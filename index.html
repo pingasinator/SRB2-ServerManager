@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="app/css/style.css">
+    <title>Title</title>
+</head>
+<body>
+<header>
+    <nav>
+        <a href=""><img src="app/img/srb2org-banner.png" alt="logo"></a>
+    </nav>
+</header>
+<main>
+    <div id="content">
+            <div class="card">
+                <div id="action-bar">
+                    <h2>Servers</h2>
+                    <div id="options">
+                        <input id="search-bar" type="text" >
+                        <div id="options-actions">
+                            <button id="start" onclick="action('start')">start</button>
+                            <button id="kill" onclick="action('kill')">kill</button>
+                            <button id="delete" onclick="action('delete')">delete</button>
+                        </div>
+                        <button onclick="display_form_server()">add Server</button>
+                    </div>
+                </div>
+
+                <table id="server-table">
+                    <thead>
+                        <tr>
+                            <th><input id="check_all" type="checkbox" onchange="select_all_servers(this)"></th>
+                            <th>Name</th>
+                            <th>State</th>
+                            <th>Port</th>
+                            <th>Max Players</th>
+                            <th>Map</th>
+                            <th>Game Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="list-servers">
+                    </tbody>
+                </table>
+            </div>
+
+        <div class="card hidden" id="server">
+            <div class="form_server">
+                <label for="Name">Name</label>
+                <input id="Name" name="Name" value="server">
+                <label for="Port">Port</label>
+                <input id="Port" name="Port" value="5029">
+                <label for="MaxPlayers">MaxPlayers</label>
+                <input id="MaxPlayers" name="MaxPlayers" value="16">
+                <label for="Map">Map</label>
+                <input id="Map" name="Map" value="1">
+                <label for="GameType">gametype</label>
+                <input id="GameType" name="GameType" value="1">
+                <div id="form_server_buttons">
+                    <button id="Cancel" onclick="hide_form_server()">Cancel</button>
+                    <button id="Create" onclick="create_server()">Create</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+
+<script src="app/js/jquery.js"></script>
+<script src="app/js/main.js"></script>
+</html>

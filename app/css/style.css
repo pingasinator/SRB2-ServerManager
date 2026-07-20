@@ -1,0 +1,99 @@
+body{
+    background: black;
+    color: white;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+}
+
+.card{
+
+
+
+}
+
+#content{
+    padding: 10px;
+}
+
+.form_server{
+    border: solid grey 1px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 640px;
+    border-radius: 10px;
+    position: absolute;
+    justify-self: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#form_server_buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+
+#action-bar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#options{
+    border: solid white 1px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    gap: 10px;
+    height: 25px;
+}
+
+#options-actions{
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    border-radius: 5px;
+    border: solid white 1px;
+}
+
+#options-actions > button{
+    background: none;
+    color: white;
+    border: solid white 1px;
+}
+
+#search-bar{
+    background: none;
+    color: white;
+}
+
+#delete{
+
+    background: red;
+}
+
+table{
+    width: 100%;
+}
+
+thead{
+    background: gray;
+}
+
+th{
+    width: 10%;
+}
+
+
+.hidden{
+    display: none;
+}
