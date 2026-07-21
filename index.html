@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="app/css/style.css">
-    <title>Title</title>
+    <link rel="stylesheet" href="app/css/home.css">
+    <title>SRB2 Server Manager</title>
+
 </head>
 <body>
 <header>
     <nav>
-        <a href=""><img src="app/img/srb2org-banner.png" alt="logo"></a>
+        <a href="index.php"><img src="app/img/srb2org-banner.png" alt="logo"></a>
+        <button>install SRB2</button>
     </nav>
+    <div id="notification" class="hidden">
+    </div>
 </header>
 <main>
     <div id="content">
@@ -53,7 +58,7 @@
                 <label for="MaxPlayers">MaxPlayers</label>
                 <input id="MaxPlayers" name="MaxPlayers" value="16">
                 <label for="Map">Map</label>
-                <input id="Map" name="Map" value="1">
+                <select id="Map"></select>
                 <label for="GameType">gametype</label>
                 <input id="GameType" name="GameType" value="1">
                 <div id="form_server_buttons">

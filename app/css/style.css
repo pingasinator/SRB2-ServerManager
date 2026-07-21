@@ -1,11 +1,26 @@
 body{
     background: black;
     color: white;
+    width: 100%;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
 }
 
 nav{
     display: flex;
     justify-content: space-between;
+}
+
+#notification{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    border: solid 1px;
 }
 
 .card{
@@ -14,30 +29,23 @@ nav{
 
 }
 
-#content{
-    padding: 10px;
-}
-
-.form_server{
-    border: solid grey 1px;
+#left-bar{
+    background: saddlebrown;
     display: flex;
     flex-direction: column;
-    padding: 10px;
-    width: 640px;
-    border-radius: 10px;
-    position: absolute;
-    justify-self: center;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 100vh;
 }
 
-#form_server_buttons{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+#content{
+    margin: 10px;
     padding: 10px;
+    border: solid 1px ;
+    border-radius: 10px;
+    width: 100%;
 }
+
+
 
 
 #action-bar{
@@ -70,29 +78,6 @@ nav{
     color: white;
     border: solid white 1px;
 }
-
-#search-bar{
-    background: none;
-    color: white;
-}
-
-#delete{
-
-    background: red;
-}
-
-table{
-    width: 100%;
-}
-
-thead{
-    background: gray;
-}
-
-th{
-    width: 10%;
-}
-
 
 .hidden{
     display: none;

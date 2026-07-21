@@ -16,6 +16,11 @@ function installSRB2(){
 }
 */
 
+/**
+ * Creates a server, put it in a json file and starts it.
+ *
+ * @return void
+ */
 function createServer(){
     $server = new server($_POST);
 
@@ -28,16 +33,23 @@ function createServer(){
     startServer($server->getName());
 }
 
+
 function startServer($name){
     $path = 'app/servers/'. $name .'.json';
-    $file = fopen($path,"r");
 
-    $data = fread($file, filesize($path));
+    if(file_exists($path)){
+        $file = fopen($path,"r");
 
-    $server = new server(json_decode($data,true));
+        $data = fread($file, filesize($path));
 
-    $command = "sudo tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}' 2>/dev/null";
-    $output = shell_exec($command);
+        $server = new server(json_decode($data,true));
+
+        $command = "sudo tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}' 2>/dev/null";
+        $output = shell_exec($command);
+    }else{
+        echo "error : Server file not found";
+    }
+
 
 }
 

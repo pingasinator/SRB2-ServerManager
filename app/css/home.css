@@ -1,0 +1,44 @@
+.form_server{
+    border: solid grey 1px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 400px;
+    border-radius: 10px;
+    position: absolute;
+    justify-self: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#form_server_buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+
+#search-bar{
+    background: none;
+    color: white;
+}
+
+#delete{
+
+    background: red;
+}
+
+table{
+    width: 100%;
+}
+
+thead{
+    background: gray;
+}
+
+th{
+    width: 10%;
+}
+
