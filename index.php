@@ -3,6 +3,8 @@
 
 require_once "app/php/modele/server.php";
 
+const srb2_addons_folder = "/root/.var/app/org.srb2.SRB2/.srb2";
+
 /*
 function installSRB2(){
     $command = "flatpak install org.srb2.SRB2";
@@ -34,14 +36,13 @@ function startServer($name){
 
     $server = new server(json_decode($data,true));
 
-    $command = "tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}' 2>/dev/null";
+    $command = "sudo tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}' 2>/dev/null";
     $output = shell_exec($command);
 
 }
 
 function changeMap($serverName,$value){
-    $command = "tmux send-key -t " . $serverName . " ". escapeshellarg("map " . $value."\n");
-    echo $command . "<br>";
+    $command = "sudo tmux send-key -t " . $serverName . " ". escapeshellarg("map " . $value."\n");
     $output = shell_exec($command);
     echo $output . "<br>";
 
@@ -67,22 +68,19 @@ function ListServers(){
         }
     }
 
-    $command = "tmux list-session";
-    $output = shell_exec($command);
-
     echo json_encode($servers);
 
     return $servers;
 }
 
 function checkServerState($serverName){
-    $command = "tmux list-session | grep 'srb2_{$serverName}'";
+    $command = "sudo tmux list-session | grep 'srb2_{$serverName}'";
     $output = shell_exec($command);
     return $output !== null;
 }
 
 function killServer($name){
-    $command = "tmux kill-session -t srb2_" . $name;
+    $command = "sudo tmux kill-session -t srb2_" . $name;
     $output = shell_exec($command);
     echo "success";
 }
