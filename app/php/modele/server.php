@@ -12,7 +12,7 @@ class ServerModele {
 
         $data = $server->ToJSON();
 
-        $file = fopen('app/servers/'. $server->getName().'.json',"w");
+        $file = fopen('../../servers/'. $server->getName().'.json',"w");
         fwrite($file, $data);
         fclose($file);
 
@@ -26,7 +26,7 @@ class ServerModele {
      * @return string
      */
     function startServer($name){
-        $path = 'app/servers/'. $name .'.json';
+        $path = '../../servers/'. $name .'.json';
 
         if(file_exists($path)){
             $file = fopen($path,"r");
@@ -99,8 +99,8 @@ class ServerModele {
      */
     function deleteServer($name){
         $this->killServer($name);
-        if(file_exists('app/servers/'. $name .'.json')){
-            unlink('app/servers/'. $name .'.json');
+        if(file_exists('../../servers/'. $name .'.json')){
+            unlink('../../servers/'. $name .'.json');
             return "success";
         }
         return "file not found";

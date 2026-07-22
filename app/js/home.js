@@ -9,7 +9,7 @@ function action(e){
     if(list.length > 0){
         list.map((server) =>{
             $.ajax({
-                url: host_url + "/index.php",
+                url: host_url + "/app/php/api/api.php",
                 method:"post",
                 data:{action: e + '_server',Name:server},
                 success:function(data){

@@ -20,7 +20,7 @@ if(isset($_POST['action'])){
             break;
 
         case "kill_server":
-            killServer($_POST['Name']);
+            echo $modele->killServer($_POST['Name']);
             break;
 
         case "delete_server":
