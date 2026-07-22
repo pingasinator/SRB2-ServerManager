@@ -6,20 +6,11 @@ const servers_table_element = document.getElementById('server-table');
 
 const list_servers_element = document.getElementById('list-servers');
 
-const check_all_element = document.getElementById('check_all');
 
 const map_selector_element = document.getElementById("Map");
+const gametype_selector_element = document.getElementById("GameType");
 
 
-function display_form_server()
-{
-    server_form_element.classList.remove("hidden");
-}
-
-function hide_form_server()
-{
-    server_form_element.classList.add("hidden");
-}
 
 function create_server() {
 
@@ -45,58 +36,26 @@ function create_server() {
     list_Servers();
 }
 
-function action(e){
 
-    let list  = list_selected_servers();
 
-    if(list.length > 0){
-        list.map((server) =>{
-            $.ajax({
-                url: host_url + "/index.php",
-                method:"post",
-                data:{action: e + '_server',Name:server},
-                success:function(data){
-                    console.log(data);
-                },
-                error:function (){
-                    console.log("error");
-                }
-            })
-        })
+
+function select_all_servers(value){
+    for(let i = 0; i < list_servers_element.childElementCount; i++ ){
+        list_servers_element.children[i].children[0].children[0].checked = value.checked;
     }
-
-    list_Servers();
 }
 
-function list_Servers(){
+function list_selected_servers(){
+    let list_servers = [];
 
-    check_all_element.checked = false;
-
-    $.ajax({
-        url: host_url + "/index.php",
-        method:"POST",
-        data:{action:'list_servers'},
-        success:function(data){
-            let content = "";
-            let servers = JSON.parse(data);
-            servers.map((value) => {
-                content += `<tr>
-                                <td><input type="checkbox"></td>
-                                <td><a href="server.html?Name=${value.server.Name}">${value.server.Name}</a></td>
-                                <td>${value.state ? 'active' : 'inactive'}</td>
-                                <td>${value.server.Port}</td>
-                                <td>${value.server.MaxPlayers}</td>
-                                <td>${value.server.Map}</td>
-                                <td>${value.server.GameType}</td>
-                            </tr>`;
-            })
-
-            servers_table_element.children[1].innerHTML = content;
-        },
-        error:function (){
-            console.log("error");
+    for(let i = 0; i < list_servers_element.childElementCount; i++ ){
+        console.log(list_servers_element.children[i].children[0].children[0].checked);
+        if(list_servers_element.children[i].children[0].children[0].checked === true){
+            list_servers.push(list_servers_element.children[i].children[1].innerText);
         }
-    })
+    }
+
+    return list_servers;
 }
 
 function generate_Map_selector(){
@@ -137,25 +96,19 @@ function generate_Map_selector(){
     }
 }
 
+function generate_gametype_selector(){
+    let defaultGametypes = [
+        "Co-op",
+        "Competition",
+        "Race",
+        "Match",
+        "Team Match",
+        "Tag",
+        "Hide and Seek",
+        "CTF"
+    ];
 
-function select_all_servers(value){
-    for(let i = 0; i < list_servers_element.childElementCount; i++ ){
-        list_servers_element.children[i].children[0].children[0].checked = value.checked;
+    for(let i = 0; i < defaultGametypes.length; i++){
+        gametype_selector_element.innerHTML += `<option value="${defaultGametypes[i]}">${defaultGametypes[i]}</option>`;
     }
 }
-
-function list_selected_servers(){
-    let list_servers = [];
-
-    for(let i = 0; i < list_servers_element.childElementCount; i++ ){
-        console.log(list_servers_element.children[i].children[0].children[0].checked);
-        if(list_servers_element.children[i].children[0].children[0].checked === true){
-            list_servers.push(list_servers_element.children[i].children[1].innerText);
-        }
-    }
-
-    return list_servers;
-}
-
-list_Servers();
-generate_Map_selector();

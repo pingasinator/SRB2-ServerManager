@@ -19,6 +19,9 @@
     padding: 10px;
 }
 
+#loading_img{
+    width: 25px;
+}
 
 #search-bar{
     background: none;

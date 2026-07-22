@@ -19,25 +19,38 @@
         <button>Addons</button>
     </div>
     <div id="content">
-            <form id="form_server_proterties">
+        <div id="top-content" class="">
+            <form action="index.php" method="post" id="form_server_proterties" class="card">
+                <h2>Properties</h2>
+                <input type="hidden" name="gestion" value="server">
                 <label for="Name">Name</label>
                 <input id="Name" type="text">
                 <label for="Port">Port</label>
                 <input id="Port" type="text">
                 <label for="GameType">gametype</label>
+                <select id="GameType"></select>
                 <label for="Map">Map</label>
                 <select id="Map"></select>
-                <select id="GameType"></select>
                 <div>
                     <input type="submit" value="Update">
                 </div>
             </form>
-            <div id="Players">
-
+            <div id="Players" class="card">
+                <h2>Players</h2>
+                <div>
+                    <button>kick</button>
+                    <button>ban</button>
+                </div>
+                <div></div>
+            </div>
+        </div>
+        <div id="bottom-content">
+            <h2>Console</h2>
+            <div id="console-content">
+            E
             </div>
         </div>
 
-        </div>
     </div>
 </main>
 <script src="app/js/server.js"></script>

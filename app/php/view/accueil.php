@@ -3,6 +3,6 @@
 class AccueilView{
 
     function display(){
-        include("../../html/accueil.html");
+        include("app/html/accueil.html");
     }
 }

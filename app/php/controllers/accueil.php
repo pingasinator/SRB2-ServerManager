@@ -2,18 +2,23 @@
 
 class AccueilController{
 
-    private $model;
-    private $view;
+    public $model;
+    public $view;
 
-
+    function __construct(){
+        $this->view = new AccueilView();
+        $this->model = new ServerModele();
+        return $this;
+    }
     function checkAction(){
-        switch($_POST['action']){
-
+        if(isset($_POST["action"])){
+            switch($_POST["action"]){
+                case "create_server":
+                    $this->model->createServer();
+                    break;
+            }
         }
+        $this->view->display();
     }
-    function checkServerState($serverName){
-        $command = "sudo tmux list-session | grep 'srb2_{$serverName}'";
-        $output = shell_exec($command);
-        return $output !== null;
-    }
+
 }
