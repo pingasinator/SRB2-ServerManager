@@ -14,6 +14,7 @@ class server{
     public function __construct($params){
         foreach ($params as $name => $value) {
             if (method_exists($this, 'set'.$name)) {
+
                 $this->{"set".$name}($value);
             }
         }

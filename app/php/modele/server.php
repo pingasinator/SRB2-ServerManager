@@ -12,11 +12,11 @@ class ServerModele {
 
         $data = $server->ToJSON();
 
-        $file = fopen('../../servers/'. $server->getName().'.json',"w");
+        $file = fopen('app/servers/'. $server->getName().'.json',"w");
         fwrite($file, $data);
         fclose($file);
 
-        $this->startServer($server->getName());
+
     }
 
     /**
@@ -26,7 +26,7 @@ class ServerModele {
      * @return string
      */
     function startServer($name){
-        $path = '../../servers/'. $name .'.json';
+        $path = 'app/servers/'. $name .'.json';
 
         if(file_exists($path)){
             $file = fopen($path,"r");
@@ -51,7 +51,7 @@ class ServerModele {
      */
     function ListServers(){
 
-        $path = '../../servers/';
+        $path = 'app/servers/';
         $files = scandir($path);
         $servers = array();
         foreach($files as $file){
@@ -99,22 +99,35 @@ class ServerModele {
      */
     function deleteServer($name){
         $this->killServer($name);
-        if(file_exists('../../servers/'. $name .'.json')){
-            unlink('../../servers/'. $name .'.json');
+        if(file_exists('app/servers/'. $name .'.json')){
+            unlink('app/servers/'. $name .'.json');
             return "success";
         }
         return "file not found";
     }
 
+    function getServer($name){
+        $path = 'app/servers/'. $name .'.json';
+        if(file_exists($path)){
+            $file = fopen($path,"r");
+            $data = fread($file, filesize($path));
+            fclose($file);
+            $server = new server(json_decode($data,true));
+            return $server;
+        }
+
+        return "error : Server file not found";
+    }
+
     /**
      * @param $serverName
      * @param $value
-     * @return void
+     * @return string
      */
-    function changeMap($serverName,$value){
-        $command = "sudo tmux send-key -t " . $serverName . " ". escapeshellarg("map " . $value."\n");
+    function changeMap($serverName,$map,$gametype){
+        $command = "sudo tmux send-key -t " . $serverName . " ". escapeshellarg("map " . $map. "-gametype " . $gametype ."\n");
         $output = shell_exec($command);
-        echo $output . "<br>";
+        return $output;
     }
 
     function getServerConsole($serverName){

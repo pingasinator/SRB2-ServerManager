@@ -50,7 +50,9 @@
             </div>
 
         <div class="card hidden" id="server">
-            <div class="form_server">
+            <form action="index.php" method="post" class="form_server">
+                <input type="hidden" name="gestion" value="accueil">
+                <input type="hidden" name="action" value="create_server">
                 <label for="Name">Name</label>
                 <input id="Name" name="Name" value="server">
                 <label for="Port">Port</label>
@@ -58,15 +60,15 @@
                 <label for="MaxPlayers">MaxPlayers</label>
                 <input id="MaxPlayers" name="MaxPlayers" value="16">
                 <label for="Map">Map</label>
-                <select id="Map"></select>
+                <select id="Map" name="Map"></select>
                 <label for="GameType">gametype</label>
-                <select id="GameType"></select>
+                <select id="GameType" name="GameType"></select>
                 <div id="form_server_buttons">
                     <button id="Cancel" onclick="hide_form_server()">Cancel</button>
-                    <button id="Create" onclick="create_server()">Create</button>
+                    <input type="submit" value="Create">
                 </div>
 
-            </div>
+            </form>
         </div>
     </div>
 </main>

@@ -22,19 +22,30 @@
         <div id="top-content" class="">
             <form action="index.php" method="post" id="form_server_proterties" class="card">
                 <h2>Properties</h2>
-                <input type="hidden" name="gestion" value="server">
-                <label for="Name">Name</label>
-                <input id="Name" type="text">
-                <label for="Port">Port</label>
-                <input id="Port" type="text">
-                <label for="GameType">gametype</label>
-                <select id="GameType"></select>
-                <label for="Map">Map</label>
-                <select id="Map"></select>
-                <div>
-                    <input type="submit" value="Update">
-                </div>
+                <?php
+
+                    $modele = new ServerModele();
+                    $server = $modele->getServer($_GET['Name']);
+
+                    echo <<< EOF
+                        <input type="hidden" name="gestion" value="server">
+                        <label for="Name">Name</label>
+                        <input id="Name" type="text" value="{$server->getName()}">
+                        <label for="Port">Port</label>
+                        <input id="Port" type="text" value="{$server->getPort()}">
+                        <label for="GameType">gametype</label>
+                        <select id="GameType"></select>
+                        <label for="Map">Map</label>
+                        <select id="Map"></select>
+                        <div>
+                            <input type="button" onclick="setMap()" value="Update">
+                        </div>
+
+                    EOF;
+                ?>
+
             </form>
+            <!--
             <div id="Players" class="card">
                 <h2>Players</h2>
                 <div>
@@ -43,16 +54,17 @@
                 </div>
                 <div></div>
             </div>
+            -->
         </div>
         <div id="bottom-content">
             <h2>Console</h2>
             <div id="console-content">
-            E
             </div>
         </div>
 
     </div>
 </main>
+<script src="app/js/jquery.js"></script>
 <script src="app/js/main.js"></script>
 <script src="app/js/server.js"></script>
 </body>

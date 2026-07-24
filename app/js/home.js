@@ -9,9 +9,9 @@ function action(e){
     if(list.length > 0){
         list.map((server) =>{
             $.ajax({
-                url: host_url + "/app/php/api/api.php",
+                url: host_url + "index.php",
                 method:"post",
-                data:{action: e + '_server',Name:server},
+                data:{gestion:"API",action: e + '_server',Name:server},
                 success:function(data){
                     console.log(data);
                 },
@@ -31,9 +31,9 @@ function list_Servers(){
     servers_table_element.children[1].innerHTML = `<div>Loading <img id="loading_img" src="app/img/sonic-running.gif" alt="sonic_running"></div>`
 
     $.ajax({
-        url: host_url + "/app/php/api/api.php",
+        url: host_url + "index.php",
         method:"POST",
-        data:{action:'list_servers'},
+        data:{gestion:"API",action:'list_servers'},
         success:function(data){
             console.log(data);
             let content = "";
