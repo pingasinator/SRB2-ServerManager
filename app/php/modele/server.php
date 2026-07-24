@@ -125,7 +125,7 @@ class ServerModele {
      * @return string
      */
     function changeMap($serverName,$map,$gametype){
-        $command = "sudo tmux send-key -t " . $serverName . " ". escapeshellarg("map " . $map. "-gametype " . $gametype ."\n");
+        $command = "sudo tmux send-key -t srb2" . $serverName . " ". escapeshellarg("map " . $map. " -gametype " . $gametype ."\n");
         $output = shell_exec($command);
         return $output;
     }

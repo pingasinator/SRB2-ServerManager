@@ -33,6 +33,7 @@ class APIController{
 
                 case 'set_map':
                     echo $this->model->changeMap($_POST['Name'],$_POST['Map'],$_POST['GameType']);
+                    echo 'test';
                     break;
             }
         }

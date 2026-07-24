@@ -10,9 +10,9 @@ function setMap(){
     $.ajax({
         url: host_url + "/index.php",
         method:"POST",
-        data:{action:'set_map',Name:name.value,GameType:gameType.value,Map:map.value},
-        success:function(){
-            console.log('E');
+        data:{gestion:'API',action:'set_map',Name:name.value,GameType:gameType.value,Map:map.value},
+        success:function(data){
+            console.log(data);
         },
         error:function (){
             console.log("error");
