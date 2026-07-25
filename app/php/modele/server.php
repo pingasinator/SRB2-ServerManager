@@ -23,7 +23,7 @@ class ServerModele {
      * Starts a Tmux session
      *
      * @param $name
-     * @return string
+     * @return array
      */
     function startServer($name){
         $path = 'app/servers/'. $name .'.json';
@@ -36,12 +36,13 @@ class ServerModele {
             $server = new server(json_decode($data,true));
 
             $command = "tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}' 2>/dev/null";
-            $output = shell_exec($command);
+            exec($command,$output,$returncode);
+
+            return array("output" => $output, "code" => $returncode);
         }else{
-            return "error : Server file not found";
+            return  array("output" => "error : Server file not found", "code" => 1);
         }
 
-        return "Success";
     }
 
     /**

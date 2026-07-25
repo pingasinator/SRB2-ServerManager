@@ -16,7 +16,7 @@ class APIController{
                     break;
 
                 case "start_server":
-                    echo $this->model->startServer($_POST['Name']);
+                    echo json_encode($this->model->startServer($_POST['Name']));
                     break;
 
                 case "list_servers":
