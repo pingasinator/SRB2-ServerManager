@@ -31,9 +31,12 @@ class APIController{
                     echo $this->model->deleteServer($_POST['Name']);
                     break;
 
-                case 'set_map':
+                case "set_map":
                     echo $this->model->changeMap($_POST['Name'],$_POST['Map'],$_POST['GameType']);
-                    echo 'test';
+                    break;
+
+                case "send_command":
+                    echo $this->model->sendCommand($_POST['Name'],$_POST['Command']);
                     break;
             }
         }

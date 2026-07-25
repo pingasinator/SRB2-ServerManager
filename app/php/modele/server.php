@@ -35,7 +35,7 @@ class ServerModele {
 
             $server = new server(json_decode($data,true));
 
-            $command = "sudo tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}' 2>/dev/null";
+            $command = "tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}' 2>/dev/null";
             $output = shell_exec($command);
         }else{
             return "error : Server file not found";
@@ -74,7 +74,7 @@ class ServerModele {
      * @return string
      */
     function checkServerState($serverName){
-        $command = "sudo tmux list-session | grep 'srb2_{$serverName}'";
+        $command = "tmux list-session | grep 'srb2_{$serverName}'";
         $output = shell_exec($command);
         return $output !== null ? "active" : "inactive";
     }
@@ -86,7 +86,7 @@ class ServerModele {
      * @return string
      */
     function killServer($name){
-        $command = "sudo tmux kill-session -t srb2_" . $name;
+        $command = "tmux kill-session -t srb2_" . $name;
         $output = shell_exec($command);
         return "success";
     }
@@ -125,9 +125,16 @@ class ServerModele {
      * @return string
      */
     function changeMap($serverName,$map,$gametype){
-        $command = "sudo tmux send-key -t srb2" . $serverName . " ". escapeshellarg("map " . $map. " -gametype " . $gametype ."\n");
+        $command = "tmux send-key -t srb2_" . $serverName . " ". escapeshellarg("map " . $map. " -gametype " . $gametype ."\n");
         $output = shell_exec($command);
         return $output;
+    }
+
+    function sendCommand($serverName,$command)
+    {
+        $command = "tmux send-key -t srb2_" . $serverName . " ". escapeshellarg($command ."\n");
+        $output = shell_exec($command);
+        return "command send";
     }
 
     function getServerConsole($serverName){

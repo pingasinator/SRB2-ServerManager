@@ -19,32 +19,38 @@
         <button>Addons</button>
     </div>
     <div id="content">
-        <div id="top-content" class="">
-            <form action="index.php" method="post" id="form_server_proterties" class="card">
-                <h2>Properties</h2>
+            <div class="card">
+                <h2>Actions</h2>
                 <?php
 
                     $modele = new ServerModele();
                     $server = $modele->getServer($_GET['Name']);
 
                     echo <<< EOF
-                        <input type="hidden" name="gestion" value="server">
-                        <label for="Name">Name</label>
-                        <input id="Name" type="text" value="{$server->getName()}">
-                        <label for="Port">Port</label>
-                        <input id="Port" type="text" value="{$server->getPort()}">
-                        <label for="GameType">gametype</label>
-                        <select id="GameType"></select>
-                        <label for="Map">Map</label>
-                        <select id="Map"></select>
-                        <div>
-                            <input type="button" onclick="setMap()" value="Update">
+                    <div id="options">
+                        <div id="options-actions">
+                            <button id="start" onclick="action('start','{$_GET['Name']}')">start</button>
+                            <button id="restart" onclick="action('restart','{$_GET['Name']}')">restart</button>
+                            <button id="kill" onclick="action('kill','{$_GET['Name']}')">kill</button>
+                            <button id="delete" onclick="action('delete','{$_GET['Name']}')">delete</button>
                         </div>
-
+                    </div>
                     EOF;
                 ?>
+            </div>
+            <div class="card">
+                <h2>Status</h2>
+                <?php
+                    echo <<< EOF
+                        <input type="hidden" name="gestion" value="server">
+                        <label for="Name">Name : {$server->getName()}<input id="Name" type="hidden" value="{$server->getName()}"></label>
+                        <label for="State">State : <input type="text" value="{$modele->checkServerState($server->getName())}"></label>
+                        <label for="Port">Port : <input id="Port" type="text" value="{$server->getPort()}"></label>
+                    EOF;
+                ?>
+            </div>
 
-            </form>
+
             <!--
             <div id="Players" class="card">
                 <h2>Players</h2>
@@ -55,10 +61,19 @@
                 <div></div>
             </div>
             -->
+        <div class="card">
+            <h2>Map and gametype</h2>
+            <label for="GameType">gametype : <select id="GameType"></select></label>
+            <label for="Map">Map : <select id="Map"></select></label>
+            <div>
+                <input type="button" onclick="setMap()" value="Set">
+            </div>
         </div>
-        <div id="bottom-content">
-            <h2>Console</h2>
-            <div id="console-content">
+        <div class="card">
+            <h2>Send Command</h2>
+            <div id="">
+                <input id="command" type="text">
+                <button onclick="sendCommand()">Send Command</button>
             </div>
         </div>
 

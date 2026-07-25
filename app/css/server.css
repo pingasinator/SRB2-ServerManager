@@ -11,6 +11,8 @@
     padding: 10px;
     gap: 10px;
     background: gray;
+    display: flex;
+    flex-direction: column;
 }
 
 #top-content{
@@ -21,6 +23,11 @@
 
 #top-content > *{
     width: 50%;
+}
+
+#command{
+    width: 100%;
+    background: grey;
 }
 
 #console-content{
