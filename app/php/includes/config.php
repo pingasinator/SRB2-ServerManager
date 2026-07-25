@@ -1,5 +1,7 @@
 <?php
 
+define('Perm', '');
+
 function loadAll(){
     $path = "app/php/";
 

@@ -44,8 +44,8 @@
                     echo <<< EOF
                         <input type="hidden" name="gestion" value="server">
                         <label for="Name">Name : {$server->getName()}<input id="Name" type="hidden" value="{$server->getName()}"></label>
-                        <label for="State">State : <input type="text" value="{$modele->checkServerState($server->getName())}"></label>
-                        <label for="Port">Port : <input id="Port" type="text" value="{$server->getPort()}"></label>
+                        <label for="State">State : {$modele->checkServerState($server->getName())}<input id="State" type="hidden" value="{$modele->checkServerState($server->getName())}"></label>
+                        <label for="Port">Port : {$server->getPort()}<input id="Port" type="hidden" value="{$server->getPort()}"></label>
                     EOF;
                 ?>
             </div>
