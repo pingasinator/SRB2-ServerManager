@@ -16,7 +16,7 @@ class ServerModele {
         fwrite($file, $data);
         fclose($file);
 
-
+        $this->startServer($server->getName());
     }
 
     /**
@@ -75,20 +75,20 @@ class ServerModele {
      */
     function checkServerState($serverName){
         $command = "tmux list-session | grep 'srb2_{$serverName}'";
-        $output = shell_exec($command);
-        return $output !== null ? "active" : "inactive";
+        exec($command,$output,$returncode);
+        return $returncode ? "inactive" : "active";
     }
 
     /**
      * kill the tmux session
      *
      * @param $name
-     * @return string
+     * @return array
      */
     function killServer($name){
         $command = "tmux kill-session -t srb2_" . $name;
-        $output = shell_exec($command);
-        return "success";
+        exec($command,$output,$returncode);
+        return array("output" => $output, "code" => $returncode);
     }
 
     /**
@@ -101,7 +101,7 @@ class ServerModele {
         $this->killServer($name);
         if(file_exists('app/servers/'. $name .'.json')){
             unlink('app/servers/'. $name .'.json');
-            return "success";
+            return "successullly deleted <br>";
         }
         return "file not found";
     }
@@ -116,25 +116,26 @@ class ServerModele {
             return $server;
         }
 
-        return "error : Server file not found";
+        return "error : Server file not found <br>";
     }
 
     /**
      * @param $serverName
-     * @param $value
-     * @return string
+     * @param $map
+     * @param $gametype
+     * @return array
      */
     function changeMap($serverName,$map,$gametype){
         $command = "tmux send-key -t srb2_" . $serverName . " ". escapeshellarg("map " . $map. " -gametype " . $gametype ."\n");
-        $output = shell_exec($command);
-        return $output;
+        exec($command,$output,$returncode);
+        return array("output" => $output, "code" => $returncode);
     }
 
     function sendCommand($serverName,$command)
     {
         $command = "tmux send-key -t srb2_" . $serverName . " ". escapeshellarg($command ."\n");
-        $output = shell_exec($command);
-        return "command send";
+        exec($command,$output,$returncode);
+        return array("output" => $output, "code" => $returncode);
     }
 
     function getServerConsole($serverName){

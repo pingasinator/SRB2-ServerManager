@@ -24,7 +24,7 @@ class APIController{
                     break;
 
                 case "kill_server":
-                    echo $this->model->killServer($_POST['Name']);
+                    echo json_encode( $this->model->killServer($_POST['Name']));
                     break;
 
                 case "delete_server":
@@ -32,11 +32,11 @@ class APIController{
                     break;
 
                 case "set_map":
-                    echo $this->model->changeMap($_POST['Name'],$_POST['Map'],$_POST['GameType']);
+                    echo json_encode($this->model->changeMap($_POST['Name'],$_POST['Map'],$_POST['GameType']));
                     break;
 
                 case "send_command":
-                    echo $this->model->sendCommand($_POST['Name'],$_POST['Command']);
+                    echo json_encode($this->model->sendCommand($_POST['Name'],$_POST['Command']));
                     break;
             }
         }
