@@ -35,13 +35,19 @@ class ServerModele {
 
             $server = new server(json_decode($data,true));
 
-            $command = Perm . "tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}' 2>/dev/null";
+            $command = Perm . " tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}' 2>/dev/null";
             exec($command,$output,$returncode);
 
             return array("output" => $output, "code" => $returncode);
         }else{
             return  array("output" => "error : Server file not found", "code" => 1);
         }
+    }
+
+    function restartServer($name){
+        $this->killServer($name);
+         return $this->startServer($name);
+
 
     }
 
@@ -75,7 +81,7 @@ class ServerModele {
      * @return string
      */
     function checkServerState($serverName){
-        $command = Perm . "tmux list-session | grep 'srb2_{$serverName}'";
+        $command = Perm . " tmux list-session | grep 'srb2_{$serverName}'";
         exec($command,$output,$returncode);
         return $returncode ? "inactive" : "active";
     }
@@ -87,7 +93,7 @@ class ServerModele {
      * @return array
      */
     function killServer($name){
-        $command = Perm . "tmux kill-session -t srb2_" . $name;
+        $command = Perm . " tmux kill-session -t srb2_" . $name;
         exec($command,$output,$returncode);
         return array("output" => $output, "code" => $returncode);
     }
@@ -127,14 +133,14 @@ class ServerModele {
      * @return array
      */
     function changeMap($serverName,$map,$gametype){
-        $command = Perm . "tmux send-key -t srb2_" . $serverName . " ". escapeshellarg("map " . $map. " -gametype " . $gametype ."\n");
+        $command = Perm . " tmux send-key -t srb2_" . $serverName . " ". escapeshellarg("map " . $map. " -gametype " . $gametype ."\n");
         exec($command,$output,$returncode);
         return array("output" => $output, "code" => $returncode);
     }
 
     function sendCommand($serverName,$command)
     {
-        $command = Perm . "tmux send-key -t srb2_" . $serverName . " ". escapeshellarg($command ."\n");
+        $command = Perm . " tmux send-key -t srb2_" . $serverName . " ". escapeshellarg($command ."\n");
         exec($command,$output,$returncode);
         return array("output" => $output, "code" => $returncode);
     }

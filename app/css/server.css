@@ -15,19 +15,8 @@
     flex-direction: column;
 }
 
-#top-content{
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-}
-
-#top-content > *{
-    width: 50%;
-}
-
 #command{
-    width: 100%;
-    background: grey;
+
 }
 
 #console-content{

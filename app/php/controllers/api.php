@@ -19,6 +19,10 @@ class APIController{
                     echo json_encode($this->model->startServer($_POST['Name']));
                     break;
 
+                case "restart_server":
+                    echo json_encode($this->model->restartServer($_POST['Name']));
+                    break;
+
                 case "list_servers":
                     echo json_encode($this->model->ListServers());
                     break;

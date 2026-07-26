@@ -42,7 +42,7 @@ function list_Servers(){
                 content += `<tr>
                                 <td><input type="checkbox"></td>
                                 <td><a href="index.php?gestion=server&Name=${value.server.Name}">${value.server.Name}</a></td>
-                                <td>${value.state}</td>
+                                <td class="state-${value.state}">${value.state}</td>
                                 <td>${value.server.Port}</td>
                                 <td>${value.server.MaxPlayers}</td>
                                 <td>${value.server.Map}</td>
@@ -63,12 +63,12 @@ function list_Servers(){
 
 function display_form_server()
 {
-    server_form_element.classList.remove("hidden");
+    server_form_element.classList.remove("d-none");
 }
 
 function hide_form_server()
 {
-    server_form_element.classList.add("hidden");
+    server_form_element.classList.add("d-none");
 }
 
 list_Servers();
