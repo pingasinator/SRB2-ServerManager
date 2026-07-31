@@ -3,8 +3,6 @@
 
 require_once "app/php/includes/config.php";
 
-const srb2_addons_folder = "/root/.var/app/org.srb2.SRB2/.srb2";
-
 /*
 function installSRB2(){
     $command = "flatpak install org.srb2.SRB2";
@@ -26,4 +24,3 @@ $_REQUEST["gestion"] .= "Controller";
 $controller = new $_REQUEST["gestion"]();
 
 $controller->checkAction();
-

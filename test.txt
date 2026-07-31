@@ -1,0 +1,1026 @@
+MainCfg
+TutorialMap = Z0
+TitleMap = 99
+SmpStage_Start = 60
+
+# Single Player
+
+Level 1
+Levelname = Greenflower
+Act = 1
+Keywords = GFZ1
+Music = GFZ1
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 2
+SkyNum = 1
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+SkyboxScale = 64
+FlickyList = Bluebird,Chipmunk
+#Flicky selection is final.
+
+Level 2
+Levelname = Greenflower
+Act = 2
+Keywords = GFZ2
+Music = GFZ2
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 3
+SkyNum = 1
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+SkyboxScale = 64
+FlickyList = Bluebird,Chipmunk
+#see act 1
+
+Level 3
+Levelname = Greenflower
+Act = 3
+Keywords = GFZ3
+Music = VSBOSS
+MusicPostBoss = GFZ1
+TypeOfLevel = Singleplayer,Co-op
+NextLevel = 4
+SkyNum = 1
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+SkyboxScale = 64
+BonusType = Boss
+FlickyList = Bluebird,Chipmunk
+StartRings = 10
+ForceResetMusic = On
+WarningTitle = true
+#see act 1
+
+Level 4
+Levelname = Techno Hill
+Act = 1
+Keywords = THZ1
+Music = THZ1
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 5
+SkyNum = 4
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+FlickyList = Rabbit,Chicken
+#Flicky selection is final.
+
+Level 5
+Levelname = Techno Hill
+Act = 2
+Keywords = THZ2
+Music = THZ2
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 6
+SkyNum = 6
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+SkyboxScale = 16
+FlickyList = Rabbit,Chicken
+#see act 1
+
+Level 6
+Levelname = Techno Hill
+Act = 3
+Keywords = THZ3
+Music = VSBOSS
+MusicPostBoss = THZ2
+TypeOfLevel = Singleplayer,Co-op
+NextLevel = 7
+SkyNum = 4
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+BonusType = Boss
+FlickyList = Rabbit,Chicken
+StartRings = 10
+ForceResetMusic = On
+WarningTitle = true
+#see act 1
+
+Level 7
+Levelname = Deep Sea
+Act = 1
+Keywords = DSZ1
+Music = DSZ1
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 8
+SkyNum = 8
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+SkyboxScale = 32
+FlickyList = Fish,Fish,Seal
+#Flicky selection is final. Two sets of fish because they come in two colours.
+
+Level 8
+Levelname = Deep Sea
+Act = 2
+Keywords = DSZ2
+Music = DSZ2
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 9
+SkyNum = 8
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+SkyboxScale = 32
+FlickyList = Fish,Fish,Seal
+#see act 1
+
+Level 9
+Levelname = Deep Sea
+Act = 3
+Keywords = DSZ3
+Music = VSBOSS
+MusicPostBoss = DSZ1
+TypeOfLevel = Singleplayer,Co-op
+NextLevel = 10
+SkyNum = 8
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+SkyboxScale = 32
+BonusType = Boss
+FlickyList = Fish,Fish,Seal
+StartRings = 10
+ForceResetMusic = On
+WarningTitle = true
+#see act 1
+
+Level 10
+Levelname = Castle Eggman
+Act = 1
+Keywords = CEZ1
+Music = CEZ1
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 11
+SkyNum = 10
+RecordAttack = true
+LevelSelect = 1
+Weather = PRECIP_STORM
+SkyboxScale = 64
+SaveGame = true
+FlickyList = Rat,Bear
+#Flicky selection is final.
+
+Level 11
+Levelname = Castle Eggman
+Act = 2
+Keywords = CEZ2
+Music = CEZ2
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 12
+SkyNum = 11
+Weather = PRECIP_STORM_NORAIN
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+SkyboxScale = 16
+FlickyList = Rat,Bear
+#Flicky selection is final.
+
+Level 12
+Levelname = Castle Eggman
+Act = 3
+Keywords = CEZ3
+Music = VSBOSS
+MusicPostBoss = CEZ2
+TypeOfLevel = Singleplayer,Co-op
+NextLevel = 13
+Weather = 1
+SkyNum = 10
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+BonusType = Boss
+FlickyList = Rat,Bear
+StartRings = 10
+ForceResetMusic = On
+WarningTitle = true
+#see act 1
+
+Level 13
+Levelname = Arid Canyon
+Act = 1
+Keywords = ACZ1
+Music = ACZ1
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 14
+SkyNum = 13
+RecordAttack = true
+LevelSelect = 1
+SkyboxScale = 64
+SaveGame = true
+FlickyList = Canary,Ram
+#Flicky selection is final.
+
+Level 14
+Levelname = Arid Canyon
+Act = 2
+Keywords = ACZ2
+Music = ACZ2
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 15
+SkyNum = 14
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+SkyboxScale = 32
+FlickyList = Canary,Ram
+
+Level 15
+Levelname = Arid Canyon
+Act = 3
+Keywords = ACZ3
+Music = VSFANG
+MusicPostBoss = ACZ1
+TypeOfLevel = Singleplayer,Co-op
+NextLevel = 16
+SkyNum = 15
+SkyboxScale = 16
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+FlickyList = Canary,Ram
+BonusType = Boss
+StartRings = 10
+ForceResetMusic = On
+WarningTitle = true
+
+Level 16
+Levelname = Red Volcano
+Act = 1
+Keywords = RVZ1
+Music = RVZ1
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 22
+SkyNum = 159
+SkyboxScaleZ = 32
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+FlickyList = Pig,Cat
+#Cow and Pig will be replaced with Monkey and Iguana when complete.
+
+Level 22
+Levelname = Egg Rock
+Act = 1
+Keywords = ERZ1
+Music = ERZ1
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 23
+SkyNum = 22
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+FlickyList = All
+#Probably final.
+
+Level 23
+Levelname = Egg Rock
+Act = 2
+Keywords = ERZ2
+Music = ERZ2
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 25
+SkyNum = 22
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+FlickyList = All
+
+Level 25
+Levelname = Black Core
+Act = 1
+Keywords = BCZ1
+Music = BCZ1
+NextLevel = 26
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+SkyNum = 22
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+FlickyList = All
+SaveGame = true
+ForceResetMusic = On
+WarningTitle = true
+
+Level 26
+Levelname = Black Core
+Act = 2
+Keywords = BCZ2
+Music = VSMETL
+MusicPostBoss = BCZ2
+TypeOfLevel = Singleplayer,Co-op
+NextLevel = 27
+SkyNum = 22
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+BonusType = Boss
+StartRings = 10
+ForceResetMusic = On
+WarningTitle = true
+
+Level 27
+Levelname = Black Core
+Act = 3
+Keywords = BCZ3
+Music = VSBRAK
+TypeOfLevel = Singleplayer,Co-op
+NextLevel = ENDING
+SkyNum = 22
+RecordAttack = true
+LevelSelect = 1
+SaveGame = true
+BonusType = Boss
+SkyboxScale = 64
+StartRings = 10
+ForceResetMusic = On
+WarningTitle = true
+
+#Bonus Levels
+
+Level 30
+Levelname = Frozen Hillside
+Act = 0
+Keywords = FHZ
+Music = FHZ
+NextLevel = 1100
+RecordAttack = true
+Unlockable = 21
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+SkyNum = 30
+LevelSelect = 2
+SelectHeading = Bonus Stages
+Weather = 2
+FlickyList = Penguin,Seal
+
+Level 31
+Levelname = Pipe Towers
+Keywords = PTZ
+Music = MARIO1
+TypeOfLevel = Singleplayer,Co-op,Competition,Race,Mario
+NextLevel = 1100
+RecordAttack = true
+Unlockable = 22
+SkyNum = 31
+LevelSelect = 2
+SelectHeading = Bonus Stages
+
+Level 32
+Levelname = Forest Fortress
+Keywords = FFZ
+Music = CEZ1
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 1100
+SkyNum = 20
+Weather = 3
+RecordAttack = true
+Unlockable = 25
+LevelSelect = 2
+SelectHeading = Bonus Stages
+SkyboxScale = 64
+FlickyList = Rat,Bear
+
+Level 33
+Levelname = Final Demo
+Act = 0
+Music = FDEMO1
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 1100
+SkyNum = 2
+RecordAttack = true
+Unlockable = 27
+NoReload = 1
+LevelSelect = 2
+SelectHeading = Bonus Stages
+WideIcon = 1
+InterScreen = INTERSCR
+FlickyList = Demo
+
+#Challenge Stages
+
+level 40
+levelname = Haunted Heights
+Keywords = HHZ
+music = HAUNTD
+skynum = 172
+nextlevel = 41
+RecordAttack = true
+Unlockable = 4
+LevelSelect = 2
+SelectHeading = Challenge Stages
+typeoflevel = Solo,Co-op,Competition,Race
+SkyboxScale = 0
+flickylist = Spider,Bat
+
+Level 41
+Levelname = Aerial Garden
+Keywords = AGZ
+Music = AGZ
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 42
+SkyNum = 40
+RecordAttack = true
+Unlockable = 5
+LevelSelect = 2
+SelectHeading = Challenge Stages
+SaveGame = true
+FlickyList = Puffin,Dove
+#Flicky selection is final.
+
+Level 42
+Levelname = Azure Temple
+Keywords = ATZ
+Music = ATZ
+TypeOfLevel = Singleplayer,Co-op,Competition,Race
+NextLevel = 1100
+SkyNum = 35
+RecordAttack = true
+Unlockable = 6
+LevelSelect = 2
+SelectHeading = Challenge Stages
+SaveGame = true
+FlickyList = Fish,Bluebird
+#Bluebird will be replaced with Flicky's Island Redbird when complete.
+
+
+#Special Stages
+
+Level 50
+LevelName = Floral Field
+Subtitle = Special Stage 1
+Music = SPEC1
+TypeOfLevel = Singleplayer,NiGHTS
+NiGHTSAttack = true
+SelectHeading = Special Stages
+SkyNum = 1
+Grades1 = 0,20000,30000,90000,180000,260000
+
+Level 51
+LevelName = Toxic Plateau
+Subtitle = Special Stage 2
+Music = SPEC2
+TypeOfLevel = Singleplayer,NiGHTS
+NiGHTSAttack = true
+SelectHeading = Special Stages
+SkyNum = 6
+Grades1 = 0,35000,50000,100000,190000,300000
+
+Level 52
+LevelName = Flooded Cove
+Subtitle = Special Stage 3
+Music = SPEC3
+TypeOfLevel = Singleplayer,NiGHTS
+NiGHTSAttack = true
+SelectHeading = Special Stages
+SkyNum = 8
+Grades1 = 0,70000,90000,180000,270000,360000
+
+Level 53
+LevelName = Cavern Fortress
+Subtitle = Special Stage 4
+Music = SPEC4
+TypeOfLevel = Singleplayer,NiGHTS
+NiGHTSAttack = true
+SelectHeading = Special Stages
+Weather = 1
+SkyNum = 10
+Grades1 = 0,40000,60000,140000,240000,300000
+
+Level 54
+LevelName = Dusty Wasteland
+Subtitle = Special Stage 5
+Music = SPEC5
+TypeOfLevel = Singleplayer,NiGHTS
+NiGHTSAttack = true
+SelectHeading = Special Stages
+SkyNum = 15
+Grades1 = 0,35000,50000,80000,120000,150000
+
+Level 55
+LevelName = Magma Caves
+Subtitle = Special Stage 6
+Music = SPEC6
+TypeOfLevel = Singleplayer,NiGHTS
+NiGHTSAttack = true
+SelectHeading = Special Stages
+SkyNum = 20
+Grades1 = 0,30000,45000,60000,90000,110000
+
+Level 56
+LevelName = Egg Satellite
+Subtitle = Special Stage 7
+Music = SPEC7
+TypeOfLevel = Singleplayer,NiGHTS
+NiGHTSAttack = true
+SelectHeading = Special Stages
+SkyNum = 22
+Grades1 = 0,60000,70000,80000,90000,140000
+
+Level 57
+LevelName = Black Hole
+Subtitle = Special Stage 8
+Music = BHZ
+TypeOfLevel = Singleplayer,NiGHTS
+NiGHTSAttack = true
+SelectHeading = Special Stages
+NoVisitNeeded = true
+SkyNum = 99
+Unlockable = 16
+Hidden = true
+Grades1 = 0,50000,60000,70000,80000,140000
+
+
+# Multiplayer
+
+Level 60
+LevelName = MP Special Stage 1
+Music = SPEC1
+TypeOfLevel = Singleplayer,Co-op
+SelectHeading = MP Special Stages
+SkyNum = 1
+SpecialStageTime = 180
+SpecialStageSpheres = 180
+
+Level 61
+LevelName = MP Special Stage 2
+Music = SPEC2
+TypeOfLevel = Singleplayer,Co-op
+SelectHeading = MP Special Stages
+SkyNum = 4
+SpecialStageTime = 160
+SpecialStageSpheres = 200
+
+Level 62
+LevelName = MP Special Stage 3
+Music = SPEC3
+TypeOfLevel = Singleplayer,Co-op
+SelectHeading = MP Special Stages
+SkyNum = 8
+SpecialStageTime = 120
+SpecialStageSpheres = 175
+
+Level 63
+LevelName = MP Special Stage 4
+Music = SPEC4
+TypeOfLevel = Singleplayer,Co-op
+SelectHeading = MP Special Stages
+Weather = 1
+SkyNum = 10
+SpecialStageTime = 120
+SpecialStageSpheres = 100
+
+Level 64
+LevelName = MP Special Stage 5
+Music = SPEC5
+TypeOfLevel = Singleplayer,Co-op
+SelectHeading = MP Special Stages
+SkyNum = 13
+SpecialStageTime = 150
+SpecialStageSpheres = 200
+
+Level 65
+LevelName = MP Special Stage 6
+Music = SPEC6
+TypeOfLevel = Singleplayer,Co-op
+SelectHeading = MP Special Stages
+SkyNum = 20
+SpecialStageTime = 120
+SpecialStageSpheres = 100
+
+Level 66
+LevelName = MP Special Stage 7
+Music = SPEC7
+TypeOfLevel = Singleplayer,Co-op
+SelectHeading = MP Special Stages
+SkyNum = 22
+SpecialStageTime = 90
+SpecialStageSpheres = 100
+
+
+#NiGHTs Stages
+
+Level 70
+Levelname = Christmas Chime
+Music = CCZ
+MixNightsCountdown = 1
+MusicInterFadeOut = 5*MUSICRATE1100
+TypeOfLevel = Singleplayer,Xmas,NiGHTS
+NextLevel = 1100
+SkyNum = 17
+Hidden = true
+LevelSelect = 2
+SelectHeading = NiGHTS Bonus Stages
+NiGHTSAttack = true
+NoVisitNeeded = true
+Unlockable = 15
+BonusType = NiGHTS
+MaxBonusLives = 0
+Grades1 = 0,30000,40000,60000,90000,110000
+FlickyList = Bluebird,Canary,Puffin,Dove
+#Canary, Puffin and Dove will be replaced with the Redbird, Pinkbird and Greenbird from Flickies Island when complete.
+
+Level 71
+Levelname = Dream Hill
+SubTitle = ^1~The Slumber~
+NoZone = true
+Act = 0
+Music = DHZ
+TypeOfLevel = Singleplayer,NiGHTS
+NextLevel = 1100
+SkyNum = 40
+Hidden = true
+LevelSelect = 2
+SelectHeading = NiGHTS Bonus Stages
+NiGHTSAttack = true
+NoVisitNeeded = true
+Unlockable = 12
+Grades1 = 0,10000,15000,50000,80000,120000
+Grades2 = 0,5000,10000,30000,40000,60000
+Grades3 = 0,10000,15000,40000,50000,60000
+Grades4 = 0,15000,20000,25000,40000,60000
+BonusType = NiGHTS
+MaxBonusLives = 0
+MixNightsCountdown = 1
+MusicInterFadeOut = 5000
+
+LEVEL 72
+Levelname = Alpine Paradise
+ACT = 1
+NEXTLEVEL = 1100
+MUSIC = APZ1
+WEATHER = 0
+SKYNUM = 300
+TYPEOFLEVEL = Singleplayer,Co-op,NiGHTS
+Hidden = true
+LevelSelect = 2
+SelectHeading = NiGHTS Bonus Stages
+NiGHTSAttack = true
+NoVisitNeeded = true
+Unlockable = 13
+BONUSTYPE = NIGHTS
+MAXBONUSLIVES = 0
+MIXNIGHTSCOUNTDOWN = 1
+MUSICINTERFADEOUT = 5*MUSICRATE
+Grades1 = 0,40000,60000,80000,120000,160000
+
+LEVEL 73
+LEVELNAME = Alpine Paradise
+ACT = 2
+NEXTLEVEL = 1100
+MUSIC = APZ2
+WEATHER = 0
+SKYNUM = 301
+TYPEOFLEVEL = Singleplayer,Co-op,NiGHTS
+Hidden = true
+LevelSelect = 2
+SelectHeading = NiGHTS Bonus Stages
+NiGHTSAttack = true
+NoVisitNeeded = true
+Unlockable = 14
+BONUSTYPE = NIGHTS
+MAXBONUSLIVES = 0
+MIXNIGHTSCOUNTDOWN = 1
+MUSICINTERFADEOUT = 5*MUSICRATE
+Grades1 = 0,15000,20000,35000,50000,70000
+Grades2 = 0,15000,20000,35000,50000,70000
+Grades3 = 0,15000,20000,35000,50000,80000
+Grades4 = 0,15000,20000,35000,50000,60000
+
+
+#Capture the Flag
+
+Level F0
+Levelname = Lime Forest
+Music = GFZALT
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = F1
+SkyNum = 1
+
+Level F1
+Levelname = Lost Palace
+Music = AGZALT
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = F2
+SkyNum = 8
+SkyBoxScale = 32
+
+Level F2
+Levelname = Silver Cascade
+Music = MP_WTR
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = F3
+Weather = 3
+SkyNum = 23
+SkyboxScale = 16
+
+Level F3
+Levelname = Icicle Falls
+Music = MP_ICE
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = F4
+Skynum = 55
+
+Level F4
+LevelName = Twisted Terminal
+Music = ERZ2
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = F5
+SkyNum = 22
+
+Level F5
+Levelname = Clockwork Towers
+Music = MP_RAI
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = F6
+Weather = 1
+SkyNum = 20
+
+LEVEL F6
+Levelname = Iron Turret
+Music = THZ1
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = F7
+SkyNum = 4
+
+Level F7
+Levelname = Dual Fortress
+Music = CEZ1
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = F8
+Weather = 1
+SkyNum = 11
+
+Level F8
+Levelname = Nimbus Ruins
+Music = MP_AIR
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = F9
+SkyNum = 68
+SkyboxScaleX = 64
+SkyboxScaleY = 64
+
+Level F9
+Levelname = Blazing Precipice
+Music = RVZ1
+SkyboxScaleZ = 32
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = FA
+SkyNum = 159
+
+Level FA
+LevelName = Meadow Match
+Music = MP_MED
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = F0
+SkyNum = 2
+
+LEVEL FB
+Levelname = Sapphire Rapids
+Music = MP_GHZ
+TypeOfLevel = CTF
+SelectHeading = Standard
+NextLevel = F0
+SkyboxScale = 64
+SkyNum = 502
+
+Level G0
+LevelName = Metal Star
+Music = MP_MN2
+NextLevel = G1
+TypeOfLevel = CTF
+SkyNum = 21
+SelectHeading = Classic
+
+Level G1
+LevelName = Conveyor Conflict
+Music = THZALT
+NextLevel = G2
+TypeOfLevel = CTF
+SkyNum = 2
+SelectHeading = Classic
+
+Level G2
+LevelName = Isolated Canyon
+Act = 0
+Music = MP_GL2
+NextLevel = G0
+TypeOfLevel = CTF
+SkyNum = 2
+SelectHeading = Classic
+
+# Match
+
+Level M0
+LevelName = Jade Valley
+Music = MP_SUN
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = M1
+SkyNum = 1
+
+Level M1
+LevelName = Noxious Factory
+Music = THZ1
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = M2
+SkyNum = 4
+
+LEVEL M2
+LevelName = Tidal Palace
+Music = DSZ2
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = M3
+SkyNum = 7
+
+Level M3
+LevelName = Thunder Citadel
+Music = CEZ2
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = M4
+Weather = 1
+SkyNum = 10
+
+Level M4
+LevelName = Desolate Twilight
+Music = MP_DES
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = M5
+SkyNum = 101
+SkyboxScale = 64
+
+Level M5
+LevelName = Frigid Mountain
+Music = MP_IC2
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = M6
+SkyNum = 6
+Weather = 2
+
+Level M6
+LevelName = Orbital Hangar
+Music = MP_DOM
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = M7
+SkyNum = 22
+
+Level M7
+LevelName = Sapphire Falls
+Music = MP_GHZ
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = M8
+SkyboxScale = 64
+SkyNum = 502
+
+Level M8
+LevelName = Diamond Blizzard
+Music = MP_AIR
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = M9
+Weather = 2
+SkyNum = 55
+
+Level M9
+LevelName = Celestial Sanctuary
+Music = MP_FOR
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = MA
+Weather = 3
+SkyboxScaleZ = 16
+SkyNum = 230
+
+Level MA
+LevelName = Frost Columns
+Music = MP_ICE
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = MB
+Weather = 2
+SkyNum = 6
+
+Level MB
+LevelName = Meadow Match
+Music = MP_MED
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = MC
+SkyNum = 2
+
+Level MC
+Levelname = Granite Lake
+Music = MP_GLZ
+TypeOfLevel = Match,Tag
+NextLevel = MD
+SkyNum = 16
+SkyboxScale = 32
+SelectHeading = Standard
+
+Level MD
+LevelName = Summit Showdown
+Music = VSAGZ
+TypeOfLevel = Match,Tag
+NextLevel = ME
+Weather = PRECIP_SNOW
+SkyNum = 17
+SkyboxScaleX = 64
+SkyboxScaleY = 64
+SelectHeading = Standard
+
+Level ME
+Levelname = Silver Shiver
+Music = MP_WT3
+TypeOfLevel = Match,Tag
+NextLevel = MF
+SkyNum = 20
+Weather = PRECIP_SNOW
+SelectHeading = Standard
+
+Level MF
+LevelName = Uncharted Badlands
+Music = SPEC5
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = MG
+SkyNum = 11
+SkyboxScale = 64
+
+Level MG
+LevelName = Pristine Shores
+Music = MP_GHZ
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = MH
+SkyNum = 76
+Skyboxscale = 32
+
+Level MH
+LevelName = Crystalline Heights
+Music = MP_CHZ
+TypeOfLevel = Match,Tag
+SelectHeading = Standard
+NextLevel = M0
+SkyNum = 69
+Skyboxscale = 256
+
+Level N0
+LevelName = Starlit Warehouse
+Music = DCZ
+NextLevel = N1
+TypeOfLevel = Match,Tag
+SkyNum = 21
+SelectHeading = Classic
+
+Level N1
+LevelName = Midnight Abyss
+Music = MP_DM2
+NextLevel = N2
+TypeOfLevel = Match,Tag
+SkyNum = 22
+SelectHeading = Classic
+
+Level N2
+LevelName = Airborne Temple
+Music = MP_AI2
+NextLevel = N0
+TypeOfLevel = Match,Tag
+SkyNum = 2
+SelectHeading = Classic
+
+# Tutorial
+
+Level Z0
+Levelname = Tutorial
+Act = 0
+Music = TUTORL
+NextLevel = 1
+TypeOfLevel = Singleplayer
+HideInStats = true
+SkyNum = 99

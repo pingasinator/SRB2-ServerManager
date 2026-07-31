@@ -42,6 +42,10 @@ class APIController{
                 case "send_command":
                     echo json_encode($this->model->sendCommand($_POST['Name'],$_POST['Command']));
                     break;
+
+                case "list_maps":
+                    echo json_encode(loadDefaultMaps());
+                    break;
             }
         }
     }

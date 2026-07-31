@@ -47,8 +47,6 @@ class ServerModele {
     function restartServer($name){
         $this->killServer($name);
          return $this->startServer($name);
-
-
     }
 
     /**
