@@ -8,7 +8,7 @@ class server{
     private $port;
     private $Mods = array();
     private $GameType;
-
+    private $forceCharacter = "None";
     private $maxPlayers;
 
     public function __construct($params){
@@ -22,12 +22,18 @@ class server{
     }
 
     public function ToJSON(){
+
+        return json_encode($this->ToArray());
+    }
+
+    public function ToArray(){
         $parameters = array();
 
         $keys = [
             "Name",
             "Map",
             "Port",
+            "ForceCharacter",
             "Mods",
             "GameType",
             "MaxPlayers"
@@ -37,7 +43,7 @@ class server{
             $parameters[$key] = $this->{"get".$key}();
         }
 
-        return json_encode($parameters);
+        return $parameters;
     }
 
     public function getName()
@@ -64,6 +70,10 @@ class server{
 
     public function getGameType(){
         return $this->GameType;
+    }
+
+    public function getForceCharacter(){
+        return $this->forceCharacter;
     }
 
     // Setters
@@ -94,5 +104,9 @@ class server{
 
     public function addMod($ModName){
         $this->Mods[] = $ModName;
+    }
+
+    public function setForceCharacter($forceCharacter){
+        $this->forceCharacter = $forceCharacter;
     }
 }

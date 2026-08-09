@@ -29,9 +29,7 @@ class ServerModele {
         $path = 'app/servers/'. $name .'.json';
 
         if(file_exists($path)){
-            $file = fopen($path,"r");
-
-            $data = fread($file, filesize($path));
+            $data = file_get_contents($path);
 
             $server = new server(json_decode($data,true));
 
@@ -47,6 +45,7 @@ class ServerModele {
 
             $command .= "' 2>/dev/null";
             exec($command,$output,$returncode);
+            $this->forceCharacter($server->getName(),$server->getForceCharacter());
 
             return array("output" => $output, "code" => $returncode);
         }else{
@@ -57,23 +56,17 @@ class ServerModele {
     function addAddon($serverName,$addonName){
         $serverFilePath = 'app/servers/'. $serverName .'.json';
         if(file_exists($serverFilePath)){
-            $serverFile = fopen($serverFilePath,"r+");
-            $data = fread($serverFile, filesize($serverFilePath));
-            fclose($serverFile);
+            $data = file_get_contents($serverFilePath);
             $server = new server(json_decode($data,true));
-
             $addonFilePath = 'app/addons/'. $addonName .'.json';
             if(file_exists($addonFilePath) && !in_array($addonName,$server->getMods())){
 
                 $addons = $server->getMods();
                 $addons[] = $addonName;
                 $server->setMods($addons);
-                try{
-                    if($this->updateServerConfig($server)){
-                        return array("output" => "success", "code" => 0);
-                    }
-                }catch(Exception $e){
-                    echo $e->getMessage();
+                if($this->updateServerConfig($server)){
+                    $this->restartServer($server->getName());
+                    return array("output" => "success", "code" => 0);
                 }
 
             }else{
@@ -88,8 +81,7 @@ class ServerModele {
     function listServerAddons($serverName){
         $serverFilePath = 'app/servers/'. $serverName .'.json';
         if(file_exists($serverFilePath)){
-            $file = fopen($serverFilePath,"r");
-            $data = fread($file, filesize($serverFilePath));
+            $data = file_get_contents($serverFilePath);
             $server = new server(json_decode($data,true));
             return $server->getMods();
         }else{
@@ -167,9 +159,7 @@ class ServerModele {
     function getServer($name){
         $path = 'app/servers/'. $name .'.json';
         if(file_exists($path)){
-            $file = fopen($path,"r");
-            $data = fread($file, filesize($path));
-            fclose($file);
+            $data = file_get_contents($path);
             $server = new server(json_decode($data,true));
             return $server;
         }
@@ -232,9 +222,7 @@ class ServerModele {
     public function getAddon($modName){
         $path = 'app/addons/'. $modName .'.json';
         if(file_exists($path)){
-            $file = fopen($path,"r");
-            $data = fread($file, filesize($path));
-            fclose($file);
+            $data = file_get_contents($path);
             $addon = new addon(json_decode($data,true));
             return $addon;
         }
@@ -259,9 +247,14 @@ class ServerModele {
 
     public function forceCharacter($serverName,$skin)
     {
-        $command = Perm . " tmux send-key -t srb2_{$serverName} " . escapeshellarg("forceskin {$skin }\n");
-        exec($command,$output,$returncode);
-        return array("output" => $output, "code" => $returncode);
+        $server = $this->getServer($serverName);
+        $server->setForceCharacter($skin);
+        if($this->updateServerConfig($server)){
+            $command = Perm . " tmux send-key -t srb2_{$serverName} " . escapeshellarg("forceskin {$skin }\n");
+            exec($command,$output,$returncode);
+            return array("output" => $output, "code" => $returncode);
+        }
+        return array("output" => "error : Server config file not found", "code" => 1);
     }
 
     public function listServerGametypes($serverName){

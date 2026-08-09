@@ -3,6 +3,8 @@ a web interface for managing your dedicated srb2 servers
 
 ## dependencies
 
+- php
+- php-zip
 - flatpak
 - flathub
 - srb2

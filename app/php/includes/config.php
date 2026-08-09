@@ -1,6 +1,6 @@
 <?php
 
-define('Perm', '');
+define('Perm', 'sudo');
 
 define('addonsFolder',"/root/.var/app/org.srb2.SRB2/.srb2/addons/");
 
@@ -24,9 +24,7 @@ function loadAll(){
 function loadDefaultMaps(){
     if(file_exists("app/datas/maps.txt"))
     {
-        $file = fopen("app/datas/maps.txt","r");
-        $content =  fread($file,filesize("app/datas/maps.txt"));
-        fclose($file);
+        $content =  file_get_contents("app/datas/maps.txt");
         $file_levels = explode("\nLevel ",$content);
 
         $levels = array();
@@ -64,9 +62,7 @@ function loadDefaultGametypes(){
 
     if(file_exists("app/datas/gametypes.txt"))
     {
-        $file = fopen("app/datas/gametypes.txt","r");
-        $content =  fread($file,filesize("app/datas/gametypes.txt"));
-        fclose($file);
+        $content =  file_get_contents("app/datas/gametypes.txt");
 
         foreach(explode("\n",$content) as $row){
             $data = explode(" = ",strtolower($row));
