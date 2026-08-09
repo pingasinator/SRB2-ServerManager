@@ -1,7 +1,5 @@
 <?php
 
-use Couchbase\View;
-
 class ServerController {
 
     public $model;
@@ -28,9 +26,17 @@ class ServerController {
                     $this->model->killServer($_POST['Name']);
                     break;
 
-                    case 'delete_server':
-                        $this->model->deleteServer($_POST['Name']);
-                        break;
+                case 'delete_server':
+                    $this->model->deleteServer($_POST['Name']);
+                    break;
+
+                case 'add_addon':
+                    $this->model->addAddon($_POST['Name'], $_POST['Addon']);
+                    break;
+
+                case 'force_character':
+                    $this->model->forceCharacter($_POST['Name'],$_POST['Skin']);
+                    break;
             }
         }
 

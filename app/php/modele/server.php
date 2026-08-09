@@ -35,10 +35,63 @@ class ServerModele {
 
             $server = new server(json_decode($data,true));
 
-            $command = Perm . " tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}' 2>/dev/null";
+            $command = Perm . " tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}";
+            if(count($server->getMods()) > 0){
+                $command .= " -file ";
+                $mods = $server->getMods();
+                foreach($mods as $mod){
+
+                    $command .= $mod . ".pk3 ";
+                }
+            }
+
+            $command .= "' 2>/dev/null";
             exec($command,$output,$returncode);
 
             return array("output" => $output, "code" => $returncode);
+        }else{
+            return  array("output" => "error : Server file not found", "code" => 1);
+        }
+    }
+
+    function addAddon($serverName,$addonName){
+        $serverFilePath = 'app/servers/'. $serverName .'.json';
+        if(file_exists($serverFilePath)){
+            $serverFile = fopen($serverFilePath,"r+");
+            $data = fread($serverFile, filesize($serverFilePath));
+            fclose($serverFile);
+            $server = new server(json_decode($data,true));
+
+            $addonFilePath = 'app/addons/'. $addonName .'.json';
+            if(file_exists($addonFilePath) && !in_array($addonName,$server->getMods())){
+
+                $addons = $server->getMods();
+                $addons[] = $addonName;
+                $server->setMods($addons);
+                try{
+                    if($this->updateServerConfig($server)){
+                        return array("output" => "success", "code" => 0);
+                    }
+                }catch(Exception $e){
+                    echo $e->getMessage();
+                }
+
+            }else{
+                return  array("output" => "error : Addon not found", "code" => 1);
+            }
+
+        }else{
+            return  array("output" => "error : Server file not found", "code" => 1);
+        }
+    }
+
+    function listServerAddons($serverName){
+        $serverFilePath = 'app/servers/'. $serverName .'.json';
+        if(file_exists($serverFilePath)){
+            $file = fopen($serverFilePath,"r");
+            $data = fread($file, filesize($serverFilePath));
+            $server = new server(json_decode($data,true));
+            return $server->getMods();
         }else{
             return  array("output" => "error : Server file not found", "code" => 1);
         }
@@ -131,16 +184,102 @@ class ServerModele {
      * @return array
      */
     function changeMap($serverName,$map,$gametype){
-        $command = Perm . " tmux send-key -t srb2_" . $serverName . " ". escapeshellarg("map " . $map. " -gametype " . $gametype ."\n");
+        $command = Perm . " tmux send-key -t srb2_{$serverName} ". escapeshellarg("map {$map}  -gametype {$gametype}\n");
+        echo $command;
         exec($command,$output,$returncode);
         return array("output" => $output, "code" => $returncode);
     }
 
     function sendCommand($serverName,$command)
     {
-        $command = Perm . " tmux send-key -t srb2_" . $serverName . " ". escapeshellarg($command ."\n");
+        $command = Perm . " tmux send-key -t srb2_{$serverName} " . escapeshellarg("{$command}\n");
         exec($command,$output,$returncode);
         return array("output" => $output, "code" => $returncode);
+    }
+
+    function updateServerConfig($server){
+        $path = 'app/servers/'. $server->getName() .'.json';
+        if(file_exists($path)){
+            $file = fopen($path,"w");
+            fwrite($file, $server->toJSON());
+            fclose($file);
+            return 1;
+        }
+        return array("output" => "error : Server config file not found", "code" => 1);
+    }
+
+    public function listServerMaps($serverName){
+        $defaultMaps = loadDefaultMaps();
+        $customMaps = array();
+
+        $server = $this->getServer($serverName);
+        foreach($server->getMods() as $modName){
+
+           $mod = $this->getAddon($modName);
+           foreach($mod->getMaps() as $map){
+
+               $customMap = new map($map);
+               $customMaps[] = $customMap->toArray();
+           }
+
+        }
+
+        $Maps = array_merge($defaultMaps,$customMaps);
+
+        return $Maps;
+    }
+
+    public function getAddon($modName){
+        $path = 'app/addons/'. $modName .'.json';
+        if(file_exists($path)){
+            $file = fopen($path,"r");
+            $data = fread($file, filesize($path));
+            fclose($file);
+            $addon = new addon(json_decode($data,true));
+            return $addon;
+        }
+    }
+
+    public function listServerCharacters($serverName){
+        $server = $this->getServer($serverName);
+        $defaultCharacters = loadDefaultCharacters();
+        foreach($server->getMods() as $modName){
+            $mod = $this->getAddon($modName);
+            foreach($mod->getCharacters() as $character){
+                $defaultCharacters[] = $character;
+            }
+        }
+
+        for($i = 0; $i < count($defaultCharacters); $i++){
+            $defaultCharacters[$i] = $defaultCharacters[$i]->ToArray();
+        }
+
+        return $defaultCharacters;
+    }
+
+    public function forceCharacter($serverName,$skin)
+    {
+        $command = Perm . " tmux send-key -t srb2_{$serverName} " . escapeshellarg("forceskin {$skin }\n");
+        exec($command,$output,$returncode);
+        return array("output" => $output, "code" => $returncode);
+    }
+
+    public function listServerGametypes($serverName){
+        $server = $this->getServer($serverName);
+        $addons = $server->getMods();
+        $gametypes = loadDefaultGametypes();
+        foreach($addons as $addonName){
+            $addon = $this->getAddon($addonName);
+            foreach($addon->getGametypes() as $gametype){
+                $gametypes[] = new Gametype($gametype);
+            }
+        }
+
+        for($i = 0; $i < count($gametypes); $i++){
+            $gametypes[$i] = $gametypes[$i]->ToArray();
+        }
+
+        return $gametypes;
     }
 
     function getServerConsole($serverName){

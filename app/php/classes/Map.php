@@ -59,21 +59,7 @@ class Map {
     }
 
     public function ToJSON(){
-        $parameters = array();
-
-        $keys = [
-            "id",
-            "levelname",
-            "ACT",
-            "TypeOfLevel",
-            "NextLevel"
-        ];
-
-        foreach($keys as $key){
-            $parameters[$key] = $this->{"get".$key}();
-        }
-
-        return json_encode($parameters);
+        return json_encode($this->ToArray());
     }
 
     public function toArray(){

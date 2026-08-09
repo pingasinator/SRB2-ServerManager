@@ -2,7 +2,7 @@
 
 define('Perm', '');
 
-const srb2_addons_folder = "/root/.var/app/org.srb2.SRB2/.srb2";
+define('addonsFolder',"/root/.var/app/org.srb2.SRB2/.srb2/addons/");
 
 
 function loadAll(){
@@ -22,10 +22,11 @@ function loadAll(){
 }
 
 function loadDefaultMaps(){
-    if(file_exists("test.txt"))
+    if(file_exists("app/datas/maps.txt"))
     {
-        $file = fopen("test.txt","r");
-        $content =  fread($file,filesize("test.txt"));
+        $file = fopen("app/datas/maps.txt","r");
+        $content =  fread($file,filesize("app/datas/maps.txt"));
+        fclose($file);
         $file_levels = explode("\nLevel ",$content);
 
         $levels = array();
@@ -55,4 +56,61 @@ function loadDefaultMaps(){
     }
 
     return null;
+}
+
+function loadDefaultGametypes(){
+    $gametypes = array();
+    $gametype = array();
+
+    if(file_exists("app/datas/gametypes.txt"))
+    {
+        $file = fopen("app/datas/gametypes.txt","r");
+        $content =  fread($file,filesize("app/datas/gametypes.txt"));
+        fclose($file);
+
+        foreach(explode("\n",$content) as $row){
+            $data = explode(" = ",strtolower($row));
+            if(str_contains($data[0],"name")){
+                if($gametype['name'] != null){
+                    $gametypes[] = new Gametype($gametype);
+                }
+                $gametype = array();
+                $data[1] = ucfirst($data[1]);
+
+            }else if (str_contains($data[0],"typeoflevel"))
+            {
+                $data[1] = array(ucfirst($data[1]));
+            }
+
+            $gametype[$data[0]] = $data[1];
+
+        }
+
+        if($gametype['name'] != null){
+
+            $gametypes[] = new Gametype($gametype);
+        }
+    }
+
+    return $gametypes;
+}
+
+function loadDefaultCharacters(){
+    $charactersNames = array(
+        "None",
+        "Sonic",
+        "Tails",
+        "knuckles",
+        "Amy",
+        "Fang",
+        "MetalSonic"
+    );
+
+    $characters = array();
+
+    foreach($charactersNames as $char){
+        $characters[] = new Character(["skinName" => $char,"displayName" => $char]);
+    }
+
+    return $characters;
 }

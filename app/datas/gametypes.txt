@@ -1,0 +1,23 @@
+name = Co-op
+identifier = Co-op
+typeoflevel = Co-op
+
+name = Competition
+identifier = Competition
+typeoflevel = Competition
+
+name = Race
+identifier = Race
+typeoflevel = Race
+
+name = Match
+identifier = Match
+typeoflevel = Match
+
+name = Tag
+identifier = Tag
+typeoflevel = Tag
+
+name = Capture the flag
+identifier = Ctf
+typeoflevel = Ctf

@@ -87,4 +87,12 @@ class server{
     public function setGameType($GameType){
         $this->GameType = $GameType;
     }
+
+    public function setMods($Mods){
+        $this->Mods = $Mods;
+    }
+
+    public function addMod($ModName){
+        $this->Mods[] = $ModName;
+    }
 }

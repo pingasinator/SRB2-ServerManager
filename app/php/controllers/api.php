@@ -36,15 +36,40 @@ class APIController{
                     break;
 
                 case "set_map":
-                    echo json_encode($this->model->changeMap($_POST['Name'],$_POST['Map'],$_POST['GameType']));
+                    echo json_encode($this->model->changeMap($_POST['Name'],$_POST['Map'],json_decode($_POST['GameType'],true)['name']));
                     break;
 
                 case "send_command":
                     echo json_encode($this->model->sendCommand($_POST['Name'],$_POST['Command']));
                     break;
 
+                case "remove_addon_server":
+
+                    break;
+
                 case "list_maps":
                     echo json_encode(loadDefaultMaps());
+                    break;
+
+                case 'list_server_maps':
+                    echo json_encode($this->model->listServerMaps($_POST['Name']));
+                    break;
+
+                case 'list_server_addons':
+                    echo json_encode($this->model->listServerAddons($_POST['Name']));
+                    break;
+
+                case "list_addons":
+                    $this->model = new AddonModel();
+                    echo json_encode($this->model->listAddons());
+                    break;
+
+                case "list_server_characters":
+                    echo json_encode($this->model->listServerCharacters($_POST['Name']));
+                    break;
+
+                case "list_server_gametypes":
+                    echo json_encode($this->model->listServerGametypes($_POST['Name']));
                     break;
             }
         }

@@ -5,18 +5,20 @@ const server_search_element = document.getElementById("server");
 const servers_table_element = document.getElementById('server-table');
 
 const list_servers_element = document.getElementById('list-servers');
+const list_addons_element = document.getElementById('form_addons');
 
+const check_all_element = document.getElementById('check_all');
 
 const map_selector_element = document.getElementById("Map");
 const gametype_selector_element = document.getElementById("GameType");
 
-function create_server() {
+const name = document.getElementById('Name');
+const port = document.getElementById('Port');
+const maxPlayers = document.getElementById('MaxPlayers');
+const map = document.getElementById('Map');
+const gameType = document.getElementById('GameType');
 
-    const name = document.getElementById('Name');
-    const port = document.getElementById('Port');
-    const maxPlayers = document.getElementById('MaxPlayers');
-    const map = document.getElementById('Map');
-    const gameType = document.getElementById('GameType');
+function create_server() {
 
     $.ajax({
         url: host_url + "/index.php",
@@ -53,17 +55,16 @@ function list_selected_servers(){
     return list_servers;
 }
 
-function generate_Map_selector(){
+function generate_server_map_selector(serverName){
 
     map_selector_element.innerHTML = "";
     $.ajax({
         url: host_url + "/index.php",
         method:"POST",
-        data:{gestion:'API',action:'list_maps'},
+        data:{gestion:'API',action:'list_server_maps',Name:serverName},
         success:function(data){
             console.log(data);
-            defaultMaps = JSON.parse(data)
-
+            defaultMaps = JSON.parse(data);
             for(let i = 0; i < defaultMaps.length; i++){
                 if(defaultMaps[i].TypeOfLevel.includes(gametype_selector_element.value)){
                     map_selector_element.innerHTML += `<option value="${defaultMaps[i].id}">${defaultMaps[i].levelname} ${defaultMaps[i].ACT != null ? " Act " + defaultMaps[i].ACT : ""}</option>`;
@@ -75,8 +76,29 @@ function generate_Map_selector(){
             console.log("error");
         }
     })
+}
 
+function generate_Map_selector(){
 
+    map_selector_element.innerHTML = "";
+    $.ajax({
+        url: host_url + "/index.php",
+        method:"POST",
+        data:{gestion:'API',action:'list_maps'},
+        success:function(data){
+            console.log(data);
+            defaultMaps = JSON.parse(data);
+            for(let i = 0; i < defaultMaps.length; i++){
+                if(defaultMaps[i].TypeOfLevel.includes(gametype_selector_element.value)){
+                    map_selector_element.innerHTML += `<option value="${defaultMaps[i].id}">${defaultMaps[i].levelname} ${defaultMaps[i].ACT != null ? " Act " + defaultMaps[i].ACT : ""}</option>`;
+                }
+            }
+
+        },
+        error:function (){
+            console.log("error");
+        }
+    })
 }
 
 function generate_gametype_selector(){
@@ -93,3 +115,35 @@ function generate_gametype_selector(){
         gametype_selector_element.innerHTML += `<option value="${defaultGametypes[i]}">${defaultGametypes[i]}</option>`;
     }
 }
+
+
+function list_Addons(){
+
+    check_all_element.checked = false;
+
+    list_addons_element.children.innerHTML = `<div>Loading <img id="loading_img" src="app/img/sonic-running.gif" alt="sonic_running"></div>`
+
+    $.ajax({
+        url: host_url + "/index.php",
+        method:"POST",
+        data:{gestion:"API",action:'list_addons'},
+        success:function(data){
+            let content = "";
+            let addons = JSON.parse(data);
+            console.log(addons);
+            addons.map((value) => {
+                content += `<tr>
+                                <td><input type="checkbox"></td>
+                                <td>${value.name}</td>
+                            </tr>`;
+            })
+
+
+            list_addons_element.innerHTML = content;
+        },
+        error:function (){
+            console.log("error");
+        }
+    })
+}
+

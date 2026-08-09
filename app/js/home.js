@@ -1,6 +1,4 @@
 
-const check_all_element = document.getElementById('check_all');
-
 
 function action(e){
 
@@ -57,9 +55,6 @@ function list_Servers(){
         }
     })
 }
-
-
-
 
 function display_form_server()
 {

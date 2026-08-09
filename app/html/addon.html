@@ -25,6 +25,7 @@
         <div class="card bg-secondary text-white">
             <div id="action-bar">
                 <h2>Addons</h2>
+                <button onclick="display_form_addon()"></button>
             </div>
 
             <table id="addon-table">
@@ -34,30 +35,20 @@
                     <th>Name</th>
                 </tr>
                 </thead>
-                <tbody id="list-servers">
+                <tbody id="list-addons">
                 </tbody>
             </table>
         </div>
 
-        <div class="card d-none" id="server">
-            <form action="index.php" method="post" class="form_server">
-                <input type="hidden" name="gestion" value="accueil">
-                <input type="hidden" name="action" value="create_server">
-                <label for="Name">Name</label>
-                <input id="Name" name="Name" value="server">
-                <label for="Port">Port</label>
-                <input id="Port" name="Port" value="5029">
-                <label for="MaxPlayers">MaxPlayers</label>
-                <input id="MaxPlayers" name="MaxPlayers" value="16">
-                <label for="Map">Map</label>
-                <select id="Map" name="Map"></select>
-                <label for="GameType">gametype</label>
-                <select id="GameType" name="GameType"></select>
-                <div id="form_server_buttons">
-                    <button id="Cancel" onclick="hide_form_server()">Cancel</button>
+        <div class="card d-none" id="form_addons">
+            <form action="index.php" method="post" class="form_addon" enctype="multipart/form-data">
+                <input type="hidden" name="gestion" value="addon">
+                <input type="hidden" name="action" value="import_addon">
+                <input type="file" name="addon" >
+                <div id="form_addon_buttons">
+                    <button id="Cancel" onclick="hide_form_addon()">Cancel</button>
                     <input type="submit" value="Create">
                 </div>
-
             </form>
         </div>
     </div>
@@ -66,5 +57,5 @@
 
 <script src="app/js/jquery.js"></script>
 <script src="app/js/main.js"></script>
-<script src="app/js/home.js"></script>
+<script src="app/js/addons.js"></script>
 </html>
