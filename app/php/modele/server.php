@@ -46,6 +46,7 @@ class ServerModele {
             $command .= "' 2>/dev/null";
             exec($command,$output,$returncode);
             $this->forceCharacter($server->getName(),$server->getForceCharacter());
+            $this->sendCommand($server->getName(),"maxsend 248000");
 
             return array("output" => $output, "code" => $returncode);
         }else{
