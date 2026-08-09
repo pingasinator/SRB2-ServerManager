@@ -5,7 +5,7 @@ const server_search_element = document.getElementById("server");
 const servers_table_element = document.getElementById('server-table');
 
 const list_servers_element = document.getElementById('list-servers');
-const list_addons_element = document.getElementById('form_addons');
+const list_addons_element = document.getElementById('list-addons');
 
 const check_all_element = document.getElementById('check_all');
 

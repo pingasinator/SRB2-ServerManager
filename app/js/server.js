@@ -167,9 +167,9 @@ function generate_server_map_selector(serverName){
             let Maps = JSON.parse(data);
             let gametypes = JSON.parse(gametype_selector_element.value);
             Maps.map((map) => {
-                gametypes.typeoflevel.map((typeoelevel) => {
-                    if(map.TypeOfLevel != null && map.TypeOfLevel.includes(typeoelevel)){
-                        map_selector_element.innerHTML += `<option value="${map.id}">${map.levelname} ${map.ACT != null ? " Act " + map.ACT : ""}</option>`;
+                gametypes.typeoflevel.map((typeofelevel) => {
+                    if(map.TypeOfLevel != null && map.TypeOfLevel.includes(typeofelevel)){
+                        map_selector_element.innerHTML += `<option value="${map.id}">${map.levelname} ${map.ACT !== null || map.ACT !== '0' ? " Act " + map.ACT : ""}</option>`;
                     }
                 })
 
@@ -236,7 +236,7 @@ function list_server_gametypes(){
             let content = "";
             listGametypes = JSON.parse(data);
             listGametypes.map((value) => {
-                content += `<option value='{"name":"${value.name}","typeoflevel":${JSON.stringify(value.TypeOfLevel)}}'>${value.name}</option>`;
+                content += `<option value='{"name":"${value.identifier}","typeoflevel":${JSON.stringify(value.TypeOfLevel)}}'>${value.name}</option>`;
             })
 
             list_gametypes_element.innerHTML = content;

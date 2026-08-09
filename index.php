@@ -1,6 +1,5 @@
 <?php
 
-
 require_once "app/php/includes/config.php";
 
 /*
