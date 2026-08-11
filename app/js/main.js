@@ -63,7 +63,6 @@ function generate_server_map_selector(serverName){
         method:"POST",
         data:{gestion:'API',action:'list_server_maps',Name:serverName},
         success:function(data){
-            console.log(data);
             defaultMaps = JSON.parse(data);
             for(let i = 0; i < defaultMaps.length; i++){
                 if(defaultMaps[i].TypeOfLevel.includes(gametype_selector_element.value)){

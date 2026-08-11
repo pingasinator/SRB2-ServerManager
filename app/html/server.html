@@ -97,6 +97,8 @@
                         <label for="Name">Name : {$server->getName()}<input id="Name" type="hidden" value="{$server->getName()}"></label>
                         <label for="State" >State : <span class="state-{$state}" >{$state}</span><input id="State" type="hidden" value="{$state}"></label>
                         <label for="Port">Port : {$server->getPort()}<input id="Port" type="hidden" value="{$server->getPort()}"></label>
+                        <label for="MaxPlayers">Max Players : {$server->getMaxPlayers()}<input id="MaxPlayers" type="hidden" value="{$server->getMaxPlayers()}"></label>
+                        <label for="DefaultMap">Default Map : {$server->getMap()}<input id="DefaultMap" type="hidden" value="{$server->getMap()}"></label>
                     EOF;
                 ?>
             </div>
@@ -162,6 +164,7 @@
                 <h2>Addons</h2>
                 <div>
                     <button onclick="display_form_addons()">add Addon</button>
+                    <button onclick="removeServerAddons()">remove Addon</button>
                 </div>
                 <table class="table table-dark">
                     <thead>

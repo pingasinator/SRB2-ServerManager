@@ -45,7 +45,8 @@ class ServerModele {
 
             $command .= "' 2>/dev/null";
             exec($command,$output,$returncode);
-            $this->forceCharacter($server->getName(),$server->getForceCharacter());
+            $this->sendCommand($server->getName(),"forceskin {$server->getForceCharacter()}");
+            $this->sendCommand($server->getName(),"maxplayers {$server->getMaxPlayers()}");
             $this->sendCommand($server->getName(),"maxsend 248000");
 
             return array("output" => $output, "code" => $returncode);
@@ -274,6 +275,34 @@ class ServerModele {
         }
 
         return $gametypes;
+    }
+
+    public function removeServerAddon($serverName,$addonName){
+        $path = 'app/servers/'. $serverName .'.json';
+        if(file_exists($path)){
+            $data = file_get_contents($path);
+            $server = new server(json_decode($data,true));
+            $addons = $server->getMods();
+            $addon = $this->getAddon($addonName);
+
+            if(in_array($addonName,$addons)){
+                $key = array_search($addonName,$addons);
+                array_splice($addons,$key,1);
+            }
+
+            foreach($addon->getCharacters() as $character){
+                if($character->getSkinName() === $server->getForceCharacter()){
+                    $server->setForceCharacter("None");
+                }
+            }
+
+            $server->setMods($addons);
+            $this->updateServerConfig($server);
+            $this->restartServer($serverName);
+            return array("output" => "Addon removed succesfully ", "code" => 0);
+        }
+
+        return array("output" => "error : Server config file not found", "code" => 1);
     }
 
     function getServerConsole($serverName){

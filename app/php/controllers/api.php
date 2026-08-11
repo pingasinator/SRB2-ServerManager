@@ -43,10 +43,6 @@ class APIController{
                     echo json_encode($this->model->sendCommand($_POST['Name'],$_POST['Command']));
                     break;
 
-                case "remove_addon_server":
-
-                    break;
-
                 case "list_maps":
                     echo json_encode(loadDefaultMaps());
                     break;
@@ -57,6 +53,10 @@ class APIController{
 
                 case 'list_server_addons':
                     echo json_encode($this->model->listServerAddons($_POST['Name']));
+                    break;
+
+                case 'remove_server_addon':
+                    echo json_encode($this->model->removeServerAddon($_POST['Name'],$_POST['AddonName']));
                     break;
 
                 case "list_addons":

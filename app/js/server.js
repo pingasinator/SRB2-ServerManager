@@ -2,6 +2,8 @@ listAddonsToAdd();
 listCharacters();
 list_server_gametypes();
 
+const list_server_addons_element = document.getElementById('list-server-addons');
+
 let listAddons = [];
 
 function action(action,name){
@@ -22,7 +24,6 @@ function action(action,name){
 
 function list_server_addons(server){
 
-    const list_server_addons_element = document.getElementById("list-server-addons")
     let content = "";
 
     $.ajax({
@@ -194,12 +195,6 @@ function check_all_elements(checkbox){
     }
 }
 
-function list_selected_addons(){
-    list_addons_element.children.map((addon) => {
-        console.log()
-    })
-}
-
 function listCharacters(){
 
     let content = "";
@@ -245,4 +240,38 @@ function list_server_gametypes(){
             console.log("error");
         }
     })
+}
+
+function removeServerAddons(){
+    let list_addons = list_selected_addons();
+    console.log(list_addons);
+
+    list_addons.map((addon) => {
+        console.log(name.value);
+        $.ajax({
+            url: host_url + "/index.php",
+            method:"POST",
+            data:{gestion:"API",action:'remove_server_addon',Name:name.value,AddonName:addon},
+            success:function(data){
+                console.log(data);
+                list_server_addons(name.value);
+            },
+            error:function (){
+                console.log("error");
+            }
+        })
+    })
+
+
+}
+
+function list_selected_addons(){
+    let list_addons = [];
+
+    for(let i = 0; i < list_server_addons_element.childElementCount; i++ ){
+        if(list_server_addons_element.children[i].children[0].children[0].checked === true){
+            list_addons.push(list_server_addons_element.children[i].children[1].innerText);
+        }
+    }
+    return list_addons;
 }

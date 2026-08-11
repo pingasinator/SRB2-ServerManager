@@ -11,7 +11,7 @@ function action(e){
                 method:"post",
                 data:{gestion:"API",action: e + '_server',Name:server},
                 success:function(data){
-                    console.log(data);
+                    list_Servers();
                 },
                 error:function (){
                     console.log("error");
@@ -20,7 +20,7 @@ function action(e){
         })
     }
 
-    list_Servers();
+
 }
 function list_Servers(){
 
@@ -33,7 +33,6 @@ function list_Servers(){
         method:"POST",
         data:{gestion:"API",action:'list_servers'},
         success:function(data){
-            console.log(data);
             let content = "";
             let servers = JSON.parse(data);
             servers.map((value) => {
