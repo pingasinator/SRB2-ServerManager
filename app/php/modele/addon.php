@@ -128,7 +128,7 @@ class AddonModel {
                     if($level['ID']  != null){
                         if(str_contains($row," = ")){
                             $data =  explode(" = ",$row);
-                            if($level[$data[0]] != null){
+                            if($level[$data[0]] == null){
                                 if(str_contains($data[1], ",")){
                                     $values = explode(",",$data[1]);
                                     foreach ($values as $value){
