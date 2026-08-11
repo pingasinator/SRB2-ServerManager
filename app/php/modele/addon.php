@@ -53,6 +53,9 @@ class AddonModel {
 
             $command = Perm . " cp -r app/tmp/" . $_FILES["addon"]["name"]. " " . addonsFolder;
             exec($command);
+
+            $command = Perm . "rm -r app/tmp/*";
+            exec($command);
         }
     }
 
