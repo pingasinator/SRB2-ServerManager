@@ -44,6 +44,7 @@ function list_Servers(){
                                 <td>${value.server.MaxPlayers}</td>
                                 <td>${value.server.Map}</td>
                                 <td>${value.server.GameType}</td>
+                                <td>${value.server.ForceCharacter}</td>
                             </tr>`;
             })
 

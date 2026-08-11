@@ -9,23 +9,16 @@
 </head>
 <body class="bg-dark d-flex flex-row">
 
-<div id="left-bar">
-    <button>Server</button>
-    <button onclick="location.href='index.php?gestion=addon'">Addons</button>
-</div>
+    <?php
+        include("app/html/leftbar.html");
+    ?>
 
-<div>
     <header>
-        <nav>
-            <a href="index.php"><img src="app/img/srb2org-banner.png" alt="logo"></a>
-            <button>install SRB2</button>
-        </nav>
         <div id="notification" class="hidden">
         </div>
     </header>
     <main id="content" class="d-flex flex-column">
         <div>
-
             <div class="card bg-secondary text-white">
                 <div id="action-bar">
                     <h2>Servers</h2>
@@ -43,22 +36,22 @@
 
                 <table id="server-table">
                     <thead>
-                    <tr>
-                        <th><input id="check_all" type="checkbox" onchange="select_all_servers(this)"></th>
-                        <th>Name</th>
-                        <th>State</th>
-                        <th>Port</th>
-                        <th>Max Players</th>
-                        <th>Map</th>
-                        <th>Game Type</th>
-                    </tr>
+                        <tr>
+                            <th><input id="check_all" type="checkbox" onchange="select_all_servers(this)"></th>
+                            <th>Name</th>
+                            <th>State</th>
+                            <th>Port</th>
+                            <th>Max Players</th>
+                            <th>Map</th>
+                            <th>Game Type</th>
+                            <th>Forced character</th>
+                        </tr>
                     </thead>
                     <tbody id="list-servers">
                     </tbody>
                 </table>
             </div>
-
-            <div class="card d-none" id="server">
+            <div class="card d-none bg-secondary" id="server">
                 <form action="index.php" method="post" class="form_server">
                     <input type="hidden" name="gestion" value="accueil">
                     <input type="hidden" name="action" value="create_server">
@@ -73,16 +66,13 @@
                     <label for="GameType">gametype</label>
                     <select id="GameType" name="GameType"></select>
                     <div id="form_server_buttons">
-                        <button id="Cancel" onclick="hide_form_server()">Cancel</button>
+                       <button id="Cancel" onclick="hide_form_server()">Cancel</button>
                         <input type="submit" value="Create">
                     </div>
-
                 </form>
             </div>
         </div>
     </main>
-</div>
-
 
 </body>
 

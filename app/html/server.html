@@ -11,14 +11,18 @@
         $server = $model->getServer($_GET['Name']);
     ?>
 </head>
-<body class="bg-dark text-white">
-<header>
-    <nav>
-        <a href="index.php"><img src="app/img/srb2org-banner.png" alt="logo"></a>
-    </nav>
-    <div id="notification hidden"></div>
-</header>
+<body class="bg-dark text-white d-flex flex-row">
+
+    <?php
+        include("app/html/leftbar.html");
+    ?>
+
+    <header>
+        <div id="notification hidden"></div>
+    </header>
+
 <main>
+
     <div id="content">
         <div id="form_addons" class="card bg-secondary text-white d-none" >
             <h2>Add Addon</h2>
@@ -83,8 +87,8 @@
                     </div>
                     EOF;
                 ?>
-            </div>
         </div>
+    </div>
         <div class="card  bg-secondary text-white">
             <div class="card-body d-flex flex-column">
                 <h2>Status</h2>
@@ -97,8 +101,10 @@
                         <label for="Name">Name : {$server->getName()}<input id="Name" type="hidden" value="{$server->getName()}"></label>
                         <label for="State" >State : <span class="state-{$state}" >{$state}</span><input id="State" type="hidden" value="{$state}"></label>
                         <label for="Port">Port : {$server->getPort()}<input id="Port" type="hidden" value="{$server->getPort()}"></label>
+                        <label for="DefaultGametype">Default Gametype : {$server->getGameType()}<input id="DefaultGametype" type="hidden" value="{$server->getGameType()}"></label>
                         <label for="MaxPlayers">Max Players : {$server->getMaxPlayers()}<input id="MaxPlayers" type="hidden" value="{$server->getMaxPlayers()}"></label>
                         <label for="DefaultMap">Default Map : {$server->getMap()}<input id="DefaultMap" type="hidden" value="{$server->getMap()}"></label>
+                        <label for="ForcedCharacter">Default Forced character : {$server->getForceCharacter()}<input id="ForcedCharacter" type="hidden" value="{$server->getForceCharacter()}"></label>
                     EOF;
                 ?>
             </div>
@@ -121,7 +127,7 @@
                 ?>
             </div>
         </div>
-            <!--
+        <!--
             <div id="Players" class="card">
                 <h2>Players</h2>
                 <div>

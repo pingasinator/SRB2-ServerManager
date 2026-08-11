@@ -1,8 +1,11 @@
-
+body{
+    width: 100%;
+}
 
 main {
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 
 nav{
@@ -24,7 +27,7 @@ nav{
     display: flex;
     flex-direction: column;
     width: 20%;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 #content{
@@ -62,6 +65,10 @@ nav{
     background: none;
     color: white;
     border: solid white 1px;
+}
+
+#logo img{
+    width: 100%;
 }
 
 .hidden{

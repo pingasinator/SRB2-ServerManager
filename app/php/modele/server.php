@@ -26,7 +26,7 @@ class ServerModele {
      * @return array
      */
     function startServer($name){
-        $path = 'app/servers/'. $name .'.json';
+        $path = "app/servers/{$name}.json";
 
         if(file_exists($path)){
             $data = file_get_contents($path);
@@ -91,9 +91,14 @@ class ServerModele {
         }
     }
 
-    function restartServer($name){
-        $this->killServer($name);
-         return $this->startServer($name);
+    function restartServer($serverName){
+        for($i = 5; $i > 0; $i--){
+            $this->sendCommand($serverName,"csay the server will be restarted in {$i} seconds.");
+            sleep(1);
+        }
+
+        $this->killServer($serverName);
+         return $this->startServer($serverName);
     }
 
     /**
