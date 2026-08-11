@@ -17,26 +17,35 @@ class AddonModel {
 
             $dirs = $this->loadDirs($path);
 
-            $sockets = scandir($dirs['soc']);
-            $luas = scandir($dirs['lua']);
+            $sockets = array();
+            $luas = array();
 
-            foreach($sockets as $socket){
-                if($socket == "." || $socket == ".."){
-                    continue;
+            if(isset($dirs['soc'])){
+                $sockets = scandir($dirs['soc']);
+
+                foreach($sockets as $socket){
+                    if($socket == "." || $socket == ".."){
+                        continue;
+                    }
+
+                    $characters = array_merge($characters,$this->importCharacters($socket));
+
+                    $maps = array_merge($maps,$this->importMaps($socket));
                 }
-
-                $characters = array_merge($characters,$this->importCharacters($socket));
-
-                $maps = array_merge($maps,$this->importMaps($socket));
             }
 
-            foreach($luas as $lua){
-                if($lua == "." || $lua == ".."){
-                    continue;
-                }
+            if(isset($dirs['lua'])){
+                $luas = scandir($dirs['lua']);
 
-                $gametypes = array_merge($gametypes,$this->importGametypes($dirs['lua'] . "/" . $lua));
+                foreach($luas as $lua){
+                    if($lua == "." || $lua == ".."){
+                        continue;
+                    }
+
+                    $gametypes = array_merge($gametypes,$this->importGametypes($dirs['lua'] . "/" . $lua));
+                }
             }
+
 
             $content = array(
                 "name" => basename($_FILES["addon"]["name"],".pk3"),
