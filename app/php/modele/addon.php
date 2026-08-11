@@ -126,16 +126,17 @@ class AddonModel {
                     $level['ID'] = $data[1];
                 }else{
                     if($level['ID']  != null){
-                        $data =  explode(" = ",$row);
-                        if(str_contains($data[1], ",")){
-                            $values = explode(",",$data[1]);
-                            foreach ($values as $value){
-                                $level[$data[0]][] = ucfirst($value);
+                        if(str_contains($row," = ")){
+                            $data =  explode(" = ",$row);
+                            if(str_contains($data[1], ",")){
+                                $values = explode(",",$data[1]);
+                                foreach ($values as $value){
+                                    $level[$data[0]][] = ucfirst($value);
+                                }
+                            }else{
+                                $level[$data[0]] = ucfirst($data[1]);
                             }
-                        }else{
-                            $level[$data[0]] = ucfirst($data[1]);
                         }
-
                     }
                 }
             }
