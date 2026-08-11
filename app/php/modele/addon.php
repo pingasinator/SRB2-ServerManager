@@ -3,9 +3,8 @@
 class AddonModel {
     public function importAddon(){
         if(isset($_FILES["addon"]["name"])){
-            mkdir("/tmp/srb2_servermanager/");
-            if(!file_exists("/tmp/srb2_servermanager/" . $_FILES["addon"]["name"])){
-                move_uploaded_file($_FILES["addon"]["tmp_name"], "/tmp/srb2_servermanager/" . $_FILES["addon"]["name"]);
+            if(!file_exists("app/tmp/" . $_FILES["addon"]["name"])){
+                move_uploaded_file($_FILES["addon"]["tmp_name"], "app/tmp/" . $_FILES["addon"]["name"]);
             }
 
             $this->extractAddon();
@@ -14,7 +13,7 @@ class AddonModel {
             $maps = array();
             $gametypes = array();
 
-            $path = "/tmp/srb2_servermanager/" . basename($_FILES["addon"]["name"],".pk3");
+            $path = "app/tmp/" . basename($_FILES["addon"]["name"],".pk3");
 
             $dirs = $this->loadDirs($path);
 
@@ -52,16 +51,16 @@ class AddonModel {
             fwrite($file, $addon->toJSON());
             fclose($file);
 
-            $command = Perm . " cp -r /tmp/srb2_servermanager/" . $_FILES["addon"]["name"]. " " . addonsFolder;
+            $command = Perm . " cp -r app/tmp/" . $_FILES["addon"]["name"]. " " . addonsFolder;
             exec($command);
 
-            $command = Perm . "rm -r /tmp/srb2_servermanager/*";
+            $command = Perm . "rm -r app/tmp/*";
             exec($command);
         }
     }
 
     public function importCharacters($socket): array{
-        $path = "/tmp/srb2_servermanager/" . basename($_FILES["addon"]["name"],".pk3") . "/SOC/" . $socket;
+        $path = "app/tmp/" . basename($_FILES["addon"]["name"],".pk3") . "/SOC/" . $socket;
         if(file_exists($path)){
             $file = fopen($path, "r");
             $content =  fread($file,filesize($path));
@@ -95,7 +94,7 @@ class AddonModel {
     }
 
     public function importMaps($socket): array{
-        $path = "/tmp/srb2_servermanager/" . basename($_FILES["addon"]["name"],".pk3") . "/SOC/" . $socket;
+        $path = "app/tmp/" . basename($_FILES["addon"]["name"],".pk3") . "/SOC/" . $socket;
 
         if(file_exists($path)){
             $file = fopen($path, "r");
@@ -221,9 +220,9 @@ class AddonModel {
     public function extractAddon(){
 
         $archive = new ZipArchive();
-        $archive->open("tmp/srb2_servermanager" . $_FILES["addon"]["name"]);
-        mkdir("/tmp/srb2_servermanager" . basename($_FILES["addon"]["name"],".pk3"));
-        $archive->extractTo("/tmp/srb2_servermanager" . basename($_FILES["addon"]["name"],".pk3"));
+        $archive->open("app/tmp/" . $_FILES["addon"]["name"]);
+        mkdir("app/tmp/" . basename($_FILES["addon"]["name"],".pk3"));
+        $archive->extractTo("app/tmp/" . basename($_FILES["addon"]["name"],".pk3"));
     }
 
     public function loadDirs($path):array{
