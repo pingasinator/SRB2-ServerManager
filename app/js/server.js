@@ -1,6 +1,11 @@
-listAddonsToAdd();
-listCharacters();
+
+display_list_form_gametypes();
+
+list_server_addons();
+list_Addons_To_Add();
+list_Characters();
 list_server_gametypes();
+generate_server_map_selector();
 
 const list_server_addons_element = document.getElementById('list-server-addons');
 
@@ -19,37 +24,27 @@ function action(action,name){
             console.log("error");
         }}
     )
-
 }
 
-function list_server_addons(server){
-
-    let content = "";
+function list_server_addons(){
 
     $.ajax({
         url: host_url + "/index.php",
         method:"POST",
-        data:{gestion:'API',action:'list_server_addons',Name:server},
+        data:{gestion:'API',action:'list_server_addons',Name:name.value},
         success:function(data){
             addons = JSON.parse(data);
-            addons.map((name) => {
-                content += `<tr><td><input type="checkbox"></td><td>${name}</td></td></tr>`;
-
-            })
-            list_server_addons_element.innerHTML = content;
+            display_list_server_addons(addons);
         },
         error:function (){
             console.log("error");
         }
     })
-
-
 }
 
 function setMap(){
     const map = document.getElementById('Map');
     const gameType = document.getElementById('GameType');
-    console.log(name);
 
     $.ajax({
         url: host_url + "/index.php",
@@ -96,23 +91,16 @@ function listSkins(){
     })
 }
 
-function listAddonsToAdd(){
-
-    const list_addons_to_Add = document.getElementById("list-addons-to-add");
+function list_Addons_To_Add(){
 
     $.ajax({
         url: host_url + "/index.php",
         method:"POST",
         data:{gestion:"API",action:'list_addons'},
         success:function(data){
-            let content = "";
             listAddons = JSON.parse(data);
+            display_list_Addons_To_Add(listAddons);
 
-            listAddons.map((value) => {
-                content += `<tr><td><button onclick="loadAddon('${value.name}')">${value.name}</button></td></tr>`;
-            })
-
-            list_addons_to_Add.innerHTML = content;
         },
         error:function (){
             console.log("error");
@@ -145,25 +133,13 @@ function loadAddon(name){
     addon_element.value = addon.name;
 }
 
-function display_form_addons(){
-    const form_addons = document.getElementById("form_addons");
-
-    form_addons.classList.remove("d-none");
-}
-
-function hide_form_addons(){
-    const form_addons = document.getElementById("form_addons");
-
-    form_addons.classList.add("d-none");
-}
-
-function generate_server_map_selector(serverName){
+function generate_server_map_selector(){
 
     map_selector_element.innerHTML = "";
     $.ajax({
         url: host_url + "/index.php",
         method:"POST",
-        data:{gestion:'API',action:'list_server_maps',Name:serverName},
+        data:{gestion:'API',action:'list_server_maps',Name:name.value},
         success:function(data){
             let Maps = JSON.parse(data);
             let gametypes = JSON.parse(gametype_selector_element.value);
@@ -182,7 +158,6 @@ function generate_server_map_selector(serverName){
     })
 }
 
-
 function select_all_addons(value){
     for(let i = 0; i < list_addons_element.childElementCount; i++ ){
         list_addons_element.children[i].children[0].children[0].checked = value.checked;
@@ -195,10 +170,7 @@ function check_all_elements(checkbox){
     }
 }
 
-function listCharacters(){
-
-    let content = "";
-    const list_skins_elements = document.getElementById("list-skins");
+function list_Characters(){
 
     $.ajax({
         url: host_url + "/index.php",
@@ -206,12 +178,8 @@ function listCharacters(){
         data:{gestion:'API',action:'list_server_characters',Name:name.value},
         success:function(data){
             let characters = JSON.parse(data);
+            display_list_Characters(characters);
 
-            characters.map((character) => {
-                content += `<option value="${character.skinName}">${character.displayName != null ? character.displayName : character.skinName}</option>`;
-            })
-
-            list_skins_elements.innerHTML = content;
         },
         error:function (){
             console.log("error");
@@ -274,4 +242,28 @@ function list_selected_addons(){
         }
     }
     return list_addons;
+}
+
+function display_list_form_gametypes(){
+    const form_default_gametype = document.getElementById("form_default_gametype");
+    const form_list_gametypes = document.getElementById("form_list_gametypes");
+
+    $.ajax({
+        url: host_url + "/index.php",
+        method:"POST",
+        data:{gestion:"API",action:'list_server_gametypes',Name:name.value},
+        success:function(data){
+            let content = "";
+            let listGametypes = JSON.parse(data);
+            listGametypes.map((gametype) => {
+                content += `<option ${gametype.identifier === form_default_gametype.value ? "selected" : ""} value="${gametype.identifier}">${gametype.name}</option>`;
+            })
+
+            form_list_gametypes.innerHTML = content;
+            display_list_form_maps();
+        },
+        error:function (){
+            console.log("error");
+        }
+    })
 }

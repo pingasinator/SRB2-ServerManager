@@ -71,6 +71,14 @@ class APIController{
                 case "list_server_gametypes":
                     echo json_encode($this->model->listServerGametypes($_POST['Name']));
                     break;
+
+                case 'get_server_gametype':
+                    echo json_encode($this->model->getServerGametype($_POST['Name'],$_POST['GameType']));
+                    break;
+
+                case 'get_server_maps_with_typeoflevel':
+                    echo json_encode($this->model->getServerMapsWithGameType($_POST['Name'],$_POST['TypeOfLevel']));
+                    break;
             }
         }
     }

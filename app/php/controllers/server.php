@@ -37,6 +37,14 @@ class ServerController {
                 case 'force_character':
                     $this->model->forceCharacter($_POST['Name'],$_POST['Skin']);
                     break;
+
+                case 'update_server':
+                    $server = new Server($_POST);
+                    $oldServer = $this->model->getServer($_POST['Name']);
+                    $server->setMods($oldServer->getMods());
+                    $this->model->updateServerConfig($server);
+                    $this->model->restartServer($_POST['Name']);
+                    break;
             }
         }
 

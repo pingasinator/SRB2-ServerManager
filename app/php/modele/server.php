@@ -282,6 +282,15 @@ class ServerModele {
         return $gametypes;
     }
 
+    public function getServerGametype($serverName,$gametypeIdentifier){
+        $gametypes = $this->listServerGametypes($serverName);
+        foreach($gametypes as $gametype){
+            if($gametype['identifier'] == $gametypeIdentifier){
+                return $gametype;
+            }
+        }
+    }
+
     public function removeServerAddon($serverName,$addonName){
         $path = 'app/servers/'. $serverName .'.json';
         if(file_exists($path)){
@@ -308,6 +317,26 @@ class ServerModele {
         }
 
         return array("output" => "error : Server config file not found", "code" => 1);
+    }
+
+    public function getServerMapsWithGameType($serverName,$gametypeName){
+        $server = $this->getServer($serverName);
+        $maps = $this->listServerMaps($serverName);
+        $gametype = $this->getServerGametype($serverName,$gametypeName);
+        $filteredMaps = array();
+        foreach($maps as $map){
+            foreach($map['TypeOfLevel'] as $typeOfLevel){
+                foreach ($gametype["TypeOfLevel"] as $type){
+                    if($typeOfLevel === $type){
+                        $filteredMaps[] = $map;
+                        break;
+                    }
+                }
+            }
+
+
+        }
+        return $filteredMaps;
     }
 
     function getServerConsole($serverName){

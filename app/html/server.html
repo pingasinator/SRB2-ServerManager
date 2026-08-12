@@ -90,42 +90,31 @@
         </div>
     </div>
         <div class="card  bg-secondary text-white">
-            <div class="card-body d-flex flex-column">
+            <div class="card-body ">
                 <h2>Status</h2>
                 <?php
 
                    $state = $model->checkServerState($server->getName());
 
                     echo <<< EOF
-                        <input type="hidden" name="gestion" value="server">
-                        <label for="Name">Name : {$server->getName()}<input id="Name" type="hidden" value="{$server->getName()}"></label>
+                    <form action="index.php?gestion=server&Name={$server->getName()}" id="form_server" class="d-flex flex-column" method="post">
+                        <input type="hidden" name="action" value="update_server">
+                        <input id="form_default_gametype" type="hidden" value="{$server->getGameType()}">
+                        <input id="form_default_map" type="hidden" value="{$server->getMap()}">
+                        <input id="form_default_character" type="hidden" value="{$server->getForceCharacter()}">
+                        <label for="Name">Name : {$server->getName()}<input id="Name" type="hidden" name="Name" value="{$server->getName()}"></label>
                         <label for="State" >State : <span class="state-{$state}" >{$state}</span><input id="State" type="hidden" value="{$state}"></label>
-                        <label for="Port">Port : {$server->getPort()}<input id="Port" type="hidden" value="{$server->getPort()}"></label>
-                        <label for="DefaultGametype">Default Gametype : {$server->getGameType()}<input id="DefaultGametype" type="hidden" value="{$server->getGameType()}"></label>
-                        <label for="MaxPlayers">Max Players : {$server->getMaxPlayers()}<input id="MaxPlayers" type="hidden" value="{$server->getMaxPlayers()}"></label>
-                        <label for="DefaultMap">Default Map : {$server->getMap()}<input id="DefaultMap" type="hidden" value="{$server->getMap()}"></label>
-                        <label for="ForcedCharacter">Default Forced character : {$server->getForceCharacter()}<input id="ForcedCharacter" type="hidden" value="{$server->getForceCharacter()}"></label>
+                        <label for="Port">Port : <input id="Port" type="text" name="Port" value="{$server->getPort()}"></label>
+                        <label for="form_list_gametypes">Default Gametype : <select id="form_list_gametypes" name="Gametype" onchange="display_list_form_maps()"></select></label>
+                        <label for="form_list_maps">Default Map : <select id="form_list_maps" name="Map"></select></label>
+                        <label for="MaxPlayers">Max Players : <input id="MaxPlayers" type="text"  name="MaxPlayers" value="{$server->getMaxPlayers()}"></label>
+                        <label for="form_list_characters">Default Forced character : <select id="form_list_characters" name="ForceCharacter"></select></label>
+                        <input type="submit" value="edit">
+                    </form>
                     EOF;
                 ?>
             </div>
 
-        </div>
-        <div class="card card  bg-secondary text-white">
-            <div class="card-body d-flex flex-column">
-                <h2>Skins</h2>
-                <?php
-                    echo <<< EOF
-                        <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
-                            <input type="hidden" name="Name" value="{$_GET['Name']}">
-                            <input type="hidden" name="action" value="force_character">
-                            <select id="list-skins" name="Skin"></select>
-                            <div>
-                                <input type="submit" value="Force Skin">
-                            </div>
-                        </form>
-                    EOF;
-                ?>
-            </div>
         </div>
         <!--
             <div id="Players" class="card">
@@ -190,13 +179,6 @@
 <script src="app/js/jquery.js"></script>
 <script src="app/js/main.js"></script>
 <script src="app/js/server.js"></script>
-<?php
-    echo <<< EOF
-        <script>
-            list_server_addons('{$_GET['Name']}');
-            generate_server_map_selector('{$_GET['Name']}');
-        </script>
-    EOF;
-?>
+    <script src="app/js/display/server.js"></script>
 </body>
 </html>

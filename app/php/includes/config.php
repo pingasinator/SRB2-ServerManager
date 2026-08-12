@@ -1,8 +1,8 @@
 <?php
 
-define('Perm', 'sudo');
+define('Perm', '');
 
-define('addonsFolder',"/root/.var/app/org.srb2.SRB2/.srb2/addons/");
+define('addonsFolder',"/home/yanni/.var/app/org.srb2.SRB2/.srb2/addons/");
 
 function loadAll(){
     $path = "app/php/";
