@@ -6,17 +6,16 @@
 
 }
 
+#content > card{
+    width: 50%;
+}
+
 .card{
     border-radius: 10px;
-    padding: 10px;
     gap: 10px;
     background: gray;
     display: flex;
     flex-direction: column;
-}
-
-#command{
-
 }
 
 #addon-maps, #addon-characters{
@@ -26,9 +25,12 @@
 }
 
 #console-content{
-    background: saddlebrown;
+    background: black;
     min-height: 500px;
     max-height: 500px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 #form_addons{

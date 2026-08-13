@@ -51,8 +51,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card d-none bg-secondary" id="server">
-                <form action="index.php" method="post" class="form_server">
+            <div class="card d-none bg-secondary text-white form_server" id="server">
+                <form action="index.php" id="form_server" method="post" class="d-flex flex-column">
                     <input type="hidden" name="gestion" value="accueil">
                     <input type="hidden" name="action" value="create_server">
                     <label for="Name">Name</label>
@@ -65,11 +65,11 @@
                     <select id="Map" name="Map"></select>
                     <label for="GameType">gametype</label>
                     <select id="GameType" name="GameType"></select>
-                    <div id="form_server_buttons">
-                       <button id="Cancel" onclick="hide_form_server()">Cancel</button>
-                        <input type="submit" value="Create">
-                    </div>
                 </form>
+                <div id="form_server_buttons">
+                    <button id="Cancel" onclick="hide_form_server()">Cancel</button>
+                    <input type="submit" form="form_server" value="Create">
+                </div>
             </div>
         </div>
     </main>

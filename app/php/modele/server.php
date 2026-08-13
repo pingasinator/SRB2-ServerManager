@@ -11,10 +11,8 @@ class ServerModele {
         $server = new server($_POST);
 
         $data = $server->ToJSON();
-
-        $file = fopen('app/servers/'. $server->getName().'.json',"w");
-        fwrite($file, $data);
-        fclose($file);
+        $path = 'app/servers/'. $server->getName().'.json';
+        file_put_contents($path, $data);
 
         $this->startServer($server->getName());
     }
@@ -48,6 +46,7 @@ class ServerModele {
             $this->sendCommand($server->getName(),"forceskin {$server->getForceCharacter()}");
             $this->sendCommand($server->getName(),"maxplayers {$server->getMaxPlayers()}");
             $this->sendCommand($server->getName(),"maxsend 248000");
+            $this->getServerLog($server->getName());
 
             return array("output" => $output, "code" => $returncode);
         }else{
@@ -92,11 +91,6 @@ class ServerModele {
     }
 
     function restartServer($serverName){
-        for($i = 5; $i > 0; $i--){
-            $this->sendCommand($serverName,"csay the server will be restarted in {$i} seconds.");
-            sleep(1);
-        }
-
         $this->killServer($serverName);
          return $this->startServer($serverName);
     }
@@ -139,11 +133,12 @@ class ServerModele {
     /**
      * kill the tmux session
      *
-     * @param $name
+     * @param $serverName
      * @return array
      */
-    function killServer($name){
-        $command = Perm . " tmux kill-session -t srb2_" . $name;
+    function killServer($serverName){
+        $this->getServerLog($serverName);
+        $command = Perm . " tmux kill-session -t srb2_{$serverName}";
         exec($command,$output,$returncode);
         return array("output" => $output, "code" => $returncode);
     }
@@ -181,7 +176,7 @@ class ServerModele {
      * @return array
      */
     function changeMap($serverName,$map,$gametype){
-        $command = Perm . " tmux send-key -t srb2_{$serverName} ". escapeshellarg("map {$map}  -gametype {$gametype}\n");
+        $command = Perm . " tmux send-key -t srb2_{$serverName} ". escapeshellarg("map {$map}  -gametype \"{$gametype}\"\n");
         echo $command;
         exec($command,$output,$returncode);
         return array("output" => $output, "code" => $returncode);
@@ -197,9 +192,7 @@ class ServerModele {
     function updateServerConfig($server){
         $path = 'app/servers/'. $server->getName() .'.json';
         if(file_exists($path)){
-            $file = fopen($path,"w");
-            fwrite($file, $server->toJSON());
-            fclose($file);
+            file_put_contents($path,$server->toJson());
             return 1;
         }
         return array("output" => "error : Server config file not found", "code" => 1);
@@ -339,7 +332,10 @@ class ServerModele {
         return $filteredMaps;
     }
 
-    function getServerConsole($serverName){
-
+    function getServerLog($serverName){
+        $command = "tmux capture-pane -t srb2_{$serverName} -S - && tmux save-buffer app/logs/{$serverName}.log";
+        exec($command,$output,$returncode);
+        $data = file_get_contents("app/logs/{$serverName}.log");
+        return array("output" => $data, "code" => $returncode);
     }
 }

@@ -23,7 +23,6 @@ nav{
 }
 
 #left-bar{
-    background: saddlebrown;
     display: flex;
     flex-direction: column;
     width: 20%;
@@ -71,6 +70,17 @@ nav{
     width: 100%;
 }
 
-.hidden{
-    display: none;
+.gif > img{
+    height: 50px;
 }
+
+.rubrik{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.rubrik *{
+    width: 50%;
+}
+

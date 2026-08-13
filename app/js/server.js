@@ -6,6 +6,7 @@ list_Addons_To_Add();
 list_Characters();
 list_server_gametypes();
 generate_server_map_selector();
+get_server_logs();
 
 const list_server_addons_element = document.getElementById('list-server-addons');
 
@@ -266,4 +267,22 @@ function display_list_form_gametypes(){
             console.log("error");
         }
     })
+}
+
+async function get_server_logs(){
+        $.ajax({
+            url: host_url + "/index.php",
+            method:"POST",
+            data:{gestion:"API",action:'get_server_logs',Name:name.value},
+            success:async function(data){
+                console.log(data);
+                let content = JSON.parse(data);
+                display_server_logs(content.output);
+                await sleep(1000);
+                get_server_logs();
+            },
+            error:function (){
+                console.log("error");
+            }
+        })
 }

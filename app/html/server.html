@@ -22,7 +22,6 @@
     </header>
 
 <main>
-
     <div id="content">
         <div id="form_addons" class="card bg-secondary text-white d-none" >
             <h2>Add Addon</h2>
@@ -55,43 +54,39 @@
                 ?>
             </div>
         </div>
-        <div class="card bg-secondary text-white" >
-            <div class="card-body">
-                <h2 >Actions</h2>
+        <div class="card bg-secondary text-white">
+            <div class="card-header d-flex flex-row justify-content-between">
+                <h2>Status</h2>
                 <?php
-
                     echo <<< EOF
-                    <div id="options">
-                        <div class="btn-group " data-toggle="buttons">
-                            <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
-                                <input type="hidden" name="Name" value="{$_GET['Name']}">
-                                <input type="hidden" name="action" value="start_server">
-                                <input type="submit" id="start" class="btn btn-primary" value="start">
-                            </form>
-                            <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
-                                <input type="hidden" name="Name" value="{$_GET['Name']}">
-                                <input type="hidden" name="action" value="restart_server">
-                                <input type="submit" id="restart" class="btn btn-primary" value="restart">
-                            </form>
-                            <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
-                                <input type="hidden" name="Name" value="{$_GET['Name']}">
-                                <input type="hidden" name="action" value="kill_server">
-                                <input type="submit" id="kill" class="btn btn-primary" value="kill">
-                            </form>
-                            <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
-                                <input type="hidden" name="Name" value="{$_GET['Name']}">
-                                <input type="hidden" name="action" value="delete_server">
-                                <input type="submit" id="delete" class="btn btn-danger" value="delete">
-                            </form>
+                        <div id="options">
+                            <div class="btn-group " data-toggle="buttons">
+                                <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
+                                    <input type="hidden" name="Name" value="{$_GET['Name']}">
+                                    <input type="hidden" name="action" value="start_server">
+                                    <input type="submit" id="start" class="btn btn-primary" value="start">
+                                </form>
+                                <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
+                                    <input type="hidden" name="Name" value="{$_GET['Name']}">
+                                    <input type="hidden" name="action" value="restart_server">
+                                    <input type="submit" id="restart" class="btn btn-primary" value="restart">
+                                </form>
+                                <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
+                                    <input type="hidden" name="Name" value="{$_GET['Name']}">
+                                    <input type="hidden" name="action" value="kill_server">
+                                    <input type="submit" id="kill" class="btn btn-primary" value="kill">
+                                </form>
+                                <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
+                                    <input type="hidden" name="Name" value="{$_GET['Name']}">
+                                    <input type="hidden" name="action" value="delete_server">
+                                    <input type="submit" id="delete" class="btn btn-danger" value="delete">
+                                </form>
+                            </div>
                         </div>
-                    </div>
                     EOF;
                 ?>
-        </div>
-    </div>
-        <div class="card  bg-secondary text-white">
+            </div>
             <div class="card-body ">
-                <h2>Status</h2>
                 <?php
 
                    $state = $model->checkServerState($server->getName());
@@ -102,19 +97,34 @@
                         <input id="form_default_gametype" type="hidden" value="{$server->getGameType()}">
                         <input id="form_default_map" type="hidden" value="{$server->getMap()}">
                         <input id="form_default_character" type="hidden" value="{$server->getForceCharacter()}">
-                        <label for="Name">Name : {$server->getName()}<input id="Name" type="hidden" name="Name" value="{$server->getName()}"></label>
-                        <label for="State" >State : <span class="state-{$state}" >{$state}</span><input id="State" type="hidden" value="{$state}"></label>
-                        <label for="Port">Port : <input id="Port" type="text" name="Port" value="{$server->getPort()}"></label>
-                        <label for="form_list_gametypes">Default Gametype : <select id="form_list_gametypes" name="Gametype" onchange="display_list_form_maps()"></select></label>
-                        <label for="form_list_maps">Default Map : <select id="form_list_maps" name="Map"></select></label>
-                        <label for="MaxPlayers">Max Players : <input id="MaxPlayers" type="text"  name="MaxPlayers" value="{$server->getMaxPlayers()}"></label>
-                        <label for="form_list_characters">Default Forced character : <select id="form_list_characters" name="ForceCharacter"></select></label>
-                        <input type="submit" value="edit">
+                        <input id="State" type="hidden" value="{$state}">
+                        <input id="Name" type="hidden" name="Name" value="{$server->getName()}">
+                        <div class="rubrik">
+                            <label for="Name">Name : </label><span>{$server->getName()}</span>
+                        </div>
+                        <div class="rubrik">
+                            <label for="State" >State : </label><span class="state-{$state}" >{$state}</span>
+                        </div>
+                        <div class="rubrik d-flex flex-row justify-content-between">
+                            <label for="Port">Port : </label><input id="Port" type="text" name="Port" value="{$server->getPort()}">
+                        </div>
+                        <div class="rubrik">
+                            <label for="form_list_gametypes">Default Gametype : </label><select id="form_list_gametypes" name="Gametype" onchange="display_list_form_maps()"></select>
+                        </div>
+                        <div class="rubrik">
+                            <label for="form_list_maps">Default Map : </label><select id="form_list_maps" name="Map"></select>
+                        </div>
+                        <div class="rubrik">
+                            <label for="MaxPlayers">Max Players : </label><input id="MaxPlayers" type="text"  name="MaxPlayers" value="{$server->getMaxPlayers()}">
+                        </div>
+                        <div class="rubrik">
+                            <label for="form_list_characters">Default Forced character : </label><select id="form_list_characters" name="ForceCharacter"></select>
+                        </div>
                     </form>
+                    <input form="form_server" type="submit" value="edit">
                     EOF;
                 ?>
             </div>
-
         </div>
         <!--
             <div id="Players" class="card">
@@ -127,36 +137,38 @@
             </div>
             -->
         <div class="card card bg-secondary text-white">
-            <div class="card-body d-flex flex-column">
+            <div class="card-header">
                 <h2>Map and gametype</h2>
-                <div class="d-flex flex-row gap-1">
-                    <label for="GameType">gametype : </label>
-                    <?php
-                        echo <<< EOF
-                            <select id="GameType" class="form-select" onchange="generate_server_map_selector('{$_GET['Name']}')"></select>
-                        EOF;
-                    ?>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <div class="rubrik">
+                    <label for="GameType">gametype : </label><select id="GameType" onchange="generate_server_map_selector()"></select>
                 </div>
-                <div class="d-flex flex-row gap-1">
-                    <label for="Map">Map : </label><select id="Map" class="form-select"></select>
+                <div class="rubrik">
+                    <label for="Map">Map : </label><select id="Map"></select>
                 </div>
                 <div>
                     <input type="button" onclick="setMap()" value="Set">
                 </div>
             </div>
         </div>
-        <div class="card card  bg-secondary text-white">
+        <div class="card bg-secondary text-white">
+            <div class="card-header">
+                <h2 class="gif">Logs <img  src="app/img/tails-running.gif" alt="tails_running"></h2>
+            </div>
             <div class="card-body d-flex flex-column">
-                <h2>Send Command</h2>
-                    <input id="command" class="" type="text">
+                <span id="console-content"></span>
+                <input id="command" class="" type="text">
                 <div>
                     <button class="btn btn-light" onclick="sendCommand()">Send Command</button>
                 </div>
             </div>
         </div>
         <div class="card card  bg-secondary text-white">
+            <div class="card-header">
+                <h2 class="gif">Addons <img src="app/img/metal-sonic.gif" alt="metal sonic"></h2>
+            </div>
             <div class="card-body">
-                <h2>Addons</h2>
                 <div>
                     <button onclick="display_form_addons()">add Addon</button>
                     <button onclick="removeServerAddons()">remove Addon</button>

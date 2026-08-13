@@ -58,7 +58,7 @@ function display_list_form_maps(){
         $.ajax({
             url: host_url + "/index.php",
             method:"POST",
-            data:{gestion:'API',action:'get_server_maps_with_typeoflevel',Name:name.value,TypeOfLevel:form_list_gametypes.value},
+            data:{gestion:'API',action:'get_server_maps_with_gametype',Name:name.value,TypeOfLevel:form_list_gametypes.value},
             success:function(data){
                 let Maps = JSON.parse(data);
                 let content = "";
@@ -73,4 +73,9 @@ function display_list_form_maps(){
             }
         })
     }
+}
+
+function display_server_logs(logs){
+    const console_content_element = document.getElementById("console-content");
+    console_content_element.innerText = logs;
 }
