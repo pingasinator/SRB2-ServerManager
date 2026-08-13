@@ -333,7 +333,7 @@ class ServerModele {
     }
 
     function getServerLog($serverName){
-        $command = "tmux capture-pane -t srb2_{$serverName} -S - && tmux save-buffer app/logs/{$serverName}.log";
+        $command = Perm . "tmux capture-pane -t srb2_{$serverName} -S - && tmux save-buffer app/logs/{$serverName}.log";
         exec($command,$output,$returncode);
         $data = file_get_contents("app/logs/{$serverName}.log");
         return array("output" => $data, "code" => $returncode);
