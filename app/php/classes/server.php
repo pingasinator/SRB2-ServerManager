@@ -10,6 +10,7 @@ class server{
     private $GameType;
     private $forceCharacter = "None";
     private $maxPlayers;
+    private $Room;
 
     public function __construct($params){
         foreach ($params as $name => $value) {
@@ -36,7 +37,8 @@ class server{
             "ForceCharacter",
             "Mods",
             "GameType",
-            "MaxPlayers"
+            "MaxPlayers",
+            "Room"
         ];
 
         foreach($keys as $key){
@@ -76,6 +78,10 @@ class server{
         return $this->forceCharacter;
     }
 
+    public function getRoom(){
+        return $this->Room;
+    }
+
     // Setters
 
     public function setName($name){
@@ -108,5 +114,9 @@ class server{
 
     public function setForceCharacter($forceCharacter){
         $this->forceCharacter = $forceCharacter;
+    }
+
+    public function setRoom($Room){
+        $this->Room = $Room;
     }
 }

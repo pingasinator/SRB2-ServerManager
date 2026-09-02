@@ -79,3 +79,23 @@ function display_server_logs(logs){
     const console_content_element = document.getElementById("console-content");
     console_content_element.innerText = logs;
 }
+
+function display_server_rooms(){
+    const form_element = document.getElementById("form_room");
+    let content = "";
+    let Rooms = [
+        {name:"None",value:"00"},
+        {name:"Standard",value:"33"},
+        {name:"Casual",value:"28"},
+        {name:"None",value:"31"},
+        {name:"Custom Gametypes",value:"38"}
+    ]
+
+    Rooms.map((room) => {
+        content += `<option value="${room.value}">${room.name}</option>`;
+    })
+
+    form_element.innerHTML = content;
+}
+
+display_server_rooms();
