@@ -1,8 +1,19 @@
 <?php
 
-class AddonModel {
+class AccueilModel{
+
     public function importAddon(){
         if(isset($_FILES["addon"]["name"])){
+
+            $ext  = pathinfo($_FILES['addon']['name'])['extension'];
+
+            if(isset($_FILES["icon"]["name"]) && !empty($_FILES["icon"]['name'])){
+
+                imagepng(imagecreatefromstring(file_get_contents($_FILES['icon']['tmp_name'])), "app/addons/icons/" . basename($_FILES['addon']['name'],$ext) . "png");
+            }else{
+
+            }
+
             if(!file_exists("app/tmp/" . $_FILES["addon"]["name"])){
                 move_uploaded_file($_FILES["addon"]["tmp_name"], "app/tmp/" . $_FILES["addon"]["name"]);
             }
@@ -13,7 +24,7 @@ class AddonModel {
             $maps = array();
             $gametypes = array();
 
-            $path = "app/tmp/" . basename($_FILES["addon"]["name"],".pk3");
+            $path = "app/tmp/" . basename($_FILES["addon"]["name"],"." . $ext);
 
             $dirs = $this->loadDirs($path);
 
@@ -48,15 +59,18 @@ class AddonModel {
 
 
             $content = array(
-                "name" => basename($_FILES["addon"]["name"],".pk3"),
+                "name" => basename($_FILES["addon"]["name"],"." . $ext),
+                "icon" => !empty($_FILES['icon']['name']) ? basename($_FILES['addon']['name'],$ext) . "png" : "default.png",
+                "description" => $_POST['description'],
                 "Characters" => $characters,
+                "size" => number_format($_FILES["addon"]["size"] / 1024 / 1024,2),
                 "Maps" => $maps,
                 "Gametypes" => $gametypes
             );
 
             $addon = new Addon($content);
 
-            $file = fopen("app/addons/" . basename($_FILES["addon"]["name"],".pk3") . ".json", "w");
+            $file = fopen("app/addons/" . basename($_FILES["addon"]["name"],$ext) . "json", "w");
             fwrite($file, $addon->toJSON());
             fclose($file);
 
@@ -235,6 +249,38 @@ class AddonModel {
         $archive->open("app/tmp/" . $_FILES["addon"]["name"]);
         mkdir("app/tmp/" . basename($_FILES["addon"]["name"],".pk3"));
         $archive->extractTo("app/tmp/" . basename($_FILES["addon"]["name"],".pk3"));
+    }
+
+    public function deleteAddon($addon){
+
+        $serverDir = "app/servers/";
+        $serverfiles = scandir($serverDir);
+
+
+
+        $list_servers = array();
+
+        foreach($serverfiles as $serverfile){
+            if($serverfile != "." && $serverfile != ".." && $serverfile != ".gitignore"){
+                if(!is_dir($serverDir . $serverfile)){
+                    $server = new Server(json_decode(file_get_contents($serverDir . $serverfile),true));
+                    if(in_array($addon,$server->getMods())){
+
+                        $list_servers[] = $server->getName();
+                    }
+                }
+            }
+        }
+
+        if(count($list_servers) > 0){
+            return array("list_servers" => $list_servers);
+        }
+
+        unlink("app/addons/{$addon}.json");
+        unlink("app/addons/icons/{$addon}.png");
+        exec(Perm . " rm " . addonsFolder . $addon . ".pk3");
+
+        return array("output" => "addon deleted successfully");
     }
 
     public function loadDirs($path):array{

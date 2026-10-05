@@ -5,7 +5,7 @@ class ServerModele {
     /**
      * Creates a server, put it in a json file and starts it.
      *
-     * @return void
+     * @return array
      */
     function createServer(){
         $server = new server($_POST);
@@ -15,6 +15,8 @@ class ServerModele {
         file_put_contents($path, $data);
 
         $this->startServer($server->getName());
+
+        return array("output" => "success", "code" => 0);
     }
 
     /**
@@ -31,7 +33,7 @@ class ServerModele {
 
             $server = new server(json_decode($data,true));
 
-            $command = Perm . " tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()}";
+            $command = Perm . " tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()} -room {$server->getRoom()} " . ($server->getAllowDownload() === 'on' ? '' :'-noupload') ;
             if(count($server->getMods()) > 0){
                 $command .= " -file ";
                 $mods = $server->getMods();
@@ -43,9 +45,16 @@ class ServerModele {
 
             $command .= "' 2>/dev/null";
             exec($command,$output,$returncode);
+            $this->sendCommand($server->getName(),"password {$server->getPassword()}");
             $this->sendCommand($server->getName(),"forceskin {$server->getForceCharacter()}");
             $this->sendCommand($server->getName(),"maxplayers {$server->getMaxPlayers()}");
-            $this->sendCommand($server->getName(),"maxsend 248000");
+            $this->sendCommand($server->getName(),"motd " . $server->getMOTD());
+            $this->sendCommand($server->getName(),"timelimit " . $server->getTimelimit());
+            $this->sendCommand($server->getName(),"pointlimit " . $server->getPointlimit());
+            if($server->getAllowDownload() === 'on'){
+                $this->sendCommand($server->getName(),"maxsend " . $server->getDownloadsize() * 1024);
+            }
+
             $this->getServerLog($server->getName());
 
             return array("output" => $output, "code" => $returncode);

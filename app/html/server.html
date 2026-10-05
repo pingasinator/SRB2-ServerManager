@@ -3,197 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <title>SRB2 Server Manager</title>
-    <link rel="stylesheet" href="app/css/style.css">
     <link rel="stylesheet" href="app/css/bootstrap.css">
+    <link rel="stylesheet" href="app/css/style.css">
     <link rel="stylesheet" href="app/css/server.css">
-    <?php
-        $model = new ServerModele();
-        $server = $model->getServer($_GET['Name']);
-    ?>
 </head>
-<body class="bg-dark text-white d-flex flex-row">
+<body class="text-white">
 
-    <?php
-        include("app/html/leftbar.html");
-    ?>
-
-    <header>
-        <div id="notification hidden"></div>
-    </header>
-
-<main>
-    <div id="content">
-        <div id="form_addons" class="card bg-secondary text-white d-none" >
-            <h2>Add Addon</h2>
-            <div class="card-body d-flex flex-row">
-                <table class="table table-dark">
-                    <thead>
-                        <tr>
-                            <th>name</th>
-                        </tr>
-                    </thead>
-                    <tbody id="list-addons-to-add">
-                    </tbody>
-                </table>
-                <div class="d-flex flex-column">
-                    <ul id="addon-characters"></ul>
-                    <ul id="addon-maps"></ul>
-                </div>
-            </div>
-            <div>
-                <button onclick="hide_form_addons()">cancel</button>
-                <?php
-                echo <<< EOF
-                    <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
-                        <input type="hidden" name="Name" value="{$_GET['Name']}">
-                        <input type="hidden" name="action" value="add_addon">
-                        <input id="addon" type="text" name="Addon" value="">
-                        <input type="submit" value="add">
-                    </form>
-                EOF;
-                ?>
-            </div>
-        </div>
-        <div class="card bg-secondary text-white">
-            <div class="card-header d-flex flex-row justify-content-between">
-                <h2>Status</h2>
-                <?php
-                    echo <<< EOF
-                        <div id="options">
-                            <div class="btn-group " data-toggle="buttons">
-                                <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
-                                    <input type="hidden" name="Name" value="{$_GET['Name']}">
-                                    <input type="hidden" name="action" value="start_server">
-                                    <input type="submit" id="start" class="btn btn-primary" value="start">
-                                </form>
-                                <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
-                                    <input type="hidden" name="Name" value="{$_GET['Name']}">
-                                    <input type="hidden" name="action" value="restart_server">
-                                    <input type="submit" id="restart" class="btn btn-primary" value="restart">
-                                </form>
-                                <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
-                                    <input type="hidden" name="Name" value="{$_GET['Name']}">
-                                    <input type="hidden" name="action" value="kill_server">
-                                    <input type="submit" id="kill" class="btn btn-primary" value="kill">
-                                </form>
-                                <form action="index.php?gestion=server&Name={$_GET['Name']}" method="post">
-                                    <input type="hidden" name="Name" value="{$_GET['Name']}">
-                                    <input type="hidden" name="action" value="delete_server">
-                                    <input type="submit" id="delete" class="btn btn-danger" value="delete">
-                                </form>
-                            </div>
-                        </div>
-                    EOF;
-                ?>
-            </div>
-            <div class="card-body ">
-                <?php
-
-                   $state = $model->checkServerState($server->getName());
-
-                    echo <<< EOF
-                    <form action="index.php?gestion=server&Name={$server->getName()}" id="form_server" class="d-flex flex-column" method="post">
-                        <input type="hidden" name="action" value="update_server">
-                        <input id="form_default_gametype" type="hidden" value="{$server->getGameType()}">
-                        <input id="form_default_map" type="hidden" value="{$server->getMap()}">
-                        <input id="form_default_character" type="hidden" value="{$server->getForceCharacter()}">
-                        <input id="State" type="hidden" value="{$state}">
-                        <input id="Name" type="hidden" name="Name" value="{$server->getName()}">
-                        <div class="rubrik">
-                            <label for="Name">Name : </label><span>{$server->getName()}</span>
-                        </div>
-                        <div class="rubrik">
-                            <label for="State" >State : </label><span class="state-{$state}" >{$state}</span>
-                        </div>
-                        <div class="rubrik d-flex flex-row justify-content-between">
-                            <label for="Port">Port : </label><input id="Port" type="text" name="Port" value="{$server->getPort()}">
-                        </div>
-                        <div class="rubrik">
-                            <label for="form_list_gametypes">Default Gametype : </label><select id="form_list_gametypes" name="Gametype" onchange="display_list_form_maps()"></select>
-                        </div>
-                        <div class="rubrik">
-                            <label for="form_list_maps">Default Map : </label><select id="form_list_maps" name="Map"></select>
-                        </div>
-                        <div class="rubrik">
-                            <label for="MaxPlayers">Max Players : </label><input id="MaxPlayers" type="text"  name="MaxPlayers" value="{$server->getMaxPlayers()}">
-                        </div>
-                        <div class="rubrik">
-                            <label for="form_list_characters">Default Forced character : </label><select id="form_list_characters" name="ForceCharacter"></select>
-                        </div>
-                        <div class="rubrik">
-                            <label for="form_room">Default Room : </label><select id="form_room" name="Room"></select>
-                        </div>
-                    </form>
-                    <input form="form_server" type="submit" value="edit">
-                    EOF;
-                ?>
-            </div>
-        </div>
-        <!--
-            <div id="Players" class="card">
-                <h2>Players</h2>
-                <div>
-                    <button>kick</button>
-                    <button>ban</button>
-                </div>
-                <div></div>
-            </div>
-            -->
-        <div class="card card bg-secondary text-white">
+    <div id="config-server-background" class="background d-none">
+        <div id="server_card" class="card card_form">
             <div class="card-header">
-                <h2>Map and gametype</h2>
+                <h1>Server configuration</h1>
             </div>
-            <div class="card-body d-flex flex-column">
-                <div class="rubrik">
-                    <label for="GameType">gametype : </label><select id="GameType" onchange="generate_server_map_selector()"></select>
-                </div>
-                <div class="rubrik">
-                    <label for="Map">Map : </label><select id="Map"></select>
-                </div>
-                <div>
-                    <input type="button" onclick="setMap()" value="Set">
-                </div>
-            </div>
-        </div>
-        <div class="card bg-secondary text-white">
-            <div class="card-header">
-                <h2 class="gif">Logs <img  src="app/img/tails-running.gif" alt="tails_running"></h2>
-            </div>
-            <div class="card-body d-flex flex-column">
-                <span id="console-content"></span>
-                <input id="command" class="" type="text">
-                <div>
-                    <button class="btn btn-light" onclick="sendCommand()">Send Command</button>
-                </div>
-            </div>
-        </div>
-        <div class="card card  bg-secondary text-white">
-            <div class="card-header">
-                <h2 class="gif">Addons <img src="app/img/metal-sonic.gif" alt="metal sonic"></h2>
-            </div>
+            
             <div class="card-body">
-                <div>
-                    <button onclick="display_form_addons()">add Addon</button>
-                    <button onclick="removeServerAddons()">remove Addon</button>
-                </div>
-                <table class="table table-dark">
-                    <thead>
-                        <tr>
-                            <th><input id="check_all" type="checkbox" onclick="check_all_elements(this)"></th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody id="list-server-addons">
-
-                    </tbody>
-                </table>
+                <nav>
+                    <button class="btn text-white" onclick="SwitchContainer('server_card_general')">General</button>
+                    <button class="btn text-white" onclick="SwitchContainer('server_card_rules')">Rules</button>
+                    <button class="btn text-white" onclick="SwitchContainer('server_card_network')">Network</button>
+                    <button class="btn text-white" onclick="SwitchContainer('server_card_commands')">commands</button>
+                </nav>
+                <form id="form_server" action="index.php?Name=server" method="post">
+                    <input type="hidden" name="Name" value="server">
+                    <input type="hidden" name="gestion" value="server">
+                    <input type="hidden" name="action" value="update_server">
+                    <div id="server_card_general" class="d-flex flex-column justify-content-between gap-2">
+                        <div class="d-flex flex-column">
+                            <label>Server Name</label>
+                            <input type="text" id="config-server-name" readonly>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label>MOTD</label>
+                            <input id="config-server-motd" type="text" name="MOTD">
+                        </div>
+                        <div class="d-flex flex-column">
+                        <label>Max Players</label>
+                        <input id="config-server-maxplayers" type="range" min="1" max="32" name="maxplayers" value="16">
+                        <datalist>
+                            <option value="1" label="1"></option>
+                            <option value="32" label="32"></option>
+                        </datalist>
+                        </div>
+                        <div class="d-flex flex-row gap-2">
+                            <label class="d-flex flex-column">
+                                Gametype 
+                                <select id="config-server-gametype" name="gametype" onchange="init_map_selector('config-server-map',this.value,'')"></select>
+                            </label>
+                            <label class="d-flex flex-column">
+                                Default Map 
+                                <select id="config-server-map" name="map"></select>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="server_card_rules" class="d-flex flex-row d-none gap-2">
+                        <div>
+                        <div class="d-flex flex-column">
+                            <label>Time limit</label>
+                            <input id="config-server-timelimit" type="text" name="timeLimit">
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label>Force Character</label>
+                            <select id="config-server-forcecharacter" name="forceCharacter"></select>
+                        </div>
+                        </div>
+                        <div>
+                        <div class="d-flex flex-column">
+                            <label>Point limit</label>
+                            <input id="config-server-pointlimit" type="text" name="pointLimit">
+                        </div>
+                        </div>
+                    </div>
+                    <div id="server_card_network" class="d-flex flex-row d-none gap-2">
+                        <div>
+                            <label>
+                                Port
+                                <input type="text" id="config-server-port" name="port">
+                            </label>
+                            <label>
+                                Admin password
+                                <input id="config-server-password" type="text" name="password">
+                            </label>
+                            <label>
+                                masterserver
+                                <input id="config-server-masterserver" type="text" name="masterServer">
+                            </label>
+                            <label>
+                                Room
+                                <select id="config-server-room" name="room"></select>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                Allow download
+                                <div>
+                                    <input id="config-server-allowdownload" type="checkbox" name="allowDownload">
+                                </div>
+                            </label>
+                            <label>
+                                max size
+                                <input id="config-server-downloadsize" type="range" min="0" max="200" value="4" name="downloadSize">
+                                <datalist>
+                                    <option value="0" label="1mb"></option>
+                                    <option value="200" label="200mb"></option>
+                                </datalist>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="server_card_commands" class="d-none"></div>
+                </form>
+            </div>
+            <div class="card-bottom d-flex justify-content-between">
+                <button class="btn btn-red" onclick="Close('config-server-background')">Cancel</button>
+                <input type="submit" form="form_server" value="Update">
             </div>
         </div>
     </div>
-</main>
-<script src="app/js/jquery.js"></script>
-<script src="app/js/main.js"></script>
-<script src="app/js/server.js"></script>
-    <script src="app/js/display/server.js"></script>
+
+    <div id="config-addons-background" class="background d-none">
+        <div class="card card_form">
+            <div class="card-header">
+                <h1>Add Addons</h1>
+            </div>
+            <div id="list_addons" >
+                <table class="table table-dark table-striped">
+                    <thead class="sticky-top">
+                    <tr>
+                        <th><input type="checkbox" onclick="check_all_table_datas(this.checked,'list-addons-to-add')"></th>
+                        <th></th>
+                        <th>Name</th>
+                    </tr>
+                    </thead>
+                    <tbody id="list-addons-to-add"></tbody>
+                </table>
+            </div>
+            <div class="card-bottom d-flex justify-content-between">
+                <button class="btn btn-red" onclick="Close('config-addons-background')">Cancel</button>
+                <button class="btn btn-valide" onclick="add_addons(),Close('config-addons-background')">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <a href="index.php" id="logo"><img src="app/img/srb2org-banner.png" alt="logo"></a>
+        <div id="notification" class="d-none">
+        </div>
+    </header>
+
+    <main>
+        <div id="content">
+            <div class="d-flex flex-row gap-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h1>Server Status</h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-column">
+                            <H2 id="server-status">Online</H2>
+                            <div class="btn-group">
+                                <button class="btn btn-valide" onclick="action('start')">Start</button>
+                                <button class="btn btn-blue" onclick="action('restart')">Restart</button>
+                                <button class="btn btn-blue" onclick="Open('config-server-background')">Configure</button>
+                                <button class="btn btn-red" onclick="action('kill')">Kill</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h1>Maps and gamemodes</h1>
+                    </div>
+                    <div class="card-body d-flex flex-column gap-2">
+                            <label for="gametype-changer" >
+                                gametype
+                                <select id="gametype-changer" onchange="init_map_selector('map-changer',this.value,'')"></select>
+                            </label>
+                            <label for="map-changer" class="">
+                                Map
+                                <select id="map-changer"></select>
+                            </label>
+                        <div>
+                            <input class="btn btn-blue" type="button" onclick="setMap()" value="Set">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row gap-3">
+                <div id="console" class="card">
+                    <div class="card-header">
+                        <h1>Console</h1>
+                    </div>
+                    <div class="card-body d-flex flex-column gap-2">
+                        <span id="console-content"></span>
+                        <div class="d-flex flex-row gap-2">
+                            <input id="command" class="" type="text">
+                            <button class="btn btn-blue" onclick="sendCommand()">Send</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="addons" class="card">
+                    <div class="card-header">
+                        <h1>Addons</h1>
+                    </div>
+                    <div>
+                        <table id="table-addons" class="table table-dark table-striped">
+                            <thead class="sticky-top">
+                            <tr>
+                                <th><input type="checkbox" onclick="check_all_table_datas(this.checked,'server-addons')"></th>
+                                <th>Name</th>
+                            </tr>
+                            </thead>
+                            <tbody id="server-addons"></tbody>
+                        </table>
+                    </div>
+                    <div class="card-bottom d-flex justify-content-between">
+                        <button class="btn btn-valide" onclick="Open('config-addons-background')">add Addon</button>
+                        <button class="btn btn-red" onclick="remove_Addons()">Remove Addons</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="app/js/main.js"></script>
+    <script src="app/js/server.js"></script>
 </body>
 </html>

@@ -2,81 +2,214 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="app/css/bootstrap.css">
     <link rel="stylesheet" href="app/css/style.css">
     <link rel="stylesheet" href="app/css/home.css">
-    <link rel="stylesheet" href="app/css/bootstrap.css">
     <title>SRB2 Server Manager</title>
 </head>
-<body class="bg-dark d-flex flex-row">
+<body>
 
-    <?php
-        include("app/html/leftbar.html");
-    ?>
-
-    <header>
-        <div id="notification" class="hidden">
+    <div id="card_add_server_background" class="background d-none">
+        <div class="card card_form" id="card_add_server">
+        <div class="card-header">
+            <h1>Add Server</h1>
         </div>
-    </header>
-    <main id="content" class="d-flex flex-column">
-        <div>
-            <div class="card bg-secondary text-white">
-                <div id="action-bar">
-                    <h2>Servers</h2>
-                    <div id="options">
-                        <input id="" type="text" >
-                        <div class="btn-group">
-                            <button id="start" class="btn btn-primary" onclick="action('start')">start</button>
-                            <button id="kill" class="btn btn-primary" onclick="action('kill')">kill</button>
-                            <button id="restart" class="btn btn-primary" onclick="action('restart')">restart</button>
-                            <button id="delete" class="btn btn-primary" onclick="action('delete')">delete</button>
-                        </div>
-                        <button onclick="display_form_server()">add Server</button>
+
+        <div class="card-body">
+            <nav>
+                <button class="btn text-white" onclick="SwitchContainer('server_card_general')">General</button>
+                <button class="btn text-white" onclick="SwitchContainer('server_card_rules')">Rules</button>
+                <button class="btn text-white" onclick="SwitchContainer('server_card_network')">Network</button>
+                <button class="btn text-white" onclick="SwitchContainer('server_card_commands')">commands</button>
+            </nav>
+            <div id="form_server" >
+                <input type="hidden" name="Name" value="server">
+                <input type="hidden" name="gestion" value="server">
+                <input type="hidden" name="action" value="update_server">
+                <div id="server_card_general" class="d-flex flex-column justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label>Server Name</label>
+                        <input type="text" id="config-server-name">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label>MOTD</label>
+                        <input id="config-server-motd" type="text" name="MOTD">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label>Max Players</label>
+                        <input id="config-server-maxplayers" type="range" min="1" max="32" name="maxplayers" value="16">
+                        <datalist>
+                            <option value="1" label="1"></option>
+                            <option value="32" label="32"></option>
+                        </datalist>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <label class="d-flex flex-column">
+                            Gametype
+                            <select id="config-server-gametype" name="gametype" onchange="init_map_selector('config-server-map',this.value,'')"></select>
+                        </label>
+                        <label class="d-flex flex-column">
+                            Default Map
+                            <select id="config-server-map" name="map"></select>
+                        </label>
                     </div>
                 </div>
+                <div id="server_card_rules" class="d-flex flex-row d-none">
+                    <div>
+                        <div class="d-flex flex-column">
+                            <label>Time limit</label>
+                            <input id="config-server-timelimit" type="text" name="timeLimit">
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label>Force Character</label>
+                            <select id="config-server-forcecharacter" name="forceCharacter"></select>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex flex-column">
+                            <label>Point limit</label>
+                            <input id="config-server-pointlimit" type="text" name="pointLimit">
+                        </div>
+                    </div>
+                </div>
+                <div id="server_card_network" class="d-flex flex-row d-none ">
+                    <div>
+                        <label>
+                            Port
+                            <input id="config-server-port" type="text" name="port" value="5029">
+                        </label>
+                        <label>
+                            Admin password
+                            <input id="config-server-password" type="text" name="password">
+                        </label>
+                        <label>
+                            masterserver
+                            <input id="config-server-masterserver" type="text" name="masterServer" value="https://mb.srb2.org/MS/0">
+                        </label>
+                        <label>
+                            Room
+                            <select id="config-server-room" name="room"></select>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            Allow download
+                            <div>
+                                <input id="config-server-allowdownload" type="checkbox" name="allowDownload">
+                            </div>
+                        </label>
+                        <label>
+                            max size
+                            <input id="config-server-downloadsize" type="range" min="0" max="200" value="4" name="downloadSize">
+                            <datalist>
+                                <option value="0" label="1mb"></option>
+                                <option value="200" label="200mb"></option>
+                            </datalist>
+                        </label>
+                    </div>
+                </div>
+                <div id="server_card_commands" class="d-none"></div>
+            </div>
+        </div>
+        <div class="card-bottom d-flex justify-content-between">
+            <button class="btn btn-red" onclick="Close('card_add_server_background')">Cancel</button>
+            <button class="btn btn-valide" onclick="create_server(), Close('card_add_server_background')">Create</button>
+        </div>
+    </div>
+    </div>
 
-                <table id="server-table">
-                    <thead>
-                        <tr>
-                            <th><input id="check_all" type="checkbox" onchange="select_all_servers(this)"></th>
-                            <th>Name</th>
-                            <th>State</th>
-                            <th>Port</th>
-                            <th>Max Players</th>
-                            <th>Map</th>
-                            <th>Game Type</th>
-                            <th>Forced character</th>
-                        </tr>
+    <div id="card_add_addon_background" class="background d-none">
+        <div id="card_add_addon" class="card card_form d-flex flex-column justify-content-between">
+            <div class="card-header"><h1>Import Addon</h1></div>
+            <div class="card-body ">
+                <form id="form_addons" action="index.php" method="post" class="d-flex flex-column gap-2" enctype="multipart/form-data">
+                    <input type="hidden" name="gestion" value="accueil">
+                    <input type="hidden" name="action" value="import_addon">
+                    <div class="d-flex flex-row">
+                        <label for="form_addons_icon">
+                            <img src="#" alt="" id="previewImage">
+                            <input id="form_addons_icon" name="icon" class="d-none" type="file" accept=".png, .jpg" onchange="previewPicture(this)">
+                        </label>
+                        <label class="d-flex flex-column justify-content-end">
+                            Description
+                            <textarea id="config-addon-description" name="description"> </textarea>
+                        </label>
+
+                    </div>
+
+                    <div class="d-flex flex-column">
+
+
+                        <label>
+                            file
+                            <input class="form-control form-control-sm" type="file" name="addon" accept=".pk3">
+                        </label>
+                    </div>
+
+                </form>
+            </div>
+            <div class="card-bottom d-flex flex-row justify-content-between">
+                <button id="Cancel" class="btn btn-red" onclick="Close('card_add_addon_background')">Cancel</button>
+                <input type="submit" class="btn btn-valide" form="form_addons" value="Create">
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <a href="index.php" id="logo"><img src="app/img/srb2org-banner.png" alt="logo"></a>
+        <div id="notification" class="d-none"></div>
+    </header>
+
+    <main id="content" class="d-flex flex-column">
+        <div id="card_server" class="card text-white">
+            <div id="action-bar" class="card-header">
+                <h2>Servers</h2>
+                <div id="options">
+                    <input id="" type="text" >
+                    <div class="btn-group">
+                        <button id="start" class="btn btn-valide" onclick="action('start')">start</button>
+                        <button id="restart" class="btn btn-blue" onclick="action('restart')">restart</button>
+                        <button id="kill" class="btn btn-red" onclick="action('kill')">kill</button>
+                        <button id="delete" class="btn btn-red" onclick="action('delete')">delete</button>
+                    </div>
+                    <button class="btn btn-valide" onclick="Open('card_add_server_background')">add Server</button>
+                </div>
+            </div>
+            <div id="div-table" >
+                <table id="server-table" class="table table-striped table-dark table-hover m-0">
+                    <thead class="sticky-top">
+                    <tr class="bg-primary">
+                        <th><input id="check_all" type="checkbox" onchange="select_all_servers(this)"></th>
+                        <th>Name</th>
+                        <th>State</th>
+                        <th>Port</th>
+                        <th>Max Players</th>
+                        <th>Map</th>
+                        <th>Game Type</th>
+                        <th>Forced character</th>
+                    </tr>
                     </thead>
                     <tbody id="list-servers">
                     </tbody>
                 </table>
             </div>
-            <div class="card d-none bg-secondary text-white form_server" id="server">
-                <form action="index.php" id="form_server" method="post" class="d-flex flex-column">
-                    <input type="hidden" name="gestion" value="accueil">
-                    <input type="hidden" name="action" value="create_server">
-                    <label for="Name">Name</label>
-                    <input id="Name" name="Name" value="server">
-                    <label for="Port">Port</label>
-                    <input id="Port" name="Port" value="5029">
-                    <label for="MaxPlayers">MaxPlayers</label>
-                    <input id="MaxPlayers" name="MaxPlayers" value="16">
-                    <label for="Map">Map</label>
-                    <select id="Map" name="Map"></select>
-                    <label for="GameType">gametype</label>
-                    <select id="GameType" name="GameType"></select>
-                </form>
-                <div id="form_server_buttons">
-                    <button id="Cancel" onclick="hide_form_server()">Cancel</button>
-                    <input type="submit" form="form_server" value="Create">
+            <div class="card-bottom"></div>
+        </div>
+
+        <div id="card_addons" class="card">
+            <div class="card-header">
+                <h2>Addons</h2>
+                <div class="d-flex flex-row justify-content-between">
+                    <input type="text">
+                    <button class="btn btn-valide" onClick="Open('card_add_addon_background')">add Addon</button>
                 </div>
             </div>
+            <div id="list-addons" class="card-body d-flex flex-row gap-3 flex-wrap"></div>
         </div>
     </main>
 
 </body>
 
-<script src="app/js/jquery.js"></script>
 <script src="app/js/main.js"></script>
 <script src="app/js/home.js"></script>
 </html>

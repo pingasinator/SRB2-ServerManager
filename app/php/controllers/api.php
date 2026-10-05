@@ -11,8 +11,9 @@ class APIController{
     {
         if(isset($_POST['action'])){
             switch($_POST['action']){
-                case "install_SRB2":
 
+                case 'create_server':
+                    echo json_encode($this->model->createServer());
                     break;
 
                 case "start_server":
@@ -31,12 +32,20 @@ class APIController{
                     echo json_encode( $this->model->killServer($_POST['Name']));
                     break;
 
+                case "add_addon_server":
+                    echo json_encode($this->model->addAddon($_POST['Name'], $_POST['addon']));
+                    break;
+
+                case "remove_addon_server":
+                    echo json_encode($this->model->removeServerAddon($_POST['Name'], $_POST['addon']));
+                    break;
+
                 case "delete_server":
                     echo $this->model->deleteServer($_POST['Name']);
                     break;
 
                 case "set_map":
-                    echo json_encode($this->model->changeMap($_POST['Name'],$_POST['Map'],json_decode($_POST['GameType'],true)['name']));
+                    echo json_encode($this->model->changeMap($_POST['Name'],$_POST['Map'],$_POST['GameType']));
                     break;
 
                 case "send_command":
@@ -55,13 +64,14 @@ class APIController{
                     echo json_encode($this->model->listServerAddons($_POST['Name']));
                     break;
 
-                case 'remove_server_addon':
-                    echo json_encode($this->model->removeServerAddon($_POST['Name'],$_POST['AddonName']));
+                case "list_addons":
+                    $this->model = new AccueilModel();
+                    echo json_encode($this->model->listAddons());
                     break;
 
-                case "list_addons":
-                    $this->model = new AddonModel();
-                    echo json_encode($this->model->listAddons());
+                case "delete_addon":
+                    $this->model = new AccueilModel();
+                    echo json_encode($this->model->deleteAddon($_POST['Name']));
                     break;
 
                 case "list_server_characters":
@@ -70,6 +80,10 @@ class APIController{
 
                 case "list_server_gametypes":
                     echo json_encode($this->model->listServerGametypes($_POST['Name']));
+                    break;
+
+                case "get_server_config":
+                    echo json_encode($this->model->getServer($_POST['Name'])->ToArray(),true);
                     break;
 
                 case 'get_server_gametype':

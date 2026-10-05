@@ -1,7 +1,5 @@
-const host_url = "";
+const host_url = "http://" + window.location.host + "/SRB2-ServerManager";
 
-const server_form_element = document.getElementById('server');
-const server_search_element = document.getElementById("server");
 const servers_table_element = document.getElementById('server-table');
 
 const list_servers_element = document.getElementById('list-servers');
@@ -9,31 +7,23 @@ const list_addons_element = document.getElementById('list-addons');
 
 const check_all_element = document.getElementById('check_all');
 
-const map_selector_element = document.getElementById("Map");
-const gametype_selector_element = document.getElementById("GameType");
+function Open(containerId){
+    let container = document.getElementById(containerId);
+    container.classList.remove("d-none");
+}
 
-const name = document.getElementById('Name');
-const port = document.getElementById('Port');
-const maxPlayers = document.getElementById('MaxPlayers');
-const map = document.getElementById('Map');
-const gameType = document.getElementById('GameType');
+function Close(containerID){
+    let container = document.getElementById(containerID);
+    container.classList.add("d-none");
+}
 
-function create_server() {
-
-    $.ajax({
-        url: host_url + "/index.php",
-        method:"POST",
-        data:{action:'create_server',Name:name.value,Port:port.value,MaxPlayers:maxPlayers.value,GameType:gameType.value,Map:map.value},
-        success:function(){
-            hide_form_server();
-        },
-        error:function (){
-            console.log("error");
-        }
+function SwitchContainer(containerId){
+    let container = document.getElementById(containerId);
+    Array.from(container.parentElement.children).map((child) => {
+        child.classList.add("d-none");
     })
 
-
-    list_Servers();
+    container.classList.remove("d-none");
 }
 
 function select_all_servers(value){
@@ -55,95 +45,107 @@ function list_selected_servers(){
     return list_servers;
 }
 
-function generate_server_map_selector(serverName){
-
-    map_selector_element.innerHTML = "";
-    $.ajax({
-        url: host_url + "/index.php",
-        method:"POST",
-        data:{gestion:'API',action:'list_server_maps',Name:serverName},
-        success:function(data){
-            defaultMaps = JSON.parse(data);
-            for(let i = 0; i < defaultMaps.length; i++){
-                if(defaultMaps[i].TypeOfLevel.includes(gametype_selector_element.value)){
-                    map_selector_element.innerHTML += `<option value="${defaultMaps[i].id}">${defaultMaps[i].levelname} ${defaultMaps[i].ACT != null ? " Act " + defaultMaps[i].ACT : ""}</option>`;
-                }
-            }
-
-        },
-        error:function (){
-            console.log("error");
-        }
-    })
-}
-
-function generate_Map_selector(){
-
-    map_selector_element.innerHTML = "";
-    $.ajax({
-        url: host_url + "/index.php",
-        method:"POST",
-        data:{gestion:'API',action:'list_maps'},
-        success:function(data){
-            console.log(data);
-            defaultMaps = JSON.parse(data);
-            for(let i = 0; i < defaultMaps.length; i++){
-                if(defaultMaps[i].TypeOfLevel.includes(gametype_selector_element.value)){
-                    map_selector_element.innerHTML += `<option value="${defaultMaps[i].id}">${defaultMaps[i].levelname} ${defaultMaps[i].ACT != null ? " Act " + defaultMaps[i].ACT : ""}</option>`;
-                }
-            }
-
-        },
-        error:function (){
-            console.log("error");
-        }
-    })
-}
-
-function generate_gametype_selector(){
+function init_gametype_selector(){
     let defaultGametypes = [
-        "Co-op",
-        "Competition",
-        "Race",
-        "Match",
-        "Tag",
-        "CTF"
+        "co-op",
+        "competition",
+        "race",
+        "match",
+        "tag",
+        "ctf"
     ];
 
     for(let i = 0; i < defaultGametypes.length; i++){
-        gametype_selector_element.innerHTML += `<option value="${defaultGametypes[i]}">${defaultGametypes[i]}</option>`;
+        server_gametype_element.innerHTML += `<option value="${defaultGametypes[i]}">${capitalize(defaultGametypes[i])}</option>`;
+    }
+
+    init_map_selector("config-server-map",server_gametype_element.value,"");
+}
+
+async function init_map_selector(selectorId,typeSelected,selectedValue){
+
+    map_selector = document.getElementById(selectorId);
+    let content = "";
+    let data = {gestion:"API",action:"list_maps"};
+
+    res = await fetch(host_url + "/index.php",{
+        method:"POST",
+        body: new URLSearchParams(data)
+    });
+
+    let maps = res.json();
+    console.log(maps)
+
+    maps.then((data) => {
+        data.map((map) => {
+            if(map.TypeOfLevel.includes(capitalize(typeSelected))){
+                content += `<option ${ map.id === selectedValue ? "selected" : ""} value="${map.id}">${map.levelname} ${map.ACT !== null && map.ACT !== '0' ? " Act " + map.ACT : ""}</option>`;
+            }
+        })
+
+        map_selector.innerHTML = content;
+    });
+}
+
+function init_rooms_selector(selectorId,selectedValue){
+
+    let rooms = [
+        {value:"00",name:"None"},
+        {value:"33",name:"Standard"},
+        {value:"28",name:"Casual"},
+        {value:"38",name:"Custom Gametype"}
+    ]
+
+    let content = "";
+
+    room_selector = document.getElementById(selectorId);
+
+    rooms.map((room) => {
+        content += `<option value='${room.value}' ${selectorId === room.value ? "selected" : ""}>${room.name}</option>`;
+    });
+
+    room_selector.innerHTML = content;
+}
+
+function check_all_table_datas(value,tbodyID){
+    const tbody = document.getElementById(tbodyID);
+
+    let childcount = tbody.childElementCount;
+
+
+    for(let i = 0; i < childcount; i++){
+        tbody.children[i].children[0].children[0].checked = value;
+        console.log(value);
     }
 }
 
+async function init_forcecharacter_selector(selectorID,selectedvalue) {
 
-function list_Addons(){
+    const selector = document.getElementById(selectorID);
 
-    check_all_element.checked = false;
+    let defaultCharacters = [
+        "None",
+        "Sonic",
+        "Tails",
+        "Knuckles",
+        "Amy",
+        "Fang",
+        "MetalSonic"
+    ]
 
-    list_addons_element.children.innerHTML = `<div>Loading <img id="loading_img" src="app/img/sonic-running.gif" alt="sonic_running"></div>`
+    let content = "";
 
-    $.ajax({
-        url: host_url + "/index.php",
-        method:"POST",
-        data:{gestion:"API",action:'list_addons'},
-        success:function(data){
-            let content = "";
-            let addons = JSON.parse(data);
-            console.log(addons);
-            addons.map((value) => {
-                content += `<tr>
-                                <td><input type="checkbox"></td>
-                                <td>${value.name}</td>
-                            </tr>`;
-            })
-
-
-            list_addons_element.innerHTML = content;
-        },
-        error:function (){
-            console.log("error");
-        }
+    defaultCharacters.map((character) => {
+        content += `<option value='${character}'>${character}</option>`
     })
+
+    selector.innerHTML = content;
+}
+
+function capitalize(string){
+    let first = string.charAt(0);
+
+    return first.toUpperCase() + string.slice(1);
 }
 
 async function sleep(ms){

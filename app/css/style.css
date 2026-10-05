@@ -1,11 +1,20 @@
 body{
     width: 100%;
+    height: 100vh;
+    background-color: #171c22;
+}
+
+header{
+    min-height: 1vh;
+    padding: 10px;
+    height: 10%;
 }
 
 main {
     display: flex;
     flex-direction: row;
     width: 100%;
+    height: 90%;
 }
 
 nav{
@@ -15,27 +24,45 @@ nav{
 
 #notification{
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    left: 100%;
+    top: 0;
+    transform: translate(-105%, 10%);
     width: 400px;
     border: solid 1px;
 }
 
-#left-bar{
+.card_form{
+    border: solid grey 1px;
     display: flex;
     flex-direction: column;
-    width: 20%;
-    min-height: 100vh;
+    min-width: 500px;
+    max-width: 500px;
+    min-height: 450px;
+    max-height: 450px;
+    border-radius: 10px;
+    position: fixed;
+    justify-self: center;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    color:white;
+}
+
+
+datalist{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 #content{
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 10px 10px;
+    gap: 20px 20px;
 }
 
 #action-bar{
@@ -67,7 +94,7 @@ nav{
 }
 
 #logo img{
-    width: 100%;
+    max-height: 10vh;
 }
 
 .gif > img{
@@ -82,5 +109,88 @@ nav{
 
 .rubrik *{
     width: 50%;
+}
+
+.row{
+    gap: 20px 20px;
+}
+
+.card{
+    background-color: #242b31;
+    color: white;
+    border-color: #5a616b;
+}
+
+.card-header{
+    border-bottom: solid #5a616b 1px;
+}
+
+.btn-valide,.btn-valide:hover{
+    background-color: #2e433c;
+    border: solid #5cc370 1px;
+    color: #5cc370;
+}
+
+.btn-blue,.btn-blue:hover{
+    background-color: #2e3e4d;
+    border: solid #8ab1d2 1px;
+    color: #8ab1d2;
+}
+
+.btn-red,.btn-red:hover,#notification{
+    background-color: #3b2f33;
+    border: solid #e55b50 1px;
+    color: #e55b50;
+}
+
+#notification{
+    max-width: 300px;
+    z-index: 100;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.card-bottom{
+    border-top: solid #5a616b 1px;
+    padding: 10px;
+}
+
+select{
+    background-color: #242b31;
+    border: solid 1px #5a616b;
+    border-radius: 5px;
+    color: white;
+}
+
+label{
+    width: 100%;
+}
+
+nav{
+    border-bottom: solid #5a616b 1px;
+}
+
+#form_server div,#form_server select{
+    width: 100%;
+}
+
+.background{
+    background-color: #0000007f;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    z-index: 2;
+}
+
+input[type=text],input[type=password],textarea{
+    background-color: black;
+    border: solid 1px #5a616b;
+    border-radius: 5px;
+    color: white;
+}
+
+.sticky-top{
+    z-index: 0;
 }
 

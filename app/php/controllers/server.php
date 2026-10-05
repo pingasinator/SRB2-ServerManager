@@ -40,6 +40,7 @@ class ServerController {
 
                 case 'update_server':
                     $server = new Server($_POST);
+
                     $oldServer = $this->model->getServer($_POST['Name']);
                     $server->setMods($oldServer->getMods());
                     $this->model->updateServerConfig($server);

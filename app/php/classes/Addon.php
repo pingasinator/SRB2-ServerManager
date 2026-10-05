@@ -3,9 +3,11 @@
 class Addon {
     private $name;
     private $file;
+    private $size;
+    private $icon = "default.png";
     private $characters = array();
     private $maps = array();
-
+    private $description;
     private $gametypes = array();
 
     public function __construct($params){
@@ -22,6 +24,10 @@ class Addon {
         return $this->name;
     }
 
+    public function getIcon(){
+        return $this->icon;
+    }
+
     public function getCharacters():array{
         return $this->characters;
     }
@@ -34,8 +40,13 @@ class Addon {
         return $this->gametypes;
     }
 
-    public function setName($name){
-        $this->name = $name;
+    public function getDescription():string{
+        return $this->description;
+    }
+
+    public function getSize($size)
+    {
+        return $this->size = $size;
     }
 
     public function setCharacters($characters){
@@ -46,6 +57,14 @@ class Addon {
         }else{
             $this->characters[] = $characters;
         }
+    }
+
+    public function setName($name){
+        $this->name = $name;
+    }
+
+    public function setIcon($icon){
+        $this->icon = $icon;
     }
 
     public function setMaps($maps){
@@ -68,8 +87,16 @@ class Addon {
         }
     }
 
-    public function ToJSON():string{
+    public function setSize($size)
+    {
+        $this->size = $size;
+    }
 
+    public function setDescription($description){
+        $this->description = $description;
+    }
+
+    public function ToJSON():string{
         return json_encode($this->ToArray());
     }
 
@@ -97,7 +124,10 @@ class Addon {
         return [
             "name" => $this->name,
             "file" => $this->file,
+            "icon" => $this->icon,
+            "size" => $this->size,
             "characters" => $characters,
+            "description" => $this->description,
             "maps" => $maps,
             "gametypes" => $gametypes
         ];

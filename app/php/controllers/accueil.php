@@ -7,14 +7,14 @@ class AccueilController{
 
     function __construct(){
         $this->view = new AccueilView();
-        $this->model = new ServerModele();
+        $this->model = new AccueilModel();
         return $this;
     }
     function checkAction(){
         if(isset($_POST["action"])){
             switch($_POST["action"]){
-                case "create_server":
-                    $this->model->createServer();
+                case "import_addon":
+                    $this->model->importAddon();
                     break;
             }
         }

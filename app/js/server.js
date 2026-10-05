@@ -1,288 +1,333 @@
-
-display_list_form_gametypes();
-
-list_server_addons();
-list_Addons_To_Add();
-list_Characters();
-list_server_gametypes();
-generate_server_map_selector();
-get_server_logs();
-
 const list_server_addons_element = document.getElementById('list-server-addons');
+
+const config_server_name_element = document.getElementById('config-server-name');
+const config_server_motd_element = document.getElementById('config-server-motd');
+const config_server_maxplayers_element = document.getElementById('config-server-maxplayers');
+const config_server_gametype_element = document.getElementById('config-server-gametype');
+
+const config_server_timelimit_element = document.getElementById('config-server-timelimit');
+const config_server_pointlimit_element = document.getElementById('config-server-pointlimit');
+
+const config_server_port_element = document.getElementById('config-server-port');
+const config_server_password_element = document.getElementById("config-server-password");
+const config_server_masterserver_element = document.getElementById("config-server-masterserver");
+const config_server_allowdownload_element = document.getElementById("config-server-allowdownload")
+const config_server_downloadsize_element = document.getElementById("config-server-downloadsize");
+
+const list_addons = document.getElementById("config-addons-background");
+
+const gametype_changer_element = document.getElementById('gametype-changer');
+
+let server_name;
+let default_gametype;
+let default_map;
+let default_character;
+let default_room;
+
+init_config();
+get_server_logs();
 
 let listAddons = [];
 
-function action(action,name){
+async function init_config(){
 
-    $.ajax({
-        url: host_url + "/index.php",
+    return await init_server_config().then(async (value) => {
+
+        await init_server_gametype_selector(config_server_gametype_element,default_gametype,"config-server-map",'').then(async (value) => {
+            await init_map_selector('config-server-map',value,default_map);
+        });
+
+        await init_server_gametype_selector(gametype_changer_element,'',"map-changer",'').then(async (value) => {
+            await init_map_selector('map-changer',value,'');
+        });
+
+        await init_server_forcecharacter_selector("config-server-forcecharacter",default_character);
+
+        init_server_addons("server-addons");
+        init_addonstoadd();
+        init_rooms_selector("config-server-room",default_room);
+
+        return 1;
+    })
+
+}
+
+async function init_server_config(){
+
+    const name_element = document.getElementById("config-server-name");
+    let url = new URL(window.location);
+    let serverName = url.searchParams.get("Name");
+
+    let res = await fetch(host_url + "/index.php",{
+        method:"POST",
+        body: new URLSearchParams({gestion:"API",action:"get_server_config",Name:serverName})
+    });
+
+    let data = res.json();
+    return await data.then((value) => {
+
+        server_name = value.Name
+        default_gametype = value.GameType;
+        default_map = value.Map;
+        default_character=value.ForceCharacter;
+        default_room = value.Room;
+
+        config_server_name_element.value = value.Name;
+        config_server_motd_element.value = value.MOTD;
+        config_server_maxplayers_element.value = value.MaxPlayers;
+
+        config_server_timelimit_element.value = value.TimeLimit;
+        config_server_pointlimit_element.value = value.PointLimit;
+        config_server_allowdownload_element.checked = value.AllowDownload === "on";
+        config_server_downloadsize_element.value = value.DownloadSize;
+
+        config_server_port_element.value = value.Port;
+        config_server_password_element.value = value.Password;
+        config_server_masterserver_element.value = value.MasterServer;
+
+
+        return 1;
+    })
+}
+
+async function action(action){
+
+    let res = await fetch(host_url + "/index.php",{
         method:"post",
-        data:{gestion:"API",action: action + '_server',Name:name},
-        success:function(data){
-            console.log(data);
-        },
-        error:function (){
-            console.log("error");
-        }}
-    )
-}
+        body: new URLSearchParams({gestion:"API",action: action + '_server',Name:server_name})
+    });
 
-function list_server_addons(){
+    let result = res.json();
 
-    $.ajax({
-        url: host_url + "/index.php",
-        method:"POST",
-        data:{gestion:'API',action:'list_server_addons',Name:name.value},
-        success:function(data){
-            addons = JSON.parse(data);
-            display_list_server_addons(addons);
-        },
-        error:function (){
-            console.log("error");
-        }
+    result.then((data) => {
+        console.log(data);
     })
 }
 
-function setMap(){
-    const map = document.getElementById('Map');
-    const gameType = document.getElementById('GameType');
+async function setMap(){
+    const map = document.getElementById('map-changer');
+    const gameType = document.getElementById('gametype-changer');
 
-    $.ajax({
-        url: host_url + "/index.php",
+    let data = {gestion:'API',action:'set_map',Name:server_name,GameType:gameType.value,Map:map.value}
+
+    let res = await fetch(host_url + "/index.php",{
         method:"POST",
-        data:{gestion:'API',action:'set_map',Name:name.value,GameType:gameType.value,Map:map.value},
-        success:function(data){
-            console.log(data);
-        },
-        error:function (){
-            console.log("error");
-        }
-    })
+        body: new URLSearchParams(data)
+    });
+
+    if(res.ok){
+        
+    }else{
+        console.log("error : " + res.status);
+    }
 }
 
-function sendCommand(){
+async function sendCommand(){
     const command = document.getElementById('command');
-    console.log(command.value);
-    $.ajax({
-        url: host_url + "/index.php",
+
+    let res = await fetch(host_url + "/index.php",{
         method:"POST",
-        data:{gestion:'API',action:'send_command',Name:name.value,Command:command.value},
-        success:function(data){
-            console.log(data);
-        },
-        error:function (){
-            console.log("error");
-        }
-    })
+        body: new URLSearchParams({gestion:'API',action:'send_command',Name:server_name,Command:command.value})
+    });
+
+    let result = res.json();
+
+    result.then((data) => {
+        console.log(data);
+    });
 }
 
-function listSkins(){
-    const skin = document.getElementById('list-skins');
+async function add_addons(){
 
-    $.ajax({
-        url: host_url + "/index.php",
-        method:"POST",
-        data:{gestion:'API',action:'force_skin',Name:name.value,Skin:skin.value},
-        success:function(data){
-            console.log(data);
-        },
-        error:function (){
-            console.log("error");
-        }
-    })
-}
+    let tbody = document.getElementById("list-addons-to-add");
+    let lines = tbody.childElementCount;
 
-function list_Addons_To_Add(){
+    for(let i = 0;i < lines;i++){
+        if(tbody.children[i].children[0].children[0].checked){
 
-    $.ajax({
-        url: host_url + "/index.php",
-        method:"POST",
-        data:{gestion:"API",action:'list_addons'},
-        success:function(data){
-            listAddons = JSON.parse(data);
-            display_list_Addons_To_Add(listAddons);
+            let res = await fetch(host_url + "/index.php",{
+                method:"POST",
+                body: new URLSearchParams({gestion:"API",action:"add_addon_server",Name:server_name,addon:tbody.children[i].children[2].innerText})
+            });
 
-        },
-        error:function (){
-            console.log("error");
-        }
-    })
-}
+            let result = res.json();
 
-function loadAddon(name){
-    const addon_list_map_element = document.getElementById("addon-maps");
-    const addon_list_characters_element = document.getElementById("addon-characters");
-    const addon_element = document.getElementById("addon");
-
-    let content_maps = "";
-    let content_characters = "";
-
-    let addon = listAddons.find((value) => value.name === name);
-
-    console.log(listAddons);
-
-    addon.maps.map((map) => {
-        content_maps += `<li>${map.levelname} ${map.ACT !== "0" ? "act " + map.ACT : ""}</li>`;
-    })
-
-    addon.characters.map((character) => {
-        content_characters += `<li>${character.skinName}</li>`;
-    })
-
-    addon_list_characters_element.innerHTML = content_characters;
-    addon_list_map_element.innerHTML = content_maps;
-    addon_element.value = addon.name;
-}
-
-function generate_server_map_selector(){
-
-    map_selector_element.innerHTML = "";
-    $.ajax({
-        url: host_url + "/index.php",
-        method:"POST",
-        data:{gestion:'API',action:'list_server_maps',Name:name.value},
-        success:function(data){
-            let Maps = JSON.parse(data);
-            let gametypes = JSON.parse(gametype_selector_element.value);
-            Maps.map((map) => {
-                gametypes.typeoflevel.map((typeofelevel) => {
-                    if(map.TypeOfLevel != null && map.TypeOfLevel.includes(typeofelevel)){
-                        map_selector_element.innerHTML += `<option value="${map.id}">${map.levelname} ${map.ACT !== null || map.ACT !== '0' ? " Act " + map.ACT : ""}</option>`;
-                    }
-                })
-
+            result.then(async () => {
+                init_config();
             })
-        },
-        error:function (){
-            console.log("error");
         }
-    })
-}
-
-function select_all_addons(value){
-    for(let i = 0; i < list_addons_element.childElementCount; i++ ){
-        list_addons_element.children[i].children[0].children[0].checked = value.checked;
     }
 }
 
-function check_all_elements(checkbox){
-    for(let i = 0; i < checkbox.parentElement.parentElement.parentElement.parentElement.children[1].childElementCount; i++ ){
-        checkbox.parentElement.parentElement.parentElement.parentElement.children[1].children[i].children[0].children[0].checked = checkbox.checked;
+async function remove_Addons(){
+
+    let tbody = document.getElementById("server-addons");
+    let lines = tbody.childElementCount;
+
+    for(let i = 0;i < lines;i++){
+        if(tbody.children[i].children[0].children[0].checked){
+
+            let res = await fetch(host_url + "/index.php",{
+                method:"POST",
+                body: new URLSearchParams({gestion:"API",action:"remove_addon_server",Name:server_name,addon:tbody.children[i].children[1].innerText})
+            });
+
+            let result = res.json();
+
+            result.then(async () => {
+                listAddons.splice(listAddons.indexOf(tbody.children[i].children[1].innerText),1);
+                init_config();
+            })
+        }
     }
 }
 
-function list_Characters(){
+async function init_server_gametype_selector(selector,selectedValue,mapSelector,mapValue){
 
-    $.ajax({
-        url: host_url + "/index.php",
+    let content = "";
+
+    let data = {gestion:"API",action:"list_server_gametypes",Name:server_name}
+            
+    const res = await fetch(host_url + "/index.php",{
         method:"POST",
-        data:{gestion:'API',action:'list_server_characters',Name:name.value},
-        success:function(data){
-            let characters = JSON.parse(data);
-            display_list_Characters(characters);
+        body: new URLSearchParams(data)
+    });
 
-        },
-        error:function (){
-            console.log("error");
-        }
-    })
+    if(res.ok){
+        let listGametypes = res.json();
+        
+        let typeSelected = "co-op";
+        let e = listGametypes.then((value) =>{
+            value.map((gametype) => {
+                content += `<option ${gametype.identifier === selectedValue ? "selected" : ""} value="${gametype.identifier}">${gametype.name}</option>`;
+                typeSelected = gametype.identifier === selectedValue ? gametype.identifier : typeSelected;               
+            });
+            selector.innerHTML = content;
+            return typeSelected;
+        });
+        return e;
+    }else{
+        console.log("error : " + res.status);
+    }
 }
 
-function list_server_gametypes(){
+async function init_map_selector(selectorId,typeSelected,selectedValue){
 
-    const list_gametypes_element = document.getElementById("GameType");
+    map_selector = document.getElementById(selectorId);
+    let content = "";
+    let data = {gestion:"API",action:"get_server_maps_with_gametype",Name:server_name,TypeOfLevel:typeSelected};
 
-    $.ajax({
-        url: host_url + "/index.php",
+    res = await fetch(host_url + "/index.php",{
         method:"POST",
-        data:{gestion:"API",action:'list_server_gametypes',Name:name.value},
-        success:function(data){
-            let content = "";
-            listGametypes = JSON.parse(data);
-            listGametypes.map((value) => {
-                content += `<option value='{"name":"${value.identifier}","typeoflevel":${JSON.stringify(value.TypeOfLevel)}}'>${value.name}</option>`;
-            })
+        body: new URLSearchParams(data)
+    });
 
-            list_gametypes_element.innerHTML = content;
-        },
-        error:function (){
-            console.log("error");
-        }
-    })
-}
+    let maps = res.json();
 
-function removeServerAddons(){
-    let list_addons = list_selected_addons();
-    console.log(list_addons);
-
-    list_addons.map((addon) => {
-        console.log(name.value);
-        $.ajax({
-            url: host_url + "/index.php",
-            method:"POST",
-            data:{gestion:"API",action:'remove_server_addon',Name:name.value,AddonName:addon},
-            success:function(data){
-                console.log(data);
-                list_server_addons(name.value);
-            },
-            error:function (){
-                console.log("error");
-            }
+    maps.then((data) => {
+        data.map((map) => {
+            content += `<option ${ map.id === selectedValue ? "selected" : ""} value="${map.id}">${map.levelname} ${map.ACT !== null && map.ACT !== '0' ? " Act " + map.ACT : ""}</option>`;
         })
-    })
 
-
+        map_selector.innerHTML = content;
+    });
 }
 
-function list_selected_addons(){
-    let list_addons = [];
+async function init_server_forcecharacter_selector(selectorID,selectedvalue) {
 
-    for(let i = 0; i < list_server_addons_element.childElementCount; i++ ){
-        if(list_server_addons_element.children[i].children[0].children[0].checked === true){
-            list_addons.push(list_server_addons_element.children[i].children[1].innerText);
-        }
-    }
-    return list_addons;
-}
-
-function display_list_form_gametypes(){
-    const form_default_gametype = document.getElementById("form_default_gametype");
-    const form_list_gametypes = document.getElementById("form_list_gametypes");
-
-    $.ajax({
-        url: host_url + "/index.php",
+    const selector = document.getElementById(selectorID);
+    let content = "";
+            
+    const res = await fetch(host_url + "/index.php",{
         method:"POST",
-        data:{gestion:"API",action:'list_server_gametypes',Name:name.value},
-        success:function(data){
-            let content = "";
-            let listGametypes = JSON.parse(data);
-            listGametypes.map((gametype) => {
-                content += `<option ${gametype.identifier === form_default_gametype.value ? "selected" : ""} value="${gametype.identifier}">${gametype.name}</option>`;
-            })
+        body: new URLSearchParams({gestion:'API',action:"list_server_characters",Name:server_name})
+    });
+    
+    let characters = res.json();
+    characters.then((value) =>{
+        value.map((character) => {
+            content += `<option ${character.skinName === selectedvalue ? "selected" : ""} value="${character.skinName}">${character.displayName != null ? character.displayName : character.skinName}</option>`;
+        })
+        selector.innerHTML = content;
+    });
+}
 
-            form_list_gametypes.innerHTML = content;
-            display_list_form_maps();
-        },
-        error:function (){
-            console.log("error");
-        }
+async function init_server_addons(tbodyID){
+
+    let content = "";
+    listAddons = [];
+    let tbody = document.getElementById(tbodyID);
+
+    let res = await fetch(host_url + "/index.php",{
+        method:"POST",
+        body: new URLSearchParams({gestion:"API",action:"list_server_addons",Name:server_name})
+    });
+
+    let addons = res.json();
+
+    addons.then((value) => {
+        value.map((addon) => {
+            listAddons.push(addon);
+            content += `<tr><td><input type="checkbox"></td><td>${addon}</td></tr>`;
+        })
+
+        tbody.innerHTML = content;
+    })
+}
+
+async function init_addonstoadd() {
+
+    let content = "";
+    const tbody = document.getElementById("list-addons-to-add");
+
+    let res = await fetch(host_url + "/index.php",{
+        method:"POST",
+        body: new URLSearchParams({gestion:"API",action:"list_addons",Name:server_name})
+    });
+
+    let addons = res.json();
+
+
+
+    addons.then((value) => {
+        let addons_left = value.filter((addon) => {
+            return !listAddons.includes(addon.name) && addon.name !== null
+        });
+
+        addons_left.map((addon) => {
+            content += `<tr><td><input type="checkbox"></td><td><div  class="addon_picture"><img src="app/addons/icons/${addon.icon}" alt="icon"></div></td><td>${addon.name}</td></tr>`;
+        })
+
+        tbody.innerHTML = content;
     })
 }
 
 async function get_server_logs(){
-        $.ajax({
-            url: host_url + "/index.php",
+    const console_content_element = document.getElementById("console-content");
+
+    while(1){
+
+        let data = {gestion:"API",action:'get_server_logs',Name:server_name};
+
+        res = await fetch(host_url + "/index.php",{
             method:"POST",
-            data:{gestion:"API",action:'get_server_logs',Name:name.value},
-            success:async function(data){
-                console.log(data);
-                let content = JSON.parse(data);
-                display_server_logs(content.output);
-                await sleep(1000);
-                get_server_logs();
-            },
-            error:function (){
-                console.log("error");
-            }
-        })
+            body: new URLSearchParams(data)
+        });
+
+        if(res.ok){
+            let returns = res.json();
+
+            returns.then((value) => {
+                console_content_element.innerText = value.output;
+            })
+
+            
+            //display_server_logs(content.output);
+        }else{
+             console.log("error : " + res.status);
+            break;
+        }
+
+        await sleep(1000);
+    }
 }

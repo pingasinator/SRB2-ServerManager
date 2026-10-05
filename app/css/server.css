@@ -1,37 +1,16 @@
-#form_server_proterties {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-
-
-}
-
-#content > card{
-    width: 50%;
-}
-
-.card{
-    border-radius: 10px;
-    gap: 10px;
-    background: gray;
-    display: flex;
-    flex-direction: column;
-}
-
-#addon-maps, #addon-characters{
-    max-height: 300px;
-    width: 300px;
-    overflow: scroll;
-}
 
 #console-content{
     background: black;
-    min-height: 500px;
-    max-height: 500px;
+    min-height: 300px;
+    max-height: 300px;
     overflow: scroll;
     display: flex;
     flex-direction: column-reverse;
+    border: solid 1px #5a616b;
+    border-radius: 10px;
 }
+
+
 
 #form_addons{
     border: solid grey 1px;
@@ -46,4 +25,33 @@
     left: 50%;
     z-index: 2;
     transform: translate(-50%, -50%);
+}
+
+#command{
+    width: 100%;
+}
+
+.card{
+    width: 50%;
+}
+
+.addon_picture{
+    max-width: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    max-height: 50px;
+    overflow: hidden;
+}
+
+.addon_picture img{
+    width: 100%;
+}
+
+#list_addons{
+    height: 300px;
+    overflow-y: scroll;
+}
+
+#addons div:nth-child(2) {
+    height: 300px;
 }
