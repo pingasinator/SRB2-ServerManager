@@ -35,6 +35,7 @@ let default_commands = [];
 let commands = [];
 
 
+
 init_config();
 get_server_logs();
 
@@ -43,6 +44,8 @@ let listAddons = [];
 async function init_config(){
 
     return await init_server_config().then(async (value) => {
+        document.getElementById("form_server").action = `index.php?gestion=server&Name=${server_name}`;
+
 
         await init_server_gametype_selector(config_server_gametype_element,default_gametype,"config-server-map",'').then(async (value) => {
             await init_map_selector('config-server-map',value,default_map);

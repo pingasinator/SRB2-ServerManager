@@ -37,10 +37,12 @@ function loadDefaultMaps(){
                 $data = explode(" = ",$row);
                 $data[0] = strtolower($data[0]);
 
-                if(str_contains($data[1],",")){
-                    $level_data[$data[0]] = explode(",",$data[1]);
-                }else{
-                    $level_data[$data[0]] = $data[1];
+                if(count($data) > 1){
+                    if(str_contains($data[1],",")){
+                        $level_data[$data[0]] = explode(",",$data[1]);
+                    }else{
+                        $level_data[$data[0]] = $data[1];
+                    }
                 }
             }
             $object_Level = new MAP($level_data);

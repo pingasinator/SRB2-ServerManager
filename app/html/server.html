@@ -21,9 +21,8 @@
                 <button class="btn text-white" onclick="SwitchContainer('server_card_commands')">commands</button>
             </nav>
             <div class="card-body">
-                <form id="form_server" action="index.php?Name=server" method="post">
-                    <input id="form-server-name" type="hidden" name="Name" value="server">
-                    <input type="hidden" name="gestion" value="server">
+                <form id="form_server" action="index.php?gestion=server" method="post">
+                    <input id="form-server-name" type="hidden" name="Name" value="">
                     <input type="hidden" name="action" value="update_server">
                     <div id="server_card_general" class="d-flex flex-column justify-content-between gap-2">
                         <label class="d-flex flex-column">
