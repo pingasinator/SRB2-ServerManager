@@ -346,8 +346,6 @@ class ServerModele {
                     }
                 }
             }
-
-
         }
         return $filteredMaps;
     }

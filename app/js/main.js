@@ -97,10 +97,10 @@ function init_rooms_selector(selectorId,selectedValue){
 
     let content = "";
 
-    room_selector = document.getElementById(selectorId);
+    let room_selector = document.getElementById(selectorId);
 
     rooms.map((room) => {
-        content += `<option value='${room.value}' ${selectorId === room.value ? "selected" : ""}>${room.name}</option>`;
+        content += `<option value='${room.value}' ${selectedValue === room.value ? "selected" : ""}>${room.name}</option>`;
     });
 
     room_selector.innerHTML = content;
