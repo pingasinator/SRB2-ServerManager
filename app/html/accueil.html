@@ -155,6 +155,30 @@
         </div>
     </div>
 
+    <div id="card_check_addon_background" class="background d-none">
+        <div class="card card_form">
+            <div class="card-header">
+                <h2>Addon</h2>
+            </div>
+            <div class="card-body">
+                <form action="index.php" method="post">
+                    <input type="hidden" name="action" value="update_addon">
+                    <label>
+                        <img src="#" alt="">
+                    </label>
+                    <label class="d-flex flex-column">
+                        Description
+                        <textarea name="description"></textarea>
+                    </label>
+                </form>
+            </div>
+            <div class="card-footer d-flex flex-row justify-content-between">
+                <button class="btn btn-red" onclick="Close('card_check_addon_background')">Cancel</button>
+                <input type="button" class="btn btn-blue" value="Apply">
+            </div>
+        </div>
+    </div>
+
     <header>
         <a href="index.php" id="logo"><img src="app/img/srb2org-banner.png" alt="logo"></a>
         <div id="notification" class="d-none"></div>

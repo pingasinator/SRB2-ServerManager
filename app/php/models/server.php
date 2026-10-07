@@ -45,6 +45,7 @@ class ServerModele {
 
             $command .= "' 2>/dev/null";
             exec($command,$output,$returncode);
+            $this->sendCommand($server->getName(),"servername \"{$server->getDisplayName()}\"");
             $this->sendCommand($server->getName(),"password {$server->getPassword()}");
             $this->sendCommand($server->getName(),"forceskin {$server->getForceCharacter()}");
             $this->sendCommand($server->getName(),"maxplayers {$server->getMaxPlayers()}");
@@ -53,6 +54,10 @@ class ServerModele {
             $this->sendCommand($server->getName(),"pointlimit " . $server->getPointlimit());
             if($server->getAllowDownload() === 'on'){
                 $this->sendCommand($server->getName(),"maxsend " . $server->getDownloadsize() * 1024);
+            }
+
+            foreach($server->getCommands() as $command){
+                $this->sendCommand($server->getName(),"{$command}");
             }
 
             $this->getServerLog($server->getName());
@@ -90,10 +95,16 @@ class ServerModele {
 
     function listServerAddons($serverName){
         $serverFilePath = 'app/servers/'. $serverName .'.json';
+        $addons = array();
+
         if(file_exists($serverFilePath)){
             $data = file_get_contents($serverFilePath);
             $server = new server(json_decode($data,true));
-            return $server->getMods();
+            foreach($server->getMods() as $mod){
+                $addons[] = $this->getAddon($mod)->ToArray();
+            }
+
+            return $addons;
         }else{
             return  array("output" => "error : Server file not found", "code" => 1);
         }

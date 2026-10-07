@@ -1,6 +1,9 @@
 const list_server_addons_element = document.getElementById('list-server-addons');
 
+const form_server_name = document.getElementById('form-server-name');
+
 const config_server_name_element = document.getElementById('config-server-name');
+const config_server_displayName_element = document.getElementById('config-server-displayName');
 const config_server_motd_element = document.getElementById('config-server-motd');
 const config_server_maxplayers_element = document.getElementById('config-server-maxplayers');
 const config_server_gametype_element = document.getElementById('config-server-gametype');
@@ -14,15 +17,23 @@ const config_server_masterserver_element = document.getElementById("config-serve
 const config_server_allowdownload_element = document.getElementById("config-server-allowdownload")
 const config_server_downloadsize_element = document.getElementById("config-server-downloadsize");
 
+const config_server_commands_input_element = document.getElementById("config-server-command-input");
+const config_server_commands_element = document.getElementById("config-server-commands");
+const config_server_commands_table_tbody_element = document.getElementById("config-server-commands-table-tbody");
+
 const list_addons = document.getElementById("config-addons-background");
 
 const gametype_changer_element = document.getElementById('gametype-changer');
 
 let server_name;
+let server_displaName;
 let default_gametype;
 let default_map;
 let default_character;
 let default_room;
+let default_commands = [];
+let commands = [];
+
 
 init_config();
 get_server_logs();
@@ -46,6 +57,7 @@ async function init_config(){
         init_server_addons("server-addons");
         init_addonstoadd();
         init_rooms_selector("config-server-room",default_room);
+        init_commands_table();
 
         return 1;
     })
@@ -67,12 +79,18 @@ async function init_server_config(){
     return await data.then((value) => {
 
         server_name = value.Name
+        server_displaName = value.DisplayName;
         default_gametype = value.GameType;
         default_map = value.Map;
         default_character=value.ForceCharacter;
         default_room = value.Room;
+        default_commands = value.Commands;
+        commands = default_commands;
+
+        form_server_name.value = value.Name;
 
         config_server_name_element.value = value.Name;
+        config_server_displayName_element.value = value.DisplayName;
         config_server_motd_element.value = value.MOTD;
         config_server_maxplayers_element.value = value.MaxPlayers;
 
@@ -267,8 +285,10 @@ async function init_server_addons(tbodyID){
 
     addons.then((value) => {
         value.map((addon) => {
+
             listAddons.push(addon);
-            content += `<tr><td><input type="checkbox"></td><td>${addon}</td></tr>`;
+            console.log(addon)
+            content += `<tr><td><input type="checkbox"></td><td><div class="addon_picture"><img src="app/addons/icons/${addon.icon}" alt="icon"></div></td><td>${addon.name}</td></tr>`;
         })
 
         tbody.innerHTML = content;
@@ -330,4 +350,39 @@ async function get_server_logs(){
 
         await sleep(1000);
     }
+}
+
+function add_command(){
+
+    if(config_server_commands_input_element.value !== ""){
+        commands.push(config_server_commands_input_element.value);
+    }
+
+    init_commands_table();
+}
+
+function init_commands_table(){
+    let content = "";
+
+    commands.map((command) => {
+        content += `<tr >
+                        <td><input type="checkbox"></td>
+                        <td class="col col-12"><textarea type="hidden" name="commands[]" class="d-none">${command}</textarea>${command}</td><td></td>
+                    </tr>`;
+    })
+
+    config_server_commands_table_tbody_element.innerHTML = content;
+}
+
+function remove_commands(){
+
+    let lines = config_server_commands_table_tbody_element.childElementCount;
+
+    for(let i = lines - 1; i >= 0; i--){
+        if(config_server_commands_table_tbody_element.children[i].children[0].children[0].checked){
+            commands.splice(i,1);
+        }
+    }
+
+    init_commands_table();
 }

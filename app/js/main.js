@@ -74,7 +74,6 @@ async function init_map_selector(selectorId,typeSelected,selectedValue){
     });
 
     let maps = res.json();
-    console.log(maps)
 
     maps.then((data) => {
         data.map((map) => {

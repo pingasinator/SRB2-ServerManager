@@ -16,12 +16,14 @@ class server{
 
     private $port;
     private $password = "";
-    private $Room = "00";
+    private $room = "00";
     private $masterServer = "https://mb.srb2.org/MS/0";
-    private $AllowDownload = "";
+    private $allowDownload = "";
     private $downloadSize = 1;
 
     private $Mods = array();
+
+    private $commands = array();
 
     public function __construct($params){
         foreach ($params as $name => $value) {
@@ -99,11 +101,11 @@ class server{
     }
 
     public function getRoom(){
-        return $this->Room;
+        return $this->room;
     }
 
     public function getAllowDownload(){
-        return $this->AllowDownload;
+        return $this->allowDownload;
     }
 
     public function getDownloadsize(){
@@ -112,6 +114,15 @@ class server{
 
     public function getMods(){
         return $this->Mods;
+    }
+
+    public function getCommands(){
+        return $this->commands;
+    }
+
+    public function getVars(){
+        $reflection = new ReflectionClass($this);
+        return $reflection->getProperties(ReflectionProperty::IS_PRIVATE);
     }
 
     // Setters
@@ -170,11 +181,11 @@ class server{
     }
 
     public function setRoom($Room){
-        $this->Room = $Room;
+        $this->room = $Room;
     }
 
     public function setAllowDownload($AllowDownload){
-        $this->AllowDownload = $AllowDownload;
+        $this->allowDownload = $AllowDownload;
     }
 
     public function setDownloadSize($Downloadsize){
@@ -185,12 +196,13 @@ class server{
         $this->Mods = $Mods;
     }
 
-    public function addMod($ModName){
-        $this->Mods[] = $ModName;
+    public function setCommands($Commands){
+        if($Commands != ""){
+            $this->commands = $Commands;
+        }
     }
 
-    public function getVars(){
-        $reflection = new ReflectionClass($this);
-        return $reflection->getProperties(ReflectionProperty::IS_PRIVATE);
+    public function addMod($ModName){
+        $this->Mods[] = $ModName;
     }
 }

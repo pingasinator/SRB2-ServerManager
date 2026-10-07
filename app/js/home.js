@@ -143,7 +143,7 @@ async function list_addons() {
                                 </div>
                                 
                                 <div class="card-bottom d-flex justify-content-between">
-                                    <button class="btn btn-blue">Check</button>
+                                    <button class="btn btn-blue" onclick="Open('card_check_addon_background')">Check</button>
                                     <button class="btn btn-red" onclick="deleteAddon('${addon.name}')">Remove</button>
                                 </div>
                             </div>`;
