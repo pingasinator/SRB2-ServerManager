@@ -100,10 +100,10 @@ async function list_Servers(){
     }
 }
 
-function previewPicture(e){
-    const previewImageElement = document.getElementById('previewImage')
+function previewPicture(input,previewImageID){
+    const previewImageElement = document.getElementById(previewImageID)
 
-    const [picture] = e.files
+    const [picture] = input.files
 
     if(picture){
 
@@ -149,7 +149,7 @@ async function list_addons() {
                                 </div>
                                 
                                 <div class="card-bottom d-flex justify-content-between">
-                                    <button class="btn btn-blue" onclick="Open('card_check_addon_background')">Check</button>
+                                    <button class="btn btn-blue" onclick="OpenCheckAddon('${addon.name}')">Check</button>
                                     <button class="btn btn-red" onclick="deleteAddon('${addon.name}')">Remove</button>
                                 </div>
                             </div>`;
@@ -194,6 +194,51 @@ async function deleteAddon(addonName){
         });
 
         list_addons();
+    })
+}
+
+async function OpenCheckAddon(addonName){
+    Open('card_check_addon_background');
+
+    const form_update_addonName = document.getElementById('form-update-addonName');
+
+    const check_addon_title_element = document.getElementById('check-addon-title')
+    const check_addon_preview_image_element = document.getElementById('card-checkaddon-previewimage')
+    const check_addon_description_element = document.getElementById('check-addon-description');
+    const check_addon_size_element = document.getElementById('check-addon-size');
+
+    const check_addon_maps_table_tbody_element = document.getElementById('check-addon-maps-table').children[1];
+    const check_addon_characters_table_tbody_element = document.getElementById('check-addon-characters-table').children[1];
+    form_update_addonName.value = addonName;
+
+    let res = await fetch(host_url + "/index.php",{
+        method:"POSt",
+        body: new URLSearchParams({gestion:"API",action:"get_addon",Name:addonName})
+    })
+
+    let result = res.json();
+
+    result.then((data) => {
+
+        check_addon_title_element.innerText = data.name;
+        check_addon_preview_image_element.src = host_url + "/app/addons/icons/" +data.icon;
+        check_addon_size_element.innerHTML = "Size : " + data.size + " MB";
+        check_addon_description_element.innerText = data.description;
+
+        let map_content = "";
+        let character_content = "";
+
+        data.maps.map((map) => {
+            map_content += `<tr><td>${map.levelname}</td><td>${map.id}</td></tr>`
+        })
+
+        data.characters.map((character) => {
+            console.log(character)
+            character_content += `<td>${character.skinName}</td>`
+        })
+
+        check_addon_maps_table_tbody_element.innerHTML = map_content;
+        check_addon_characters_table_tbody_element.innerHTML = character_content;
     })
 }
 

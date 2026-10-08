@@ -202,3 +202,24 @@ input[type=text],input[type=password],textarea{
 #config-server-command-input{
     width: 100%;
 }
+
+.width-25{
+    width: 25%;
+}
+
+.width-50{
+    width: 50%;
+}
+
+.width-75{
+    width: 75%;
+}
+
+.width-100{
+    width: 100%;
+}
+
+.check-addon-table{
+    height: 175px;
+    overflow-y: scroll;
+}

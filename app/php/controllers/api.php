@@ -4,7 +4,7 @@ class APIController{
 
     public $model;
     function __construct(){
-        $this->model = new ServerModele();
+        $this->model = new ServerModel();
     }
 
     function checkAction()
@@ -22,6 +22,10 @@ class APIController{
 
                 case "restart_server":
                     echo json_encode($this->model->restartServer($_POST['Name']));
+                    break;
+
+                case "get_server_state":
+                    echo json_encode($this->model->checkServerState($_POST['Name']));
                     break;
 
                 case "list_servers":
@@ -58,6 +62,10 @@ class APIController{
 
                 case 'list_server_maps':
                     echo json_encode($this->model->listServerMaps($_POST['Name']));
+                    break;
+
+                case "get_addon":
+                    echo json_encode($this->model->getAddon($_POST['Name'])->ToArray());
                     break;
 
                 case 'list_server_addons':

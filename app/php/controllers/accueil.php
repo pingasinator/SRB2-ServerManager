@@ -16,9 +16,13 @@ class AccueilController{
                 case "import_addon":
                     $this->model->importAddon();
                     break;
+
+                case "update_addon":
+                    $this->model->updateAddon($_POST["addonName"]);
+                    break;
+
             }
         }
         $this->view->display();
     }
-
 }

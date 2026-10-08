@@ -8,10 +8,7 @@ class AccueilModel{
             $ext  = pathinfo($_FILES['addon']['name'])['extension'];
 
             if(isset($_FILES["icon"]["name"]) && !empty($_FILES["icon"]['name'])){
-
                 imagepng(imagecreatefromstring(file_get_contents($_FILES['icon']['tmp_name'])), "app/addons/icons/" . basename($_FILES['addon']['name'],$ext) . "png");
-            }else{
-
             }
 
             if(!file_exists("app/tmp/" . $_FILES["addon"]["name"])){
@@ -166,6 +163,12 @@ class AccueilModel{
         return [];
     }
 
+    /**
+     * Reads all the lua files in the addon and returns all the custom gametypes
+     *
+     * @param $lua
+     * @return array
+     */
     public function importGametypes($lua): array{
         $path = $lua;
 
@@ -281,6 +284,20 @@ class AccueilModel{
         exec(Perm . " rm " . addonsFolder . $addon . ".pk3");
 
         return array("output" => "addon deleted successfully");
+    }
+
+    public function updateAddon($addonName){
+        $addon = new Addon(json_decode(file_get_contents("app/addons/{$addonName}.json"),true));
+
+
+
+        if(isset($_FILES['icon']['name']) && !empty($_FILES['icon']['name'])){
+            imagepng(imagecreatefromstring(file_get_contents($_FILES['icon']['tmp_name'])), "app/addons/icons/{$addonName}.png");
+            $addon->setIcon("{$addonName}.png");
+        }
+
+        $addon->setDescription($_POST["description"]);
+        file_put_contents("app/addons/{$addonName}.json",json_encode($addon->toArray(),true) );
     }
 
     public function loadDirs($path):array{

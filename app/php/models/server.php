@@ -1,6 +1,6 @@
 <?php
 
-class ServerModele {
+class ServerModel{
 
     /**
      * Creates a server, put it in a json file and starts it.
@@ -68,6 +68,13 @@ class ServerModele {
         }
     }
 
+    /**
+     * add an existing addon to the server
+     *
+     * @param $serverName
+     * @param $addonName
+     * @return array
+     */
     function addAddon($serverName,$addonName){
         $serverFilePath = 'app/servers/'. $serverName .'.json';
         if(file_exists($serverFilePath)){
@@ -110,6 +117,12 @@ class ServerModele {
         }
     }
 
+    /**
+     * restart the tmux session
+     *
+     * @param $serverName
+     * @return array
+     */
     function restartServer($serverName){
         $this->killServer($serverName);
          return $this->startServer($serverName);
@@ -173,11 +186,18 @@ class ServerModele {
         $this->killServer($name);
         if(file_exists('app/servers/'. $name .'.json')){
             unlink('app/servers/'. $name .'.json');
+            unlink('app/logs/'. $name .'.log');
             return "successullly deleted <br>";
         }
         return "file not found";
     }
 
+    /**
+     * Mak an Instance of a server
+     *
+     * @param $name
+     * @return server|string
+     */
     function getServer($name){
         $path = 'app/servers/'. $name .'.json';
         if(file_exists($path)){
@@ -202,6 +222,13 @@ class ServerModele {
         return array("output" => $output, "code" => $returncode);
     }
 
+    /**
+     * send SRB2 command to the server
+     *
+     * @param $serverName
+     * @param $command
+     * @return array
+     */
     function sendCommand($serverName,$command)
     {
         $command = Perm . " tmux send-key -t srb2_{$serverName} " . escapeshellarg("{$command}\n");
@@ -209,6 +236,12 @@ class ServerModele {
         return array("output" => $output, "code" => $returncode);
     }
 
+    /**
+     * Updates the server config in the json file
+     *
+     * @param $server
+     * @return array|int
+     */
     function updateServerConfig($server){
         $path = 'app/servers/'. $server->getName() .'.json';
         if(file_exists($path)){
@@ -218,6 +251,12 @@ class ServerModele {
         return array("output" => "error : Server config file not found", "code" => 1);
     }
 
+    /**
+     * return all the defaults and custom maps of the server
+     *
+     * @param $serverName
+     * @return array|null
+     */
     public function listServerMaps($serverName){
         $defaultMaps = loadDefaultMaps();
         $customMaps = array();
@@ -247,6 +286,8 @@ class ServerModele {
             return $addon;
         }
     }
+
+
 
     public function listServerCharacters($serverName){
         $server = $this->getServer($serverName);
@@ -349,6 +390,7 @@ class ServerModele {
         }
         return $filteredMaps;
     }
+
 
     function getServerLog($serverName){
         $command = Perm . " tmux capture-pane -t srb2_{$serverName} -S - && " . Perm . " tmux save-buffer app/logs/{$serverName}.log";

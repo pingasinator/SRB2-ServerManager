@@ -7,7 +7,7 @@ class ServerController {
 
     function __construct(){
         $this->view = new ServerView();
-        $this->model = new ServerModele();
+        $this->model = new ServerModel();
         return $this;
     }
 

@@ -142,7 +142,7 @@
                     <div class="d-flex flex-row">
                         <label for="form_addons_icon">
                             <img src="#" alt="" id="previewImage">
-                            <input id="form_addons_icon" name="icon" class="d-none" type="file" accept=".png, .jpg" onchange="previewPicture(this)">
+                            <input id="form_addons_icon" name="icon" class="d-none" type="file" accept=".png, .jpg" onchange="previewPicture(this,'previewImage')">
                         </label>
                         <label class="d-flex flex-column justify-content-end">
                             Description
@@ -172,23 +172,55 @@
     <div id="card_check_addon_background" class="background d-none">
         <div class="card card_form">
             <div class="card-header">
-                <h2>Addon</h2>
+                <h2 id="check-addon-title">Addon</h2>
             </div>
             <div class="card-body">
-                <form action="index.php" method="post">
+                <form id="form-update-addon" action="index.php" method="post" enctype="multipart/form-data" class="d-flex flex-column gap-2">
+                    <input type="hidden" name="gestion" value="accueil">
                     <input type="hidden" name="action" value="update_addon">
-                    <label>
-                        <img src="#" alt="">
-                    </label>
-                    <label class="d-flex flex-column">
-                        Description
-                        <textarea name="description"></textarea>
-                    </label>
+                    <input id="form-update-addonName" type="hidden" name="addonName">
+                    <input id="check-addon-icon" type="file" name="icon" accept=".png, .jpg, .jpeg" class="d-none" onchange="previewPicture(this,'card-checkaddon-previewimage')">
+                    <div class="d-flex flex-row gap-2">
+                        <label class="addon_picture" for="check-addon-icon">
+                            <img id="card-checkaddon-previewimage" src="#" alt="">
+                        </label>
+                        <div class="width-100">
+                            <span id="check-addon-size">Size : </span>
+                            <label class="d-flex flex-column">
+                                Description
+                                <textarea id="check-addon-description" name="description"></textarea>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row gap-2 justify-content-between">
+                        <div class="width-50 check-addon-table">
+                            <table id="check-addon-maps-table" class="table table-dark table-striped">
+                                <thead class="sticky-top">
+                                <tr>
+                                    <th>map</th>
+                                    <th>ID</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="width-50 check-addon-table">
+                            <table id="check-addon-characters-table" class="table table-dark table-striped">
+                                <thead class="sticky-top">
+                                <tr>
+                                    <th>character</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </form>
             </div>
             <div class="card-footer d-flex flex-row justify-content-between">
                 <button class="btn btn-red" onclick="Close('card_check_addon_background')">Cancel</button>
-                <input type="button" class="btn btn-blue" value="Apply">
+                <input type="submit" form="form-update-addon" class="btn btn-blue" value="Apply">
             </div>
         </div>
     </div>
