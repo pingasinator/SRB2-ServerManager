@@ -14,7 +14,7 @@ class server{
     private $pointLimit;
     private $forceCharacter = "None";
 
-    private $port;
+    private $port = "5029";
     private $password = "";
     private $room = "00";
     private $masterServer = "https://mb.srb2.org/MS/0";
@@ -32,6 +32,11 @@ class server{
                 $this->{"set".$name}($value);
             }
         }
+
+        if($this->getDisplayName() === ""){
+            $this->setDisplayName($this->getName());
+        }
+
         return $this;
     }
 
@@ -128,7 +133,7 @@ class server{
     // Setters
 
     public function setName($name){
-        $this->name = $name;
+        $this->name = str_replace(" ", "_", $name);;
     }
 
     public function setDisplayName($displayName){
@@ -169,7 +174,9 @@ class server{
     }
 
     public function setPort($port){
-        $this->port = $port;
+        if($port != ""){
+            $this->port = $port;
+        }
     }
 
     public function setPassword($password){
@@ -197,9 +204,14 @@ class server{
     }
 
     public function setCommands($Commands){
-        if($Commands != ""){
+        if(is_string($Commands)){
+            if($Commands != ""){
+                $this->commands = json_decode($Commands);
+            }
+        }else{
             $this->commands = $Commands;
         }
+
     }
 
     public function addMod($ModName){

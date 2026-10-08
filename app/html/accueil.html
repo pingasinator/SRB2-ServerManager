@@ -14,91 +14,90 @@
         <div class="card-header">
             <h1>Add Server</h1>
         </div>
-
+        <nav>
+            <button class="btn text-white" onclick="SwitchContainer('server_card_general')">General</button>
+            <button class="btn text-white" onclick="SwitchContainer('server_card_rules')">Rules</button>
+            <button class="btn text-white" onclick="SwitchContainer('server_card_network')">Network</button>
+            <button class="btn text-white" onclick="SwitchContainer('server_card_commands')">commands</button>
+        </nav>
         <div class="card-body">
-            <nav>
-                <button class="btn text-white" onclick="SwitchContainer('server_card_general')">General</button>
-                <button class="btn text-white" onclick="SwitchContainer('server_card_rules')">Rules</button>
-                <button class="btn text-white" onclick="SwitchContainer('server_card_network')">Network</button>
-                <button class="btn text-white" onclick="SwitchContainer('server_card_commands')">commands</button>
-            </nav>
-            <div id="form_server" >
+            <div id="form_server">
                 <input type="hidden" name="Name" value="server">
-                <input type="hidden" name="gestion" value="server">
-                <input type="hidden" name="action" value="update_server">
-                <div id="server_card_general" class="d-flex flex-column justify-content-between">
-                    <div class="d-flex flex-column">
-                        <label>Server Name</label>
-                        <input type="text" id="config-server-name">
-                    </div>
-                    <div class="d-flex flex-column">
-                        <label>MOTD</label>
+                <div id="server_card_general" class="d-flex flex-column justify-content-between gap-2">
+                    <label class="d-flex flex-column">
+                        Server Name
+                        <input type="text" id="config-server-name" value="Server">
+                    </label>
+                    <label class="d-flex flex-column">
+                        Display Name
+                        <input type="text" id="config-server-displayName" name="displayName">
+                    </label>
+                    <label class="d-flex flex-column">
+                        MOTD
                         <input id="config-server-motd" type="text" name="MOTD">
-                    </div>
-                    <div class="d-flex flex-column">
-                        <label>Max Players</label>
+                    </label>
+                    <label class="d-flex flex-column">
+                        Max Players
                         <input id="config-server-maxplayers" type="range" min="1" max="32" name="maxplayers" value="16">
                         <datalist>
                             <option value="1" label="1"></option>
                             <option value="32" label="32"></option>
                         </datalist>
-                    </div>
-                    <div class="d-flex flex-row">
+                    </label>
+                </div>
+                <div id="server_card_rules" class="d-flex flex-row d-none gap-2">
+                    <div class="d-flex flex-column gap-2">
                         <label class="d-flex flex-column">
-                            Gametype
+                            Default Gametype
                             <select id="config-server-gametype" name="gametype" onchange="init_map_selector('config-server-map',this.value,'')"></select>
                         </label>
+                        <label class="d-flex flex-column">
+                            Time limit
+                            <input id="config-server-timelimit" type="text" name="timeLimit">
+                        </label>
+                        <label class="d-flex flex-column">
+                            Force Character
+                            <select id="config-server-forcecharacter" name="forceCharacter"></select>
+                        </label>
+                    </div>
+                    <div class="d-flex flex-column gap-2">
                         <label class="d-flex flex-column">
                             Default Map
                             <select id="config-server-map" name="map"></select>
                         </label>
-                    </div>
-                </div>
-                <div id="server_card_rules" class="d-flex flex-row d-none">
-                    <div>
-                        <div class="d-flex flex-column">
-                            <label>Time limit</label>
-                            <input id="config-server-timelimit" type="text" name="timeLimit">
-                        </div>
-                        <div class="d-flex flex-column">
-                            <label>Force Character</label>
-                            <select id="config-server-forcecharacter" name="forceCharacter"></select>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="d-flex flex-column">
-                            <label>Point limit</label>
+                        <label class="d-flex flex-column">
+                            Point limit
                             <input id="config-server-pointlimit" type="text" name="pointLimit">
-                        </div>
+                        </label>
                     </div>
                 </div>
-                <div id="server_card_network" class="d-flex flex-row d-none ">
-                    <div>
-                        <label>
+                <div id="server_card_network" class="d-flex flex-row d-none gap-2">
+                    <div class="d-flex flex-column gap-2">
+                        <label class="d-flex flex-column gap">
                             Port
-                            <input id="config-server-port" type="text" name="port" value="5029">
+                            <input type="text" id="config-server-port" name="port" value="5029">
                         </label>
-                        <label>
+                        <label class="d-flex flex-column gap">
                             Admin password
                             <input id="config-server-password" type="text" name="password">
                         </label>
-                        <label>
+                        <label class="d-flex flex-column gap">
                             masterserver
                             <input id="config-server-masterserver" type="text" name="masterServer" value="https://mb.srb2.org/MS/0">
                         </label>
-                        <label>
+                        <label class="d-flex flex-column gap">
                             Room
                             <select id="config-server-room" name="room"></select>
                         </label>
                     </div>
-                    <div>
-                        <label>
+                    <div class="d-flex flex-column gap-2">
+                        <label class="d-flex flex-column gap">
                             Allow download
                             <div>
                                 <input id="config-server-allowdownload" type="checkbox" name="allowDownload">
                             </div>
                         </label>
-                        <label>
+                        <label class="d-flex flex-column gap">
                             max size
                             <input id="config-server-downloadsize" type="range" min="0" max="200" value="4" name="downloadSize">
                             <datalist>
@@ -108,14 +107,29 @@
                         </label>
                     </div>
                 </div>
-                <div id="server_card_commands" class="d-none"></div>
+                <div id="server_card_commands" class=" d-flex flex-column gap-2 d-none">
+                    <div id="config-server-commands" >
+                        <table id="config-server-commands-table" class="table table-striped table-dark">
+                            <thead class="sticky-top">
+                            <tr>
+                                <th><input type="checkbox" onchange="check_all_table_datas(this.checked,'config-server-commands-table-tbody')"></th>
+                                <th class="col col-10">Commands</th>
+                                <th><button type="button" class="btn btn-red" onclick="remove_commands('config-server-commands-table')">Remove</button></th>
+                            </tr>
+                            </thead>
+                            <tbody id="config-server-commands-table-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex gap-2"><input id="config-server-command-input" type="text"><button type="button" onclick="add_command('config-server-commands-table',this.parentElement.children[0].value)" class="btn btn-blue">Add</button></div>
+                </div>
             </div>
         </div>
         <div class="card-bottom d-flex justify-content-between">
             <button class="btn btn-red" onclick="Close('card_add_server_background')">Cancel</button>
             <button class="btn btn-valide" onclick="create_server(), Close('card_add_server_background')">Create</button>
         </div>
-    </div>
+        </div>
     </div>
 
     <div id="card_add_addon_background" class="background d-none">
@@ -205,8 +219,10 @@
                     <tr class="bg-primary">
                         <th><input id="check_all" type="checkbox" onchange="select_all_servers(this)"></th>
                         <th>Name</th>
+                        <th>Display Name</th>
                         <th>State</th>
                         <th>Port</th>
+                        <th>Room</th>
                         <th>Max Players</th>
                         <th>Map</th>
                         <th>Game Type</th>

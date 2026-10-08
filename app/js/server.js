@@ -18,8 +18,6 @@ const config_server_allowdownload_element = document.getElementById("config-serv
 const config_server_downloadsize_element = document.getElementById("config-server-downloadsize");
 
 const config_server_commands_input_element = document.getElementById("config-server-command-input");
-const config_server_commands_element = document.getElementById("config-server-commands");
-const config_server_commands_table_tbody_element = document.getElementById("config-server-commands-table-tbody");
 
 const list_addons = document.getElementById("config-addons-background");
 
@@ -32,8 +30,6 @@ let default_map;
 let default_character;
 let default_room;
 let default_commands = [];
-let commands = [];
-
 
 
 init_config();
@@ -57,10 +53,10 @@ async function init_config(){
 
         await init_server_forcecharacter_selector("config-server-forcecharacter",default_character);
 
-        init_server_addons("server-addons");
-        init_addonstoadd();
+        await init_server_addons("server-addons");
+        await init_addonstoadd();
         init_rooms_selector("config-server-room",default_room);
-        init_commands_table();
+        init_commands_table("config-server-commands-table",default_commands);
 
         return 1;
     })
@@ -355,37 +351,3 @@ async function get_server_logs(){
     }
 }
 
-function add_command(){
-
-    if(config_server_commands_input_element.value !== ""){
-        commands.push(config_server_commands_input_element.value);
-    }
-
-    init_commands_table();
-}
-
-function init_commands_table(){
-    let content = "";
-
-    commands.map((command) => {
-        content += `<tr >
-                        <td><input type="checkbox"></td>
-                        <td class="col col-12"><textarea type="hidden" name="commands[]" class="d-none">${command}</textarea>${command}</td><td></td>
-                    </tr>`;
-    })
-
-    config_server_commands_table_tbody_element.innerHTML = content;
-}
-
-function remove_commands(){
-
-    let lines = config_server_commands_table_tbody_element.childElementCount;
-
-    for(let i = lines - 1; i >= 0; i--){
-        if(config_server_commands_table_tbody_element.children[i].children[0].children[0].checked){
-            commands.splice(i,1);
-        }
-    }
-
-    init_commands_table();
-}

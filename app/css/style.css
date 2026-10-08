@@ -194,3 +194,11 @@ input[type=text],input[type=password],textarea{
     z-index: 0;
 }
 
+#config-server-commands{
+    height: 200px;
+    overflow-y: scroll;
+}
+
+#config-server-command-input{
+    width: 100%;
+}

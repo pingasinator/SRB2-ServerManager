@@ -9,8 +9,9 @@ const server_motd_element = document.getElementById("config-server-motd");
 const server_masterserver_element = document.getElementById("config-server-masterserver");
 const server_password_element = document.getElementById("config-server-password");
 const server_timelimit_element = document.getElementById("config-server-timelimit");
-const server_pointlimit_element = document.getElementById("config-server-pointlimit");
-
+const server_pointlimit_element = document.getElementById("config-server-pointlimit")
+const server_allowdownload_element = document.getElementById("config-server-allowdownload");
+const server_downloadsize_element = document.getElementById("config-server-downloadsize");
 async function action(e){
 
     let list  = list_selected_servers();
@@ -46,11 +47,14 @@ async function create_server() {
             GameType:server_gametype_element.value,
             Map:server_map_element.value,
             MOTD:server_motd_element.value,
+            AllowDownload:server_allowdownload_element.value,
+            DownloadSize:server_downloadsize_element.value,
             ForceCharacter:server_character_element.value,
             MasterServer:server_masterserver_element.value,
             Password:server_password_element.value,
             TimeLimit:server_timelimit_element.value,
-            PointLimit:server_pointlimit_element.value
+            PointLimit:server_pointlimit_element.value,
+            Commands:JSON.stringify(commands)
         })
     });
 
@@ -80,8 +84,10 @@ async function list_Servers(){
                 content += `<tr>
                                 <td><input type="checkbox"></td>
                                 <td><a href="index.php?gestion=server&Name=${server.server.Name}">${server.server.Name}</a></td>
+                                <td>${server.server.DisplayName}</td>
                                 <td class="state-${server.state}">${server.state}</td>
                                 <td>${server.server.Port}</td>
+                                <td>${server.server.Room === "38" ? "Custom" : server.server.Room === "28" ? "Casual" : server.server.Room === "33" ? "Standard" : "None"}</td>
                                 <td>${server.server.MaxPlayers}</td>
                                 <td>${server.server.Map}</td>
                                 <td>${server.server.GameType}</td>

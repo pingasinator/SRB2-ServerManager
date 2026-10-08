@@ -56,11 +56,3 @@
     height: 300px;
 }
 
-#config-server-commands-table{
-    height: 200px;
-    overflow-y: scroll;
-}
-
-#config-server-command-input{
-    width: 100%;
-}

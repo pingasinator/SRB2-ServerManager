@@ -7,6 +7,8 @@ const list_addons_element = document.getElementById('list-addons');
 
 const check_all_element = document.getElementById('check_all');
 
+let commands = [];
+
 function Open(containerId){
     let container = document.getElementById(containerId);
     container.classList.remove("d-none");
@@ -36,7 +38,6 @@ function list_selected_servers(){
     let list_servers = [];
 
     for(let i = 0; i < list_servers_element.childElementCount; i++ ){
-        console.log(list_servers_element.children[i].children[0].children[0].checked);
         if(list_servers_element.children[i].children[0].children[0].checked === true){
             list_servers.push(list_servers_element.children[i].children[1].innerText);
         }
@@ -139,6 +140,49 @@ async function init_forcecharacter_selector(selectorID,selectedvalue) {
     })
 
     selector.innerHTML = content;
+}
+
+function add_command(tableId,value){
+
+    if(value !== ""){
+        commands.push(value);
+    }
+
+    init_commands_table(tableId);
+}
+
+function init_commands_table(tableID,defaultCommands){
+
+    let content = "";
+    const tbody = document.getElementById(tableID).children[1];
+
+    if(defaultCommands != null){
+        commands = defaultCommands;
+    }
+
+    commands.map((command) => {
+        content += `<tr>
+                        <td><input type="checkbox"></td>
+                        <td class="col col-12"><textarea type="hidden" name="commands[]" class="d-none">${command}</textarea>${command}</td><td></td>
+                    </tr>`;
+    })
+
+    tbody.innerHTML = content;
+}
+
+function remove_commands(tableID){
+
+    let tbody = document.getElementById(tableID).children[1];
+
+    let lines = tbody.childElementCount;
+
+    for(let i = lines - 1; i >= 0; i--){
+        if(tbody.children[i].children[0].children[0].checked){
+            commands.splice(i,1);
+        }
+    }
+
+    init_commands_table(tableID);
 }
 
 function capitalize(string){

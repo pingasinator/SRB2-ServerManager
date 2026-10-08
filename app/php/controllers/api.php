@@ -41,7 +41,7 @@ class APIController{
                     break;
 
                 case "delete_server":
-                    echo $this->model->deleteServer($_POST['Name']);
+                    echo json_encode($this->model->deleteServer($_POST['Name']));
                     break;
 
                 case "set_map":
