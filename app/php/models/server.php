@@ -43,7 +43,9 @@ class ServerModel{
                 }
             }
 
-            $command .= "+servername \"{$server->getDisplayName()}\" +password \"{$server->getPassword()}\" +forceskin {$server->getForceCharacter()} +maxplayers {$server->getMaxPlayers()} +motd \"{$server->getMOTD()}\" +timelimit {$server->getTimelimit()} +pointlimit {$server->getPointlimit()} ";
+            $motd = str_replace("'","\'",$server->getMOTD());
+
+            $command .= "+servername \"{$server->getDisplayName()}\" +password \"{$server->getPassword()}\" +forceskin {$server->getForceCharacter()} +maxplayers {$server->getMaxPlayers()} +motd \"{$motd}\" +timelimit {$server->getTimelimit()} +pointlimit {$server->getPointlimit()} ";
 
             if($server->getAllowDownload() === 'on'){
                 $var = $server->getDownloadsize() * 1024;
