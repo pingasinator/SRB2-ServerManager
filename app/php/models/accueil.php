@@ -3,7 +3,7 @@
 class AccueilModel{
 
     public function importAddon(){
-        if(isset($_FILES["addon"]["name"])){
+        if(isset($_FILES["addon"]["name"]) && $_FILES["addon"]["name"] != ""){
 
             $ext  = pathinfo($_FILES['addon']['name'])['extension'];
 

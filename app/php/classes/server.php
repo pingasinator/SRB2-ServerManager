@@ -133,7 +133,7 @@ class server{
     // Setters
 
     public function setName($name){
-        $this->name = str_replace(" ", "_", $name);;
+        $this->name = str_replace([" "], "_", $name);;
     }
 
     public function setDisplayName($displayName){

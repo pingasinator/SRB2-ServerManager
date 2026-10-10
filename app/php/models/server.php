@@ -49,7 +49,7 @@ class ServerModel{
             $this->sendCommand($server->getName(),"password {$server->getPassword()}");
             $this->sendCommand($server->getName(),"forceskin {$server->getForceCharacter()}");
             $this->sendCommand($server->getName(),"maxplayers {$server->getMaxPlayers()}");
-            $this->sendCommand($server->getName(),"motd " . $server->getMOTD());
+            $this->sendCommand($server->getName(),"motd " . `\"{$server->getMOTD()}\"`);
             $this->sendCommand($server->getName(),"timelimit " . $server->getTimelimit());
             $this->sendCommand($server->getName(),"pointlimit " . $server->getPointlimit());
             if($server->getAllowDownload() === 'on'){
@@ -57,7 +57,7 @@ class ServerModel{
             }
 
             foreach($server->getCommands() as $command){
-                $this->sendCommand($server->getName(),"{$command}");
+                $this->sendCommand($server->getName(),`{$command}`);
             }
 
             $this->getServerLog($server->getName());
