@@ -43,7 +43,7 @@ class ServerModel{
                 }
             }
 
-            $motd = str_replace("'","\'",$server->getMOTD());
+            $motd = str_replace("'","'\''",$server->getMOTD());
 
             $command .= "+servername \"{$server->getDisplayName()}\" +password \"{$server->getPassword()}\" +forceskin {$server->getForceCharacter()} +maxplayers {$server->getMaxPlayers()} +motd \"{$motd}\" +timelimit {$server->getTimelimit()} +pointlimit {$server->getPointlimit()} ";
 
