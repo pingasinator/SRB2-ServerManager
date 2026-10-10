@@ -186,7 +186,7 @@ async function remove_Addons(){
 
             let res = await fetch(host_url + "/index.php",{
                 method:"POST",
-                body: new URLSearchParams({gestion:"API",action:"remove_addon_server",Name:server_name,addon:tbody.children[i].children[1].innerText})
+                body: new URLSearchParams({gestion:"API",action:"remove_addon_server",Name:server_name,addon:tbody.children[i].children[2].innerText})
             });
 
             let result = res.json();
@@ -286,10 +286,9 @@ async function init_server_addons(tbodyID){
         value.map((addon) => {
 
             listAddons.push(addon);
-            console.log(addon)
             content += `<tr><td><input type="checkbox"></td><td><div class="addon_picture"><img src="app/addons/icons/${addon.icon}" alt="icon"></div></td><td>${addon.name}</td></tr>`;
         })
-
+        console.log(listAddons);
         tbody.innerHTML = content;
     })
 }
@@ -309,9 +308,16 @@ async function init_addonstoadd() {
 
 
     addons.then((value) => {
-        let addons_left = value.filter((addon) => {
-            return !listAddons.includes(addon.name) && addon.name !== null
+
+        let e = listAddons.map((server_addon) => {
+            return server_addon.name;
         });
+
+        let addons_left = value.filter((addon) => {
+            return !e.includes(addon.name) && addon.name !== null;
+        });
+
+        console.log(addons_left)
 
         addons_left.map((addon) => {
             content += `<tr><td><input type="checkbox"></td><td><div  class="addon_picture"><img src="app/addons/icons/${addon.icon}" alt="icon"></div></td><td>${addon.name}</td></tr>`;
