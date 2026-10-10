@@ -43,18 +43,15 @@ class ServerModel{
                 }
             }
 
+            $command .= "+servername \"{$server->getDisplayName()}\" +password \"{$server->getPassword()}\" +forceskin {$server->getForceCharacter()} +maxplayers {$server->getMaxPlayers()} +motd \"{$server->getMOTD()}\" +timelimit {$server->getTimelimit()} +pointlimit {$server->getPointlimit()} ";
+
+            if($server->getAllowDownload() === 'on'){
+                $var = $server->getDownloadsize() * 1024;
+                $command .= "+maxsend {$var}";
+            }
+
             $command .= "' 2>/dev/null";
             exec($command,$output,$returncode);
-            $this->sendCommand($server->getName(),"servername \"{$server->getDisplayName()}\"");
-            $this->sendCommand($server->getName(),"password {$server->getPassword()}");
-            $this->sendCommand($server->getName(),"forceskin {$server->getForceCharacter()}");
-            $this->sendCommand($server->getName(),"maxplayers {$server->getMaxPlayers()}");
-            $this->sendCommand($server->getName(),"motd \"{$server->getMOTD()}\"");
-            $this->sendCommand($server->getName(),"timelimit " . $server->getTimelimit());
-            $this->sendCommand($server->getName(),"pointlimit " . $server->getPointlimit());
-            if($server->getAllowDownload() === 'on'){
-                $this->sendCommand($server->getName(),"maxsend " . $server->getDownloadsize() * 1024);
-            }
 
             foreach($server->getCommands() as $command){
                 $this->sendCommand($server->getName(),`{$command}`);
