@@ -12,6 +12,10 @@ const server_timelimit_element = document.getElementById("config-server-timelimi
 const server_pointlimit_element = document.getElementById("config-server-pointlimit")
 const server_allowdownload_element = document.getElementById("config-server-allowdownload");
 const server_downloadsize_element = document.getElementById("config-server-downloadsize");
+
+const server_filter_element = document.getElementById("server-filter");
+const addon_filter_element = document.getElementById("addon-filter");
+
 async function action(e){
 
     let list  = list_selected_servers();
@@ -28,7 +32,7 @@ async function action(e){
             let result = res.json();
 
             result.then(() => {
-                list_Servers();
+                init_list_Servers();
             })
         })
     }
@@ -61,11 +65,11 @@ async function create_server() {
     let result = res.json();
 
     result.then((data) => {
-        list_Servers();
+        init_list_Servers();
     })
 }
 
-async function list_Servers(){
+async function init_list_Servers(){
 
     check_all_element.checked = false;
     let content = "";
@@ -79,9 +83,9 @@ async function list_Servers(){
     if(res.ok){
         let servers = res.json();
 
-        servers.then((value) => {
-            value.map((server) => {
-                content += `<tr>
+        servers.then((data) => {
+            data.map((server) => {
+                content += server.server.Name.toLowerCase().includes(server_filter_element.value.toLowerCase()) ?  `<tr>
                                 <td><input type="checkbox"></td>
                                 <td><a href="index.php?gestion=server&Name=${server.server.Name}">${server.server.Name}</a></td>
                                 <td>${server.server.DisplayName}</td>
@@ -92,7 +96,7 @@ async function list_Servers(){
                                 <td>${server.server.Map}</td>
                                 <td>${server.server.GameType}</td>
                                 <td>${server.server.ForceCharacter}</td>
-                            </tr>`;
+                            </tr>` : "";
             })
 
             servers_table_element.children[1].innerHTML = content;
@@ -117,7 +121,7 @@ function previewPicture(input,previewImageID){
     }
 }
 
-async function list_addons() {
+async function init_list_addons() {
     let content = "";
 
     const list_addons_element = document.getElementById("list-addons")
@@ -132,7 +136,7 @@ async function list_addons() {
     addons.then((data) => {
         data.map((addon) => {
             if(addon.name != null){
-                content += `<div class="card card_addon">
+                content += addon.name.toLowerCase().includes(addon_filter_element.value.toLowerCase()) ?  `<div class="card card_addon">
                                 <div class="card-body d-flex flex-column gap-2">
                                     <div class="d-flex flex-row gap-2">
                                         <div class="addon_picture">
@@ -152,7 +156,7 @@ async function list_addons() {
                                     <button class="btn btn-blue" onclick="OpenCheckAddon('${addon.name}')">Check</button>
                                     <button class="btn btn-red" onclick="deleteAddon('${addon.name}')">Remove</button>
                                 </div>
-                            </div>`;
+                            </div>` : "";
             }
         })
 
@@ -193,7 +197,7 @@ async function deleteAddon(addonName){
             Close("notification");
         });
 
-        list_addons();
+        init_list_addons();
     })
 }
 
@@ -242,8 +246,8 @@ async function OpenCheckAddon(addonName){
     })
 }
 
-list_Servers();
-list_addons();
+init_list_Servers();
+init_list_addons();
 init_gametype_selector();
 init_forcecharacter_selector("config-server-forcecharacter");
 init_rooms_selector("config-server-room", '');

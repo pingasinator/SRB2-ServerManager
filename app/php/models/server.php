@@ -56,7 +56,7 @@ class ServerModel{
             exec($command,$output,$returncode);
 
             foreach($server->getCommands() as $command){
-                $this->sendCommand($server->getName(),`{$command}`);
+                $this->sendCommand($server->getName(),$command);
             }
 
             $this->getServerLog($server->getName());
@@ -157,7 +157,7 @@ class ServerModel{
      * @return string
      */
     function checkServerState($serverName){
-        $command = Perm . " tmux list-session | grep 'srb2_{$serverName}'";
+        $command = Perm . " tmux list-session | grep -w 'srb2_{$serverName}'";
         exec($command,$output,$returncode);
         return $returncode ? "inactive" : "active";
     }
@@ -192,7 +192,7 @@ class ServerModel{
     }
 
     /**
-     * Mak an Instance of a server
+     * Make an Instance of a server
      *
      * @param $name
      * @return server|string

@@ -58,7 +58,7 @@ class Map {
         $this->NextLevel = $NextLevel;
     }
 
-    public function ToJSON(){
+    public function toJSON(){
         return json_encode($this->ToArray());
     }
 

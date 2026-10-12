@@ -235,7 +235,7 @@
             <div id="action-bar" class="card-header">
                 <h2>Servers</h2>
                 <div id="options">
-                    <input id="" type="text" >
+                    <input id="server-filter" type="text" onchange="init_list_Servers()">
                     <div class="btn-group">
                         <button id="start" class="btn btn-valide" onclick="action('start')">start</button>
                         <button id="restart" class="btn btn-blue" onclick="action('restart')">restart</button>
@@ -272,7 +272,7 @@
             <div class="card-header">
                 <h2>Addons</h2>
                 <div class="d-flex flex-row justify-content-between">
-                    <input type="text">
+                    <input id="addon-filter" type="text" onchange="init_list_addons()">
                     <button class="btn btn-valide" onClick="Open('card_add_addon_background')">add Addon</button>
                 </div>
             </div>

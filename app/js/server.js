@@ -57,6 +57,7 @@ async function init_config(){
         await init_addonstoadd();
         init_rooms_selector("config-server-room",default_room);
         init_commands_table("config-server-commands-table",default_commands);
+        await init_server_state();
 
         return 1;
     })
@@ -116,8 +117,8 @@ async function action(action){
 
     let result = res.json();
 
-    result.then((data) => {
-        console.log(data);
+    result.then(async () => {
+        await init_server_state();
     })
 }
 
@@ -288,7 +289,6 @@ async function init_server_addons(tbodyID){
             listAddons.push(addon);
             content += `<tr><td><input type="checkbox"></td><td><div class="addon_picture"><img src="app/addons/icons/${addon.icon}" alt="icon"></div></td><td>${addon.name}</td></tr>`;
         })
-        console.log(listAddons);
         tbody.innerHTML = content;
     })
 }
@@ -316,8 +316,6 @@ async function init_addonstoadd() {
         let addons_left = value.filter((addon) => {
             return !e.includes(addon.name) && addon.name !== null;
         });
-
-        console.log(addons_left)
 
         addons_left.map((addon) => {
             content += `<tr><td><input type="checkbox"></td><td><div  class="addon_picture"><img src="app/addons/icons/${addon.icon}" alt="icon"></div></td><td>${addon.name}</td></tr>`;
@@ -357,3 +355,18 @@ async function get_server_logs(){
     }
 }
 
+async function init_server_state(){
+
+    const server_state_element = document.getElementById("server-state")
+
+    let res = await fetch(host_url + "/index.php",{
+        method: "POST",
+        body: new URLSearchParams({gestion:"API",action:"get_server_state",Name:server_name})
+    });
+
+    let result = res.json();
+
+    result.then((data) => {
+        server_state_element.innerText = data;
+    })
+}
