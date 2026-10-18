@@ -121,7 +121,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="d-flex gap-2"><input id="config-server-command-input" type="text"><button type="button" onclick="add_command('config-server-commands-table',this.parentElement.children[0].value)" class="btn btn-blue">Add</button></div>
+                    <div class="d-flex gap-2"><input id="config-server-command-input" type="text"><button type="button" onclick="add_command('config-server-commands-table',this.parentElement.children[0].value)" class="btn btn-primary">Add</button></div>
                 </div>
             </div>
         </div>
@@ -184,7 +184,7 @@
                         <label class="addon_picture" for="check-addon-icon">
                             <img id="card-checkaddon-previewimage" src="#" alt="">
                         </label>
-                        <div class="width-100">
+                        <div class="w-100">
                             <span id="check-addon-size">Size : </span>
                             <label class="d-flex flex-column">
                                 Description
@@ -193,7 +193,7 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row gap-2 justify-content-between">
-                        <div class="width-50 check-addon-table">
+                        <div class="w-50 check-addon-table">
                             <table id="check-addon-maps-table" class="table table-dark table-striped">
                                 <thead class="sticky-top">
                                 <tr>
@@ -204,7 +204,7 @@
                                 <tbody></tbody>
                             </table>
                         </div>
-                        <div class="width-50 check-addon-table">
+                        <div class="w-50 check-addon-table">
                             <table id="check-addon-characters-table" class="table table-dark table-striped">
                                 <thead class="sticky-top">
                                 <tr>
@@ -220,7 +220,7 @@
             </div>
             <div class="card-footer d-flex flex-row justify-content-between">
                 <button class="btn btn-red" onclick="Close('card_check_addon_background')">Cancel</button>
-                <input type="submit" form="form-update-addon" class="btn btn-blue" value="Apply">
+                <input type="submit" form="form-update-addon" class="btn btn-primary" value="Apply">
             </div>
         </div>
     </div>
@@ -238,7 +238,7 @@
                     <input id="server-filter" type="text" onchange="init_list_Servers()">
                     <div class="btn-group">
                         <button id="start" class="btn btn-valide" onclick="action('start')">start</button>
-                        <button id="restart" class="btn btn-blue" onclick="action('restart')">restart</button>
+                        <button id="restart" class="btn btn-primary" onclick="action('restart')">restart</button>
                         <button id="kill" class="btn btn-red" onclick="action('kill')">kill</button>
                         <button id="delete" class="btn btn-red" onclick="action('delete')">delete</button>
                     </div>
@@ -269,12 +269,10 @@
         </div>
 
         <div id="card_addons" class="card">
-            <div class="card-header">
+            <div class="card-header d-flex flex-row justify-content-between gap-2">
                 <h2>Addons</h2>
-                <div class="d-flex flex-row justify-content-between">
-                    <input id="addon-filter" type="text" onchange="init_list_addons()">
+                    <input id="addon-filter"  type="text" onchange="init_list_addons()">
                     <button class="btn btn-valide" onClick="Open('card_add_addon_background')">add Addon</button>
-                </div>
             </div>
             <div id="list-addons" class="card-body d-flex flex-row gap-3 flex-wrap"></div>
         </div>

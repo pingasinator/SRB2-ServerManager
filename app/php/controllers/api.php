@@ -98,8 +98,40 @@ class APIController{
                     echo json_encode($this->model->getServerGametype($_POST['Name'],$_POST['GameType']));
                     break;
 
+                case "send_server_message":
+                    echo json_encode($this->model->sendCommand($_POST['Name'],"say {$_POST['Message']}"));
+                    break;
+
+                case "get_server_players":
+                    echo json_encode($this->model->getServerPlayers($_POST['Name']),true);
+                    break;
+
+                case "get_server_bans":
+                    echo json_encode($this->model->getServerBanList($_POST['Name']),true);
+                    break;
+
+                case "force_server_character":
+                    echo json_encode($this->model->forceCharacter($_POST['Name'],$_POST['Character']));
+                    break;
+
+                case "set_time_and_point_limit":
+                    echo json_encode($this->model->setServerTimeAndPointLimit($_POST['Name'],$_POST['Time'],$_POST['Point']),true);
+                    break;
+
+                case "server_clear_bans":
+                    echo json_encode($this->model->ServerCleanBans($_POST['Name']),true);
+                    break;
+
                 case 'get_server_maps_with_gametype':
                     echo json_encode($this->model->getServerMapsWithGameType($_POST['Name'],$_POST['TypeOfLevel']));
+                    break;
+
+                case "kick_server_player":
+                    echo json_encode($this->model->kickServerPlayer($_POST['Name'],$_POST['Node']));
+                    break;
+
+                case "ban_server_player":
+                    echo json_encode($this->model->banServerPlayer($_POST['Name'],$_POST['Node']));
                     break;
 
                 case 'get_server_logs':

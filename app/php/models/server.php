@@ -277,6 +277,88 @@ class ServerModel{
         return $Maps;
     }
 
+
+
+    public function getServerPlayers($serverName){
+
+        $this->sendCommand($serverName, "nodes");
+
+        usleep(100000);
+
+        $result =  $this->getServerLog($serverName);
+
+        $lines = explode("\n",$result["output"]);
+
+        $players = array();
+
+        for($i=count($lines) - 1;$i > 0;$i--){
+            if(trim($lines[$i]) == "\$nodes"){
+                break;
+            }
+
+            if(preg_match('/^\d/',$lines[$i])){
+                $datas = explode(" - ",$lines[$i]);
+                $name = trim(explode(":",$datas[0])[1]);
+                $node = intval(explode(" ",$datas[0])[0]);
+                if(str_contains($datas[2],"[")){
+                    $e = explode("]:",$datas[2]);
+                    $ip = substr($e[0],1,strlen($e[0])-1);
+                    $port = $e[1];
+                }else{
+                    $ip = explode(":",$datas[2])[0];
+                    $port = explode(":",$datas[2])[1];
+                }
+                $players[] = ["name" => $name,"node" => $node,"ip" => $ip,"port" => $port];
+            }
+
+        }
+
+        return $players;
+    }
+
+    public function getServerBanList($serverName){
+        $ips = array();
+        $this->sendCommand($serverName, "showbanlist");
+        usleep(100000);
+        $result =  $this->getServerLog($serverName);
+        $lines = explode("\n",$result["output"]);
+        for($i = count($lines) - 1;$i > 0;$i--){
+            if($lines[$i] === "\$showbanlist" || $lines[$i] === "(empty)"){
+                break;
+            }
+
+            if($lines[$i] !== "Ban List:" && $lines[$i] !== ""){
+                $ips[] = explode("/",explode(" ",$lines[$i])[1])[0];
+            }
+
+        }
+
+        return $ips;
+    }
+
+    public function setServerTimeAndPointLimit($serverName,$time,$point){
+        $this->sendCommand($serverName, "timelimit {$time}");
+        $this->sendCommand($serverName, "pointlimit {$point}");
+        return array("output" => "sucess", "code" => 0);
+    }
+
+    public function ServerCleanBans($serverName){
+        $this->sendCommand($serverName, "clearbans");
+        return array("output" => "success", "code" => 0);
+    }
+
+    public function kickServerPlayer($serverName,$node){
+        $this->sendCommand($serverName, "kick {$node}");
+        sleep(1);
+        return array("output" => "success","code" => 0);
+    }
+
+    public function banServerPlayer($serverName,$node){
+        $this->sendCommand($serverName, "ban {$node}");
+        sleep(1);
+        return array("output" => "success","code" => 0);
+    }
+
     public function getAddon($modName){
         $path = 'app/addons/'. $modName .'.json';
         if(file_exists($path)){
@@ -391,10 +473,13 @@ class ServerModel{
     }
 
 
-    function getServerLog($serverName){
-        $command = Perm . " tmux capture-pane -t srb2_{$serverName} -S - && " . Perm . " tmux save-buffer app/logs/{$serverName}.log";
-        exec($command,$output,$returncode);
-        $data = file_get_contents("app/logs/{$serverName}.log");
-        return array("output" => $data, "code" => $returncode);
+    function getServerLog($serverName): array{
+        if($this->checkServerState($serverName) === "active"){
+            $command = Perm . " tmux capture-pane -t srb2_{$serverName} -S - && " . Perm . " tmux save-buffer app/logs/{$serverName}.log";
+            exec($command,$output,$returncode);
+            $data = file_get_contents("app/logs/{$serverName}.log");
+            return array("output" => $data, "code" => $returncode);
+        }
+        return array("output" => "server offline", "code" => 1);
     }
 }

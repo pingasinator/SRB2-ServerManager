@@ -33,7 +33,7 @@ let default_commands = [];
 
 
 init_config();
-get_server_logs();
+
 
 let listAddons = [];
 
@@ -52,16 +52,51 @@ async function init_config(){
         });
 
         await init_server_forcecharacter_selector("config-server-forcecharacter",default_character);
+        await init_server_forcecharacter_selector("character-changer",default_character);
 
         await init_server_addons("server-addons");
         await init_addonstoadd();
         init_rooms_selector("config-server-room",default_room);
         init_commands_table("config-server-commands-table",default_commands);
         await init_server_state();
+        await get_server_logs();
 
         return 1;
     })
 
+}
+
+async function forceCharacter(){
+
+    let character = document.getElementById("character-changer").value;
+
+    let req = await fetch(host_url + "/index.php",{
+        method:"post",
+        body: new URLSearchParams({gestion:"API",action: 'force_server_character',Name:server_name,Character:character})
+    });
+
+    let res = req.json();
+
+    res.then((data) => {
+        console.log(data);
+    })
+}
+
+async function set_time_and_point_limits(){
+
+    let time = document.getElementById("timelimit-changer").value;
+    let point = document.getElementById("pointlimit-changer").value;
+
+    let req = await fetch(host_url + "/index.php",{
+        method:"POST",
+        body: new URLSearchParams({gestion:"API",action:"set_time_and_point_limit",Name:server_name,Time:time,Point:point})
+    })
+
+    let res = req.json();
+
+    res.then((data) => {
+        console.log(data);
+    })
 }
 
 async function init_server_config(){
@@ -110,14 +145,14 @@ async function init_server_config(){
 
 async function action(action){
 
-    let res = await fetch(host_url + "/index.php",{
+    let req = await fetch(host_url + "/index.php",{
         method:"post",
         body: new URLSearchParams({gestion:"API",action: action + '_server',Name:server_name})
     });
 
-    let result = res.json();
+    let res = req.json();
 
-    result.then(async () => {
+    res.then(async () => {
         await init_server_state();
     })
 }
@@ -171,7 +206,7 @@ async function add_addons(){
             let result = res.json();
 
             result.then(async () => {
-                init_config();
+                await init_config();
             })
         }
     }
@@ -231,11 +266,11 @@ async function init_server_gametype_selector(selector,selectedValue,mapSelector,
 
 async function init_map_selector(selectorId,typeSelected,selectedValue){
 
-    map_selector = document.getElementById(selectorId);
+    let map_selector = document.getElementById(selectorId);
     let content = "";
     let data = {gestion:"API",action:"get_server_maps_with_gametype",Name:server_name,TypeOfLevel:typeSelected};
 
-    res = await fetch(host_url + "/index.php",{
+    let res = await fetch(host_url + "/index.php",{
         method:"POST",
         body: new URLSearchParams(data)
     });
@@ -283,12 +318,17 @@ async function init_server_addons(tbodyID){
 
     let addons = res.json();
 
-    addons.then((value) => {
-        value.map((addon) => {
+    addons.then((data) => {
+        if(data.length !== 0){
+            data.map((addon) => {
 
-            listAddons.push(addon);
-            content += `<tr><td><input type="checkbox"></td><td><div class="addon_picture"><img src="app/addons/icons/${addon.icon}" alt="icon"></div></td><td>${addon.name}</td></tr>`;
-        })
+                listAddons.push(addon);
+                content += `<tr><td><input type="checkbox"></td><td><div class="addon_picture"><img src="app/addons/icons/${addon.icon}" alt="icon"></div></td><td>${addon.name}</td></tr>`;
+            })
+        }else{
+            content += `<tr class="h-100"><td colspan="3" class="text-center">no addons loaded</td></tr>`
+        }
+
         tbody.innerHTML = content;
     })
 }
@@ -332,20 +372,18 @@ async function get_server_logs(){
 
         let data = {gestion:"API",action:'get_server_logs',Name:server_name};
 
-        res = await fetch(host_url + "/index.php",{
+        let req = await fetch(host_url + "/index.php",{
             method:"POST",
             body: new URLSearchParams(data)
         });
 
-        if(res.ok){
-            let returns = res.json();
+        if(req.ok){
+            let res = req.json();
 
-            returns.then((value) => {
+            res.then((value) => {
                 console_content_element.innerText = value.output;
             })
 
-            
-            //display_server_logs(content.output);
         }else{
              console.log("error : " + res.status);
             break;
@@ -359,14 +397,134 @@ async function init_server_state(){
 
     const server_state_element = document.getElementById("server-state")
 
-    let res = await fetch(host_url + "/index.php",{
+    let req = await fetch(host_url + "/index.php",{
         method: "POST",
         body: new URLSearchParams({gestion:"API",action:"get_server_state",Name:server_name})
     });
 
-    let result = res.json();
+    let result = req.json();
 
     result.then((data) => {
         server_state_element.innerText = data;
+    })
+}
+
+async function refresh_players(){
+
+    const tbody = document.getElementById("players-body");
+    let content = "";
+
+    let req = await fetch(host_url + "/index.php",{
+        method:"POST",
+        body: new URLSearchParams({gestion:"API",action:"get_server_players",Name:server_name})
+    });
+
+    let res = req.json();
+
+
+    res.then((data) => {
+        if(data.length > 0){
+            data.map((player) => {
+                content += `<tr>
+                            <td >${player.node}</td>
+                            <td >${player.name}</td>
+                            ${player.ip === null || player.port === null ? "<td colspan='2'>disconnected</td>" : `<td>${player.ip}</td>\n<td>${player.port}</td>\n`}
+                             <td class="text-end">
+                                <button class="btn btn-sm btn-outline-warning" onclick="kick('${player.node}')">Kick</button> 
+                                <button class="btn btn-sm btn-outline-danger" onclick="ban('${player.node}')">Ban</button>
+                             </td>
+                        </tr>`;
+            })
+        }else{
+            content += `<tr><td colspan="5">no players found</td></tr>`
+        }
+
+
+        tbody.innerHTML = content;
+    })
+}
+
+async function refresh_bans(){
+    const tbody = document.getElementById("bans-body");
+    let content = "";
+
+    let req = await fetch(host_url + "/index.php",{
+        method:"POST",
+        body: new URLSearchParams({gestion:"API",action:"get_server_bans",Name:server_name})
+    });
+
+    let res = req.json();
+
+    res.then((data) => {
+        if(data.length > 0){
+            data.map((ip) => {
+                content += `<tr><td>${ip}</td></tr>`;
+            })
+        }else{
+            content += `<tr><td>no bans found</td></tr>`;
+        }
+
+
+        tbody.innerHTML = content;
+    });
+
+
+}
+
+async function kick(player){
+    let req = await fetch(host_url + "/index.php",{
+        method:"POST",
+        body: new URLSearchParams({gestion:"API",action:"kick_server_player",Name:server_name,Node:player})
+    })
+
+    let res = req.json();
+
+    res.then((data) => {
+        console.log(data);
+        refresh_players();
+    })
+}
+
+async function ban(player){
+    let req = await fetch(host_url + "/index.php",{
+        method:"POST",
+        body: new URLSearchParams({gestion:"API",action:"ban_server_player",Name:server_name,Node:player})
+    })
+
+    let res = req.json();
+
+    res.then(async (data) => {
+        console.log(data);
+        await refresh_players();
+        await refresh_bans();
+    })
+}
+
+async function clearBans(){
+    let req = await fetch(host_url + "/index.php",{
+        method:"POST",
+        body: new URLSearchParams({gestion:"API",action:"server_clear_bans",Name:server_name})
+    })
+
+    let res = req.json();
+
+    res.then((data) => {
+        console.log(data);
+        refresh_bans();
+    })
+}
+
+async function send_message(){
+    const message_element = document.getElementById("message-input");
+
+    let req = await fetch(host_url + "/index.php",{
+        method:"POST",
+        body: new URLSearchParams({gestion:"API",action:"send_server_message",Name:server_name,Message:message_element.value})
+    })
+
+    let result = req.json();
+
+    result.then((data) => {
+        console.log(data)
     })
 }

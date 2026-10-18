@@ -131,7 +131,7 @@ datalist{
     color: #5cc370;
 }
 
-.btn-blue,.btn-blue:hover{
+.btn-primary,.btn-primary:hover{
     background-color: #2e3e4d;
     border: solid #8ab1d2 1px;
     color: #8ab1d2;
@@ -151,7 +151,7 @@ datalist{
     padding: 10px;
 }
 
-.card-bottom{
+.card-footer{
     border-top: solid #5a616b 1px;
     padding: 10px;
 }
@@ -178,8 +178,8 @@ nav{
 .background{
     background-color: #0000007f;
     width: 100%;
-    height: 100vh;
-    position: absolute;
+    height: 100%;
+    position: fixed;
     z-index: 2;
 }
 
@@ -203,20 +203,8 @@ input[type=text],input[type=password],textarea{
     width: 100%;
 }
 
-.width-25{
-    width: 25%;
-}
-
-.width-50{
-    width: 50%;
-}
-
-.width-75{
-    width: 75%;
-}
-
-.width-100{
-    width: 100%;
+#players-section{
+    height: 250px;
 }
 
 .check-addon-table{

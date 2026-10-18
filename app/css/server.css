@@ -27,14 +27,6 @@
     transform: translate(-50%, -50%);
 }
 
-#command{
-    width: 100%;
-}
-
-.card{
-    width: 50%;
-}
-
 .addon_picture{
     max-width: 50px;
     min-width: 50px;
@@ -56,3 +48,7 @@
     height: 300px;
 }
 
+#limiter-server-addons{
+
+    overflow-y: scroll;
+}
