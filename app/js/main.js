@@ -7,6 +7,7 @@ const list_servers_element = document.getElementById('list-servers');
 const check_all_element = document.getElementById('check_all');
 
 let commands = [];
+let Notifications = [];
 
 function Open(containerId){
     let container = document.getElementById(containerId);
@@ -188,6 +189,26 @@ function capitalize(string){
     let first = string.charAt(0);
 
     return first.toUpperCase() + string.slice(1);
+}
+
+async function sendNotification(message,type){
+    const notifications_element = document.getElementById("notifications");
+
+    let content = "";
+    let i = Notifications.length;
+
+    Notifications.push(message);
+
+    notifications_element.innerHTML += `<div id="notification-${i}" class="notification notification-${type}">
+                                            ${message}
+                                        </div>`;
+
+    await sleep(5000).then(() => {
+        Notifications = Notifications.splice(1,1);
+
+        let notification_element = document.getElementById(`notification-${i}`);
+        notification_element.remove();
+    });
 }
 
 async function sleep(ms){

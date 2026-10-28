@@ -99,7 +99,7 @@ class APIController{
                     break;
 
                 case "send_server_message":
-                    echo json_encode($this->model->sendCommand($_POST['Name'],"say {$_POST['Message']}"));
+                    echo json_encode($this->model->sendServerMessage($_POST['Name'],$_POST['Message']));
                     break;
 
                 case "get_server_players":

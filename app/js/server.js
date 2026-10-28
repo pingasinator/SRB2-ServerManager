@@ -84,7 +84,7 @@ async function forceCharacter(){
     let res = req.json();
 
     res.then((data) => {
-        console.log(data);
+        sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
     })
 }
 
@@ -101,7 +101,7 @@ async function set_time_and_point_limits(){
     let res = req.json();
 
     res.then((data) => {
-        console.log(data);
+        sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
     })
 }
 
@@ -161,7 +161,8 @@ async function action(action){
 
     let res = req.json();
 
-    res.then(async () => {
+    res.then(async (data) => {
+        sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
         await init_server_state();
     })
 }
@@ -176,7 +177,11 @@ async function setMap(){
     });
 
     if(req.ok){
-        
+        let res = req.json();
+
+        res.then((data) => {
+            sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
+        });
     }else{
         console.log("error : " + req.status);
     }
@@ -194,7 +199,7 @@ async function sendCommand(){
 
     if(req.ok){
         res.then((data) => {
-            console.log(data);
+            sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
         });
     }else{
         console.error("Error : " + req.status);
@@ -217,7 +222,8 @@ async function add_addons(){
             if(req.ok){
                 let res = req.json();
 
-                res.then(async () => {
+                res.then(async (data) => {
+                    sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
                     await init_config();
                 })
             }else{
@@ -243,7 +249,8 @@ async function remove_Addons(){
             if(req.ok){
                 let res = req.json();
 
-                res.then(async () => {
+                res.then(async (data) => {
+                    sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
                     listAddons.splice(listAddons.indexOf(tbody.children[i].children[1].innerText),1);
                     await init_config();
                 })
@@ -524,7 +531,7 @@ async function kick(player){
         let res = req.json();
 
         res.then((data) => {
-            console.log(data);
+            sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
             refresh_players();
         })
     }else{
@@ -543,7 +550,7 @@ async function ban(player){
         let res = req.json();
 
         res.then(async (data) => {
-            console.log(data);
+            sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
             await refresh_players();
             await refresh_bans();
         });
@@ -564,6 +571,7 @@ async function unban(ip){
         let res = req.json();
 
         res.then((data) => {
+            sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
             refresh_bans();
         })
     }
@@ -579,7 +587,7 @@ async function clearBans(){
         let res = req.json();
 
         res.then((data) => {
-            console.log(data);
+            sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
             refresh_bans();
         })
     }else{
@@ -599,7 +607,7 @@ async function send_message(){
         let res = req.json();
 
         res.then((data) => {
-            console.log(data)
+            sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
         })
     }else{
         console.error("Error : " + req.status);

@@ -315,7 +315,7 @@ class AccueilModel{
         }
         exec(Perm . " rm " . addonsFolder . $addon . ".pk3");
 
-        return array("output" => "addon deleted successfully");
+        return array("output" => "addon deleted successfully", "code" => 0);
     }
 
     /**

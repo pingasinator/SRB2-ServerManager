@@ -16,7 +16,7 @@ class ServerModel{
 
         $this->startServer($server->getName());
 
-        return array("output" => "success", "code" => 0);
+        return array("output" => "Server successfully created.", "code" => 0);
     }
 
     /**
@@ -61,7 +61,7 @@ class ServerModel{
 
             $this->getServerLog($server->getName());
 
-            return array("output" => $output, "code" => $returncode);
+            return array("output" => "Server successfully started", "code" => 0);
         }
 
         return  array("output" => "error : Server file not found", "code" => 1);
@@ -88,7 +88,7 @@ class ServerModel{
                 $server->setMods($addons);
                 if($this->updateServerConfig($server)){
                     $this->restartServer($server->getName());
-                    return array("output" => "success", "code" => 0);
+                    return array("output" => "Addon successfully added", "code" => 0);
                 }
 
             }else{
@@ -132,7 +132,10 @@ class ServerModel{
      */
     function restartServer($serverName): array{
         $this->killServer($serverName);
-         return $this->startServer($serverName);
+        if($this->startServer($serverName)["code"] === 0){
+            return array("output" => "Server successfully restarted", "code" => 0);
+        }
+        return array("output" => "Error : Server file not found", "code" => 1);
     }
 
     /**
@@ -180,23 +183,23 @@ class ServerModel{
         $this->getServerLog($serverName);
         $command = Perm . " tmux kill-session -t srb2_{$serverName}";
         exec($command,$output,$returncode);
-        return array("output" => $output, "code" => $returncode);
+        return array("output" => "Server successfully killed", "code" => 0);
     }
 
     /**
      * Kills the tmux session and delete the json file
      *
      * @param $ServerName
-     * @return string
+     * @return array
      */
-    function deleteServer($ServerName){
+    function deleteServer($ServerName): array{
         $this->killServer($ServerName);
         if(file_exists('app/servers/'. $ServerName .'.json')){
             unlink('app/servers/'. $ServerName .'.json');
             unlink('app/logs/'. $ServerName .'.log');
-            return "successullly deleted <br>";
+            return array("output" => "Server successfully deleted", "code" => 0);
         }
-        return "file not found";
+        return array("output" => "Error : Server file not found", "code" => 1);
     }
 
     /**
@@ -225,10 +228,12 @@ class ServerModel{
      * @return array
      */
     function changeMap($serverName,$map,$gametype): array{
+        if($this->checkServerState($serverName) === "inactive"){
+            return array("output" => "Server offline", "code" => 1);
+        }
         $command = Perm . " tmux send-key -t srb2_{$serverName} ". escapeshellarg("map {$map}  -gametype \"{$gametype}\"\n");
-        echo $command;
         exec($command,$output,$returncode);
-        return array("output" => $output, "code" => $returncode);
+        return array("output" => "Map set to {$map} with the gametype {$gametype}", "code" => 0);
     }
 
     /**
@@ -240,9 +245,17 @@ class ServerModel{
      */
     function sendCommand($serverName,$command):array
     {
+        if($this->checkServerState($serverName)){
+            return array("output" => "Server offline", "code" => 1);
+        }
+
+        if(empty(trim($command))){
+            return array("output" => "Command empty", "code" => 1);
+        }
+
         $command = Perm . " tmux send-key -t srb2_{$serverName} " . escapeshellarg("{$command}\n");
         exec($command,$output,$returncode);
-        return array("output" => $output, "code" => $returncode);
+        return array("output" => "Command successfully send", "code" => 0);
     }
 
     /**
@@ -264,7 +277,7 @@ class ServerModel{
      * Returns all the defaults and custom maps of the server
      *
      * @param $serverName
-     * @return array|null
+     * @return array
      */
     public function listServerMaps($serverName): array{
         $defaultMaps = loadDefaultMaps();
@@ -362,9 +375,12 @@ class ServerModel{
      * @return array
      */
     public function setServerTimeAndPointLimit($serverName,$time,$point): array{
+        if($this->checkServerState($serverName) === "inactive"){
+            return array("output" => "Server offline", "code" => 1);
+        }
         $this->sendCommand($serverName, "timelimit {$time}");
         $this->sendCommand($serverName, "pointlimit {$point}");
-        return array("output" => "sucess", "code" => 0);
+        return array("output" => "Time set to " . (empty($time) ? "unlimited" : $time) . "<br> Points set to " . (empty($point) ? 'unlimited' : $point), "code" => 0);
     }
 
     /**
@@ -374,8 +390,11 @@ class ServerModel{
      * @return array
      */
     public function ServerCleanBans($serverName): array{
+        if($this->checkServerState($serverName) === "inactive"){
+            return array("output" => "Server offline", "code" => 1);
+        }
         $this->sendCommand($serverName, "clearbans");
-        return array("output" => "success", "code" => 0);
+        return array("output" => "banlist Cleared", "code" => 0);
     }
 
     /**
@@ -388,7 +407,7 @@ class ServerModel{
     public function kickServerPlayer($serverName,$node):array{
         $this->sendCommand($serverName, "kick {$node}");
         sleep(1);
-        return array("output" => "success","code" => 0);
+        return array("output" => "player {$node} kicked","code" => 0);
     }
 
     /**
@@ -401,7 +420,7 @@ class ServerModel{
     public function banServerPlayer($serverName,$node):array{
         $this->sendCommand($serverName, "ban {$node}");
         sleep(1);
-        return array("output" => "success","code" => 0);
+        return array("output" => "Player {$node} banned","code" => 0);
     }
 
     /**
@@ -423,7 +442,7 @@ class ServerModel{
         file_put_contents($path,implode("\n",$lines));
 
         $this->sendCommand($serverName, "reloadbans");
-        return array("output" => "success","code" => 0);
+        return array("output" => "IP {$ip} unbanned","code" => 0);
     }
 
     /**
@@ -479,7 +498,7 @@ class ServerModel{
         if($this->updateServerConfig($server)){
             $command = Perm . " tmux send-key -t srb2_{$serverName} " . escapeshellarg("forceskin {$skin }\n");
             exec($command,$output,$returncode);
-            return array("output" => $output, "code" => $returncode);
+            return array("output" => "Character {$skin} forced", "code" => 0);
         }
         return array("output" => "error : Server config file not found", "code" => 1);
     }
@@ -625,12 +644,27 @@ class ServerModel{
      * @return array
      */
     function getServerLog($serverName): array{
-        if($this->checkServerState($serverName) === "active"){
-            $command = Perm . " tmux capture-pane -t srb2_{$serverName} -S - && " . Perm . " tmux save-buffer app/logs/{$serverName}.log";
-            exec($command,$output,$returncode);
-            $data = file_get_contents("app/logs/{$serverName}.log");
-            return array("output" => $data, "code" => $returncode);
+        if($this->checkServerState($serverName) === "inactive"){
+            return array("output" => "server offline", "code" => 1);
         }
-        return array("output" => "server offline", "code" => 1);
+
+        $command = Perm . " tmux capture-pane -t srb2_{$serverName} -S - && " . Perm . " tmux save-buffer app/logs/{$serverName}.log";
+        exec($command,$output,$returncode);
+        $data = file_get_contents("app/logs/{$serverName}.log");
+        return array("output" => $data, "code" => $returncode);
+
+    }
+
+    function sendServerMessage($serverName,$message):array{
+        if($this->checkServerState($serverName) === "inactive"){
+            return array("output" => "server offline", "code" => 1);
+        }
+
+        if(empty($message)){
+            return array("output" => "Message empty", "code" => 1);
+        }
+
+        $this->sendCommand($serverName,"say {$message}");
+        return array("output" => "Message sent", "code" => 0);
     }
 }

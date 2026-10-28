@@ -22,11 +22,15 @@ nav{
     justify-content: space-between;
 }
 
-#notification{
-    position: absolute;
+#notifications{
+    z-index: 3;
+    position: fixed;
     left: 100%;
     top: 0;
-    transform: translate(-105%, 10%);
+    transform: translate(-105%, 10px);
+}
+
+.notification{
     width: 400px;
     border: solid 1px;
 }
@@ -113,7 +117,7 @@ datalist{
     border-bottom: solid #5a616b 1px;
 }
 
-.btn-valide,.btn-valide:hover{
+.btn-valide,.btn-valide:hover, .notification-valide{
     background-color: #2e433c;
     border: solid #5cc370 1px;
     color: #5cc370;
@@ -125,13 +129,13 @@ datalist{
     color: #8ab1d2;
 }
 
-.btn-red,.btn-red:hover,#notification{
+.btn-red,.btn-red:hover,.notification-error{
     background-color: #3b2f33;
     border: solid #e55b50 1px;
     color: #e55b50;
 }
 
-#notification{
+.notification{
     max-width: 300px;
     z-index: 100;
     color: white;

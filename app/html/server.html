@@ -9,8 +9,9 @@
 </head>
 <body class="text-white">
 
-    <div id="config-server-background" class="background d-none">
-        <div id="server_card" class="card card_form">
+    <div id="widget-background" class="background d-none">
+
+        <div id="config-server" class="card card_form d-none">
             <div class="card-header">
                 <h1>Server configuration</h1>
             </div>
@@ -112,11 +113,11 @@
                         <div id="config-server-commands" >
                             <table id="config-server-commands-table" class="table table-striped table-dark">
                                 <thead class="sticky-top">
-                                    <tr>
-                                        <th><input type="checkbox" onchange="check_all_table_datas(this.checked,'config-server-commands-table-tbody')"></th>
-                                        <th class="col col-10">Commands</th>
-                                        <th><button type="button" class="btn btn-red" onclick="remove_commands('config-server-commands-table')">Remove</button></th>
-                                    </tr>
+                                <tr>
+                                    <th><input type="checkbox" onchange="check_all_table_datas(this.checked,'config-server-commands-table-tbody')"></th>
+                                    <th class="col col-10">Commands</th>
+                                    <th><button type="button" class="btn btn-red" onclick="remove_commands('config-server-commands-table')">Remove</button></th>
+                                </tr>
                                 </thead>
                                 <tbody id="config-server-commands-table-tbody">
                                 </tbody>
@@ -127,14 +128,12 @@
                 </form>
             </div>
             <div class="card-footer d-flex justify-content-between">
-                <button class="btn btn-red" onclick="Close('config-server-background')">Cancel</button>
+                <button class="btn btn-red" onclick="Close('widget-background'); Close('config-server')">Cancel</button>
                 <input type="submit" form="form_server" value="Update" class="btn btn-primary">
             </div>
         </div>
-    </div>
 
-    <div id="config-addons-background" class="background d-none">
-        <div class="card card_form">
+        <div id="config-add-addons" class="card card_form d-none">
             <div class="card-header">
                 <h1>Add Addons</h1>
             </div>
@@ -151,16 +150,15 @@
                 </table>
             </div>
             <div class="card-footer d-flex justify-content-between">
-                <button class="btn btn-red" onclick="Close('config-addons-background')">Cancel</button>
-                <button class="btn btn-valide" onclick="add_addons(),Close('config-addons-background')">Add</button>
+                <button class="btn btn-red" onclick="Close('widget-background'); Close('config-add-addons')">Cancel</button>
+                <button class="btn btn-valide" onclick="add_addons(); Close('widget-background'); Close('config-add-addons')">Add</button>
             </div>
         </div>
     </div>
 
     <header>
         <a href="index.php" id="logo"><img src="app/img/srb2org-banner.png" alt="logo"></a>
-        <div id="notification" class="d-none">
-        </div>
+        <div id="notifications" class="d-flex flex-column gap-2"></div>
     </header>
     <main>
         <div id="content">
@@ -210,7 +208,7 @@
                                 <div class="card w-50">
                                     <div class="card-body">
                                         <div class="d-flex flex-row justify-content-between">
-                                            <strong>CPU</strong>
+                                            <strong>CPU : </strong>
                                             <strong id="server-cpu"></strong>
                                         </div>
                                         <div>
@@ -221,7 +219,7 @@
                                 <div class="card w-50">
                                     <div class="card-body">
                                         <div class="d-flex flex-row justify-content-between">
-                                            <strong>RAM</strong>
+                                            <strong>RAM : </strong>
                                             <strong id="server-ram"></strong>
                                         </div>
                                         <div>
@@ -234,7 +232,7 @@
                             <div class="btn-group">
                                 <button class="btn btn-valide" onclick="action('start')">Start</button>
                                 <button class="btn btn-primary" onclick="action('restart')">Restart</button>
-                                <button class="btn btn-primary" onclick="Open('config-server-background')">Configure</button>
+                                <button class="btn btn-primary" onclick="Open('widget-background'); Open('config-server')">Configure</button>
                                 <button class="btn btn-red" onclick="action('kill')">Kill</button>
                             </div>
                         </div>
@@ -360,7 +358,7 @@
                         </table>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <button class="btn btn-valide" onclick="Open('config-addons-background')">add Addon</button>
+                        <button class="btn btn-valide" onclick="Open('widget-background'); Open('config-add-addons')">add Addon</button>
                         <button class="btn btn-red" onclick="remove_Addons()">Remove Addons</button>
                     </div>
                 </div>

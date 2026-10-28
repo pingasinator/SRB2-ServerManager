@@ -32,7 +32,8 @@ async function action(e){
 
             let res = req.json();
 
-            res.then(async () => {
+            res.then(async (data) => {
+                sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
                 await init_list_Servers();
             })
         })
@@ -67,6 +68,7 @@ async function create_server() {
     let res = req.json();
 
     res.then(async (data) => {
+        sendNotification(`<span>${data.output} <br> code : ${data.code}</span>`,"valide");
         await init_list_Servers();
     })
 }
@@ -182,7 +184,6 @@ async function init_list_addons() {
 
 async function deleteAddon(addonName){
 
-   const notification_element = document.getElementById("notification");
    let content = "";
 
     let req = await fetch(host_url + "/index.php",{
@@ -194,25 +195,22 @@ async function deleteAddon(addonName){
 
         let res = req.json();
 
-        res.then(async (value) => {
-            if(value.list_servers){
-                Open("notification");
+        res.then(async (data) => {
+            if(data.list_servers){
                 content = `<span>you can't delete this addon ! <br>
                              you need to remove it from the servers : </span>
                             <ul>`;
 
-                value.list_servers.map((server) => {
+                data.list_servers.map((server) => {
                     content += `<li>${server}</li>`;
                 })
 
                 content += "</ul>";
 
-                notification_element.innerHTML = content;
+                sendNotification(content,"error");
+            }else{
+                sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,"valide");
             }
-
-            await sleep(5000).then(() => {
-                Close("notification");
-            });
 
             await init_list_addons();
         })
