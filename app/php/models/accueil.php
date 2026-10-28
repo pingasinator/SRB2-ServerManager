@@ -2,12 +2,17 @@
 
 class AccueilModel{
 
-    public function importAddon(){
+    /**
+     * imports an addon (only pk3 are supported)
+     *
+     * @return void
+     */
+    public function importAddon():void {
         if(isset($_FILES["addon"]["name"]) && $_FILES["addon"]["name"] != ""){
 
             $ext  = pathinfo($_FILES['addon']['name'])['extension'];
 
-            if(isset($_FILES["icon"]["name"]) && !empty($_FILES["icon"]['name'])){
+            if(!empty($_FILES["icon"]['name'])){
                 imagepng(imagecreatefromstring(file_get_contents($_FILES['icon']['tmp_name'])), "app/addons/icons/" . basename($_FILES['addon']['name'],$ext) . "png");
             }
 
@@ -79,6 +84,12 @@ class AccueilModel{
         }
     }
 
+    /**
+     * Imports all the characters in files located in the "SOC" folder
+     *
+     * @param $socket
+     * @return array
+     */
     public function importCharacters($socket): array{
         $path = "app/tmp/" . basename($_FILES["addon"]["name"],".pk3") . "/SOC/" . $socket;
         if(file_exists($path)){
@@ -113,6 +124,12 @@ class AccueilModel{
         return [];
     }
 
+    /**
+     * Imports all the maps in the files located in the "SOC" folder
+     *
+     * @param $socket
+     * @return array
+     */
     public function importMaps($socket): array{
         $path = "app/tmp/" . basename($_FILES["addon"]["name"],".pk3") . "/SOC/" . $socket;
 
@@ -228,38 +245,51 @@ class AccueilModel{
         return [];
     }
 
+    /**
+     * Lists all the Addons in the addons folder
+     *
+     * @return array
+     */
     public function listAddons(): array{
         $dir = "app/addons/";
         $files = scandir($dir);
         $addons = array();
         foreach($files as $file){
-            if($file != "." && $file != ".."){
-                if(!is_dir($dir . $file)){
+            if(!is_dir($dir . $file) && pathinfo($dir . $file)['extension'] === "json"){
                     $f = fopen($dir . $file, "r");
                     $content = fread($f,filesize($dir . $file));
                     fclose($f);
                     $addon =  new Addon(json_decode($content));
                     $addons[] = $addon->ToArray();
-                }
             }
         }
         return $addons;
     }
 
-    public function extractAddon(){
+    /**
+     * Extracts the pk3 file in the tmp folder
+     *
+     * @return void
+     */
+    public function extractAddon(): void{
 
         $archive = new ZipArchive();
         $archive->open("app/tmp/" . $_FILES["addon"]["name"]);
         mkdir("app/tmp/" . basename($_FILES["addon"]["name"],".pk3"));
         $archive->extractTo("app/tmp/" . basename($_FILES["addon"]["name"],".pk3"));
+
     }
 
-    public function deleteAddon($addon){
+    /**
+     * Checks if the addon is used in a server. if not, it's deleted
+     *
+     * @param $addon
+     * @return array[]|string[]
+     */
+    public function deleteAddon($addon):array{
 
         $serverDir = "app/servers/";
         $serverfiles = scandir($serverDir);
-
-
 
         $list_servers = array();
 
@@ -280,16 +310,22 @@ class AccueilModel{
         }
 
         unlink("app/addons/{$addon}.json");
-        unlink("app/addons/icons/{$addon}.png");
+        if(file_exists("app/addons/icons/{$addon}.png")){
+            unlink("app/addons/icons/{$addon}.png");
+        }
         exec(Perm . " rm " . addonsFolder . $addon . ".pk3");
 
         return array("output" => "addon deleted successfully");
     }
 
-    public function updateAddon($addonName){
+    /**
+     * Update the datas of the Addon's JSON file (description and icon)
+     *
+     * @param $addonName
+     * @return void
+     */
+    public function updateAddon($addonName):void{
         $addon = new Addon(json_decode(file_get_contents("app/addons/{$addonName}.json"),true));
-
-
 
         if(isset($_FILES['icon']['name']) && !empty($_FILES['icon']['name'])){
             imagepng(imagecreatefromstring(file_get_contents($_FILES['icon']['tmp_name'])), "app/addons/icons/{$addonName}.png");

@@ -4,7 +4,12 @@ define('Perm', 'sudo');
 
 define('addonsFolder',"/root/.var/app/org.srb2.SRB2/.srb2/addons/");
 
-function loadAll(){
+/**
+ * Autoloader
+ *
+ * @return void
+ */
+function loadAll():void{
     $path = "app/php/";
 
     $folders = scandir($path);
@@ -20,7 +25,12 @@ function loadAll(){
     }
 }
 
-function loadDefaultMaps(){
+/**
+ * Return all the default maps in the maps.txt
+ *
+ * @return array
+ */
+function loadDefaultMaps():array{
     if(file_exists("app/datas/maps.txt"))
     {
         $content =  file_get_contents("app/datas/maps.txt");
@@ -41,7 +51,11 @@ function loadDefaultMaps(){
                     if(str_contains($data[1],",")){
                         $level_data[$data[0]] = explode(",",$data[1]);
                     }else{
-                        $level_data[$data[0]] = $data[1];
+                        if($data[0] === "typeoflevel"){
+                            $level_data[$data[0]] = array($data[1]);
+                        }else{
+                            $level_data[$data[0]] = $data[1];
+                        }
                     }
                 }
             }
@@ -54,10 +68,15 @@ function loadDefaultMaps(){
         return $levels;
     }
 
-    return null;
+    return array();
 }
 
-function loadDefaultGametypes(){
+/**
+ * Returns all the default gametypes in the gametypes.txt
+ *
+ * @return array
+ */
+function loadDefaultGametypes():array{
     $gametypes = array();
     $gametype = array();
 
@@ -66,21 +85,22 @@ function loadDefaultGametypes(){
         $content =  file_get_contents("app/datas/gametypes.txt");
 
         foreach(explode("\n",$content) as $row){
-            $data = explode(" = ",strtolower($row));
-            if(str_contains($data[0],"name")){
-                if($gametype['name'] != null){
-                    $gametypes[] = new Gametype($gametype);
+            if($row != ""){
+                $data = explode(" = ",strtolower($row));
+                if(str_contains($data[0],"name")){
+                    if(count($gametype) > 0 && $gametype['name'] != null){
+                        $gametypes[] = new Gametype($gametype);
+                    }
+                    $gametype = array();
+                    $data[1] = ucfirst($data[1]);
+
+                }else if (str_contains($data[0],"typeoflevel"))
+                {
+                    $data[1] = array(ucfirst($data[1]));
                 }
-                $gametype = array();
-                $data[1] = ucfirst($data[1]);
 
-            }else if (str_contains($data[0],"typeoflevel"))
-            {
-                $data[1] = array(ucfirst($data[1]));
+                $gametype[$data[0]] = $data[1];
             }
-
-            $gametype[$data[0]] = $data[1];
-
         }
 
         if($gametype['name'] != null){
@@ -92,7 +112,12 @@ function loadDefaultGametypes(){
     return $gametypes;
 }
 
-function loadDefaultCharacters(){
+/**
+ * Returns all the default characters
+ *
+ * @return array
+ */
+function loadDefaultCharacters():array{
     $charactersNames = array(
         "None",
         "Sonic",

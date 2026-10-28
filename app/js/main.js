@@ -3,7 +3,6 @@ const host_url = "http://" + window.location.host + "/SRB2-ServerManager";
 const servers_table_element = document.getElementById('server-table');
 
 const list_servers_element = document.getElementById('list-servers');
-const list_addons_element = document.getElementById('list-addons');
 
 const check_all_element = document.getElementById('check_all');
 
@@ -46,7 +45,7 @@ function list_selected_servers(){
     return list_servers;
 }
 
-function init_gametype_selector(){
+async function init_gametype_selector(){
     let defaultGametypes = [
         "co-op",
         "competition",
@@ -60,23 +59,23 @@ function init_gametype_selector(){
         server_gametype_element.innerHTML += `<option value="${defaultGametypes[i]}">${capitalize(defaultGametypes[i])}</option>`;
     }
 
-    init_map_selector("config-server-map",server_gametype_element.value,"");
+    await init_map_selector("config-server-map",server_gametype_element.value,"");
 }
 
 async function init_map_selector(selectorId,typeSelected,selectedValue){
 
-    map_selector = document.getElementById(selectorId);
+    let map_selector = document.getElementById(selectorId);
     let content = "";
     let data = {gestion:"API",action:"list_maps"};
 
-    res = await fetch(host_url + "/index.php",{
+    let req = await fetch(host_url + "/index.php",{
         method:"POST",
         body: new URLSearchParams(data)
     });
 
-    let maps = res.json();
+    let res = req.json();
 
-    maps.then((data) => {
+    res.then((data) => {
         data.map((map) => {
             if(map.TypeOfLevel.includes(capitalize(typeSelected))){
                 content += `<option ${ map.id === selectedValue ? "selected" : ""} value="${map.id}">${map.levelname} ${map.ACT !== null && map.ACT !== '0' ? " Act " + map.ACT : ""}</option>`;
@@ -119,7 +118,7 @@ function check_all_table_datas(value,tbodyID){
     }
 }
 
-async function init_forcecharacter_selector(selectorID,selectedvalue) {
+function init_default_forcecharacter_selector(selectorID) {
 
     const selector = document.getElementById(selectorID);
 

@@ -122,7 +122,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="d-flex gap-2"><input id="config-server-command-input" type="text"><button type="button" onclick="add_command('config-server-commands-table',this.parentElement.children[0].value)" class="btn btn-primary">Add</button></div>
+                        <div class="d-flex gap-2"><input id="config-server-command-input" class="w-100" type="text"><button type="button" onclick="add_command('config-server-commands-table',this.parentElement.children[0].value)" class="btn btn-primary">Add</button></div>
                     </div>
                 </form>
             </div>
@@ -162,7 +162,6 @@
         <div id="notification" class="d-none">
         </div>
     </header>
-
     <main>
         <div id="content">
             <div class="d-flex flex-row gap-3">
@@ -170,9 +169,68 @@
                     <div class="card-header">
                         <h1>Server Status</h1>
                     </div>
-                    <div class="card-body">
-                        <div class="d-flex flex-column">
-                            <H2 id="server-state"></H2>
+                    <div class="card-body ">
+                        <div class="d-flex flex-column gap-2">
+                            <div class="d-flex flex-row gap-2">
+                                <div class="card w-25">
+                                    <div class="card-header">
+                                        <strong>Name</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <span id="server-name"></span>
+                                    </div>
+                                </div>
+                                <div class="card w-25">
+                                    <div class="card-header">
+                                        <strong>Port</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <span id="server-port"></span>
+                                    </div>
+                                </div>
+                                <div class="card w-25">
+                                    <div class="card-header">
+                                        <strong>Uptime</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <span id="server-time">1</span>
+                                    </div>
+                                </div>
+                                <div class="card w-25">
+                                    <div class="card-header">
+                                        <strong>State</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <span id="server-state"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row gap-2">
+                                <div class="card w-50">
+                                    <div class="card-body">
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <strong>CPU</strong>
+                                            <strong id="server-cpu"></strong>
+                                        </div>
+                                        <div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card w-50">
+                                    <div class="card-body">
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <strong>RAM</strong>
+                                            <strong id="server-ram"></strong>
+                                        </div>
+                                        <div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="btn-group">
                                 <button class="btn btn-valide" onclick="action('start')">Start</button>
                                 <button class="btn btn-primary" onclick="action('restart')">Restart</button>
@@ -187,41 +245,43 @@
                         <h1>Rules</h1>
                     </div>
                     <div class="card-body d-flex flex-column gap-1">
-                        <div class="d-flex flex-column gap-1 ">
-                            <strong>Maps and gamemodes</strong>
-                            <div class="d-flex flex-row gap-1">
-                                <label for="gametype-changer" class="d-flex flex-column">
-                                    gametype
-                                    <select id="gametype-changer" class="w-100" onchange="init_map_selector('map-changer',this.value,'')"></select>
-                                </label>
-                                <label for="map-changer" class="d-flex flex-column">
-                                    Map
-                                    <select id="map-changer" class="w-100"></select>
-                                </label>
+                        <div class="d-flex flex-row w-100 gap-1">
+                            <div class="d-flex flex-column gap-1 w-50">
+                                <h3>Maps and gamemodes</h3>
+                                <div class="d-flex flex-row gap-1">
+                                    <label for="gametype-changer" class="d-flex flex-column w-100">
+                                        gametype
+                                        <select id="gametype-changer" class="w-100" onchange="init_map_selector('map-changer',this.value,'')"></select>
+                                    </label>
+                                    <label for="map-changer" class="d-flex flex-column w-100">
+                                        Map
+                                        <select id="map-changer" class="w-100"></select>
+                                    </label>
+                                </div>
+                                <div>
+                                    <input class="btn btn-primary" type="button" onclick="setMap()" value="Set">
+                                </div>
                             </div>
-                            <div>
-                                <input class="btn btn-primary" type="button" onclick="setMap()" value="Set">
-                            </div>
-                        </div>
-                        <div class="d-flex flex-column gap-1 ">
-                            <strong>Limits</strong>
-                            <div class="d-flex flex-row gap-2 ">
-                                <label for="timelimit-changer" class="d-flex flex-column">
-                                    Time limit
-                                    <input id="timelimit-changer" type="text"/>
-                                </label>
-                                <label for="pointlimit-changer" class="d-flex flex-column">
-                                    Point limit
-                                    <input id="pointlimit-changer" type="text" />
-                                </label>
-                            </div>
-                            <div>
-                                <input class="btn btn-primary" type="button" onclick="set_time_and_point_limits()" value="Set">
+                            <div class="d-flex flex-column gap-1 w-50">
+                                <h3>Limits</h3>
+                                <div class="d-flex flex-row gap-2 ">
+                                    <label for="timelimit-changer" class="d-flex flex-column w-100">
+                                        Time limit
+                                        <input id="timelimit-changer" class="w-100" type="text"/>
+                                    </label>
+                                    <label for="pointlimit-changer" class="d-flex flex-column w-100">
+                                        Point limit
+                                        <input id="pointlimit-changer" class="w-100" type="text" />
+                                    </label>
+                                </div>
+                                <div>
+                                    <input class="btn btn-primary" type="button" onclick="set_time_and_point_limits()" value="Set">
+                                </div>
                             </div>
                         </div>
                         <div class="d-flex flex-column gap-1 ">
                             <div class="d-flex flex-column w-50">
-                                <strong>Character</strong>
+                                <h3>Character</h3>
                                 <label for="character-changer" class="d-flex flex-column ">
                                     force character
                                     <select id="character-changer" class="w-100" onchange=""></select>
@@ -235,69 +295,51 @@
                 </div>
             </div>
             <div class="d-flex flex-row gap-3">
-                <div class="card w-100">
-                    <div class="card-header d-flex flex-row gap-3 align-items-center">
-                        <h1>Players</h1>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="player-search" placeholder="Search a player…">
-                            <button class="btn btn-primary" id="players-refresh" onclick="refresh_players()">Refresh</button>
+                <div class="d-flex flex-column gap-4 w-50">
+                    <div class="card w-100">
+                        <div class="card-header d-flex flex-row gap-3 align-items-center">
+                            <h1>Players</h1>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="player-search" placeholder="Search a player…">
+                                <button class="btn btn-primary" id="players-refresh" onclick="refresh_players()">Refresh</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12" id="players-section">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-dark table-striped" id="players-table">
-                                <thead>
+                        <div class="col-12" id="players-section">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-dark table-striped" id="players-table">
+                                    <thead>
                                     <tr><th>#</th><th>Name</th><th>Ip</th><th>Port</th><th class="text-end">Actions</th></tr>
                                     </thead>
                                     <tbody id="players-body">
-                                        <tr><td colspan="5">no players found</td></tr>
+                                    <tr><td colspan="5">no players found</td></tr>
                                     </tbody>
                                 </table>
                             </div>
-                    </div>
-                    <div class="card-footer">
-                        <h3 class="section-title">Broadcast</h3>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="message-input" placeholder="Message to all players…">
-                            <button class="btn btn-primary" id="message-send" onclick="send_message()">Send</button>
                         </div>
                     </div>
-                </div>
-                <div class="card w-100">
-                    <div class="card-header d-flex flex-row gap-3 align-items-center">
-                        <h1>Bans</h1>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="bans-search" placeholder="Search an ip adress…">
-                            <button class="btn btn-primary" id="bans-refresh" onclick="refresh_bans()">Refresh</button>
-                            <button class="btn btn-red" id="clear-bans" onclick="clearBans()">clear bans</button>
+                    <div class="card w-100">
+                        <div class="card-header d-flex flex-row gap-3 align-items-center">
+                            <h1>Bans</h1>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="bans-search" placeholder="Search an ip adress…">
+                                <button class="btn btn-primary" id="bans-refresh" onclick="refresh_bans()">Refresh</button>
+                                <button class="btn btn-red" id="clear-bans" onclick="clearBans()">clear bans</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12" id="bans-section">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-dark table-striped" id="bans-table">
-                                <thead>
-                                <tr><th>Ip</th></tr>
-                                </thead>
-                                <tbody id="bans-body">
-                                <tr><td>no bans found</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex flex-row gap-3">
-                <div id="console" class="card w-50">
-                    <div class="card-header">
-                        <h1>Console</h1>
-                    </div>
-                    <div class="card-body d-flex flex-column gap-2">
-                        <span id="console-content"></span>
-                    </div>
-                    <div class="card-footer gap-2">
-                        <div class="input-group ">
-                            <input type="text" id="command" class="form-control" placeholder="Type command..." >
-                            <button class="btn btn-primary" onclick="sendCommand()" >Send</button>
+                        <div class="col-12" id="bans-section">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-dark table-striped" id="bans-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Ip</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bans-body">
+                                    <tr><td colspan="2">no bans found</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -322,6 +364,32 @@
                         <button class="btn btn-red" onclick="remove_Addons()">Remove Addons</button>
                     </div>
                 </div>
+            </div>
+            <div class="d-flex flex-column gap-3">
+                <div class="card w-100">
+                    <div class="card-header">
+                        <h1 class="section-title">Broadcast</h1>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="message-input" placeholder="Message to all players…">
+                            <button class="btn btn-primary" id="message-send" onclick="send_message()">Send</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="console" class="card w-100">
+                    <div class="card-header">
+                        <h1>Console</h1>
+                    </div>
+                    <div class="card-body d-flex flex-column gap-2">
+                        <span id="console-content"></span>
+                    </div>
+                    <div class="card-footer gap-2">
+                        <div class="input-group ">
+                            <input type="text" id="command" class="form-control" placeholder="Type command..." >
+                            <button class="btn btn-primary" onclick="sendCommand()" >Send</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </main>

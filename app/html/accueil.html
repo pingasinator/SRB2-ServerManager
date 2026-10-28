@@ -8,7 +8,6 @@
     <title>SRB2 Server Manager</title>
 </head>
 <body>
-
     <div id="card_add_server_background" class="background d-none">
         <div class="card card_form" id="card_add_server">
         <div class="card-header">
@@ -23,7 +22,7 @@
         <div class="card-body">
             <div id="form_server">
                 <input type="hidden" name="Name" value="server">
-                <div id="server_card_general" class="d-flex flex-column justify-content-between gap-2">
+                <div id="server_card_general" class="d-flex flex-column justify-content-between gap-2 w-100">
                     <label class="d-flex flex-column">
                         Server Name
                         <input type="text" id="config-server-name" value="Server">
@@ -45,11 +44,11 @@
                         </datalist>
                     </label>
                 </div>
-                <div id="server_card_rules" class="d-flex flex-row d-none gap-2">
-                    <div class="d-flex flex-column gap-2">
+                <div id="server_card_rules" class="d-flex flex-row d-none gap-2 w-100">
+                    <div class="d-flex flex-column gap-2 w-100">
                         <label class="d-flex flex-column">
                             Default Gametype
-                            <select id="config-server-gametype" name="gametype" onchange="init_map_selector('config-server-map',this.value,'')"></select>
+                            <select id="config-server-gametype" class="w-100" name="gametype" onchange="init_map_selector('config-server-map',this.value,'')"></select>
                         </label>
                         <label class="d-flex flex-column">
                             Time limit
@@ -57,22 +56,22 @@
                         </label>
                         <label class="d-flex flex-column">
                             Force Character
-                            <select id="config-server-forcecharacter" name="forceCharacter"></select>
+                            <select id="config-server-forcecharacter" class="w-100" name="forceCharacter"></select>
                         </label>
                     </div>
-                    <div class="d-flex flex-column gap-2">
+                    <div class="d-flex flex-column gap-2 w-100">
                         <label class="d-flex flex-column">
                             Default Map
-                            <select id="config-server-map" name="map"></select>
+                            <select id="config-server-map" class="w-100" name="map"></select>
                         </label>
                         <label class="d-flex flex-column">
                             Point limit
-                            <input id="config-server-pointlimit" type="text" name="pointLimit">
+                            <input id="config-server-pointlimit" class="w-100" type="text" name="pointLimit">
                         </label>
                     </div>
                 </div>
-                <div id="server_card_network" class="d-flex flex-row d-none gap-2">
-                    <div class="d-flex flex-column gap-2">
+                <div id="server_card_network" class="d-flex flex-row d-none gap-2 w-100">
+                    <div class="d-flex flex-column gap-2 w-100">
                         <label class="d-flex flex-column gap">
                             Port
                             <input type="text" id="config-server-port" name="port" value="5029">
@@ -87,10 +86,10 @@
                         </label>
                         <label class="d-flex flex-column gap">
                             Room
-                            <select id="config-server-room" name="room"></select>
+                            <select id="config-server-room" class="w-100" name="room"></select>
                         </label>
                     </div>
-                    <div class="d-flex flex-column gap-2">
+                    <div class="d-flex flex-column gap-2 w-100">
                         <label class="d-flex flex-column gap">
                             Allow download
                             <div>
@@ -107,7 +106,7 @@
                         </label>
                     </div>
                 </div>
-                <div id="server_card_commands" class=" d-flex flex-column gap-2 d-none">
+                <div id="server_card_commands" class=" d-flex flex-column gap-2 d-none w-100">
                     <div id="config-server-commands" >
                         <table id="config-server-commands-table" class="table table-striped table-dark">
                             <thead class="sticky-top">
@@ -121,11 +120,11 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="d-flex gap-2"><input id="config-server-command-input" type="text"><button type="button" onclick="add_command('config-server-commands-table',this.parentElement.children[0].value)" class="btn btn-primary">Add</button></div>
+                    <div class="d-flex gap-2"><input id="config-server-command-input" class="w-100" type="text"><button type="button" onclick="add_command('config-server-commands-table',this.parentElement.children[0].value)" class="btn btn-primary">Add</button></div>
                 </div>
             </div>
         </div>
-        <div class="card-bottom d-flex justify-content-between">
+        <div class="card-footer d-flex justify-content-between">
             <button class="btn btn-red" onclick="Close('card_add_server_background')">Cancel</button>
             <button class="btn btn-valide" onclick="create_server(), Close('card_add_server_background')">Create</button>
         </div>
@@ -140,7 +139,7 @@
                     <input type="hidden" name="gestion" value="accueil">
                     <input type="hidden" name="action" value="import_addon">
                     <div class="d-flex flex-row">
-                        <label for="form_addons_icon">
+                        <label for="form_addons_icon" class="w-100">
                             <img src="#" alt="" id="previewImage">
                             <input id="form_addons_icon" name="icon" class="d-none" type="file" accept=".png, .jpg" onchange="previewPicture(this,'previewImage')">
                         </label>
@@ -150,10 +149,7 @@
                         </label>
 
                     </div>
-
                     <div class="d-flex flex-column">
-
-
                         <label>
                             file
                             <input class="form-control form-control-sm" type="file" name="addon" accept=".pk3">
@@ -162,7 +158,7 @@
 
                 </form>
             </div>
-            <div class="card-bottom d-flex flex-row justify-content-between">
+            <div class="card-footer d-flex flex-row justify-content-between">
                 <button id="Cancel" class="btn btn-red" onclick="Close('card_add_addon_background')">Cancel</button>
                 <input type="submit" class="btn btn-valide" form="form_addons" value="Create">
             </div>
@@ -182,7 +178,7 @@
                     <input id="check-addon-icon" type="file" name="icon" accept=".png, .jpg, .jpeg" class="d-none" onchange="previewPicture(this,'card-checkaddon-previewimage')">
                     <div class="d-flex flex-row gap-2">
                         <label class="addon_picture" for="check-addon-icon">
-                            <img id="card-checkaddon-previewimage" src="#" alt="">
+                            <img id="card-checkaddon-previewimage" class="w-100" src="#" alt="">
                         </label>
                         <div class="w-100">
                             <span id="check-addon-size">Size : </span>
@@ -231,20 +227,18 @@
     </header>
 
     <main id="content" class="d-flex flex-column">
-        <div id="card_server" class="card text-white">
-            <div id="action-bar" class="card-header">
-                <h2>Servers</h2>
-                <div id="options">
-                    <input id="server-filter" type="text" onchange="init_list_Servers()">
-                    <div class="btn-group">
+        <div id="card-server" class="card h-50 text-white">
+            <div id="action-bar" class="card-header d-flex flex-row gap-3 align-items-center">
+                <h1>Servers</h1>
+                    <div class="input-group">
+                        <input type="text" id="server-filter" class="form-control"  onkeyup="init_list_Servers()">
                         <button id="start" class="btn btn-valide" onclick="action('start')">start</button>
                         <button id="restart" class="btn btn-primary" onclick="action('restart')">restart</button>
                         <button id="kill" class="btn btn-red" onclick="action('kill')">kill</button>
                         <button id="delete" class="btn btn-red" onclick="action('delete')">delete</button>
+                        <button class="btn btn-valide" onclick="Open('card_add_server_background')">add Server</button>
                     </div>
-                    <button class="btn btn-valide" onclick="Open('card_add_server_background')">add Server</button>
                 </div>
-            </div>
             <div id="div-table" >
                 <table id="server-table" class="table table-striped table-dark table-hover m-0">
                     <thead class="sticky-top">
@@ -268,11 +262,13 @@
             <div class="card-bottom"></div>
         </div>
 
-        <div id="card_addons" class="card">
-            <div class="card-header d-flex flex-row justify-content-between gap-2">
-                <h2>Addons</h2>
-                    <input id="addon-filter"  type="text" onchange="init_list_addons()">
+        <div id="card-addons" class="card h-50">
+            <div class="card-header d-flex flex-row gap-3 align-items-center">
+                <h1>Addons</h1>
+                <div class="input-group">
+                    <input id="addon-filter" class="form-control" type="text" onkeyup="init_list_addons()">
                     <button class="btn btn-valide" onClick="Open('card_add_addon_background')">add Addon</button>
+                </div>
             </div>
             <div id="list-addons" class="card-body d-flex flex-row gap-3 flex-wrap"></div>
         </div>

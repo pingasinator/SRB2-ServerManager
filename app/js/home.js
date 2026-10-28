@@ -6,6 +6,7 @@ const server_map_element = document.getElementById('config-server-map');
 const server_gametype_element = document.getElementById('config-server-gametype');
 const server_character_element = document.getElementById("config-server-forcecharacter");
 const server_motd_element = document.getElementById("config-server-motd");
+const server_room_element = document.getElementById("config-server-room")
 const server_masterserver_element = document.getElementById("config-server-masterserver");
 const server_password_element = document.getElementById("config-server-password");
 const server_timelimit_element = document.getElementById("config-server-timelimit");
@@ -24,15 +25,15 @@ async function action(e){
     if(list.length > 0){
         list.map(async (server) =>{
 
-            let res = await fetch(host_url + "/index.php",{
+            let req = await fetch(host_url + "/index.php",{
                 method:"POST",
                 body: new URLSearchParams({gestion:"API",action: e + '_server',Name:server})
             })
 
-            let result = res.json();
+            let res = req.json();
 
-            result.then(() => {
-                init_list_Servers();
+            res.then(async () => {
+                await init_list_Servers();
             })
         })
     }
@@ -40,7 +41,7 @@ async function action(e){
 
 async function create_server() {
 
-    let res = await fetch(host_url + "/index.php",{
+    let req = await fetch(host_url + "/index.php",{
         method:"POST",
         body: new URLSearchParams({
             gestion:"API",
@@ -51,6 +52,7 @@ async function create_server() {
             GameType:server_gametype_element.value,
             Map:server_map_element.value,
             MOTD:server_motd_element.value,
+            Room:server_room_element.value,
             AllowDownload:server_allowdownload_element.value,
             DownloadSize:server_downloadsize_element.value,
             ForceCharacter:server_character_element.value,
@@ -62,10 +64,10 @@ async function create_server() {
         })
     });
 
-    let result = res.json();
+    let res = req.json();
 
-    result.then((data) => {
-        init_list_Servers();
+    res.then(async (data) => {
+        await init_list_Servers();
     })
 }
 
@@ -75,15 +77,15 @@ async function init_list_Servers(){
     let content = "";
     servers_table_element.children[1].innerHTML = `<div>Loading <img id="loading_img" src="app/img/sonic-running.gif" alt="sonic_running"></div>`
 
-    let res = await fetch(host_url + "/index.php", {
+    let req = await fetch(host_url + "/index.php", {
         method:"POST",
         body: new URLSearchParams({gestion:"API",action:'list_servers'})
     })
 
-    if(res.ok){
-        let servers = res.json();
+    if(req.ok){
+        let res = req.json();
 
-        servers.then((data) => {
+        res.then((data) => {
             data.map((server) => {
                 content += server.server.Name.toLowerCase().includes(server_filter_element.value.toLowerCase()) ?  `<tr>
                                 <td><input type="checkbox"></td>
@@ -99,25 +101,33 @@ async function init_list_Servers(){
                             </tr>` : "";
             })
 
+            if(content === ""){
+                content = `<tr>
+                            <td colspan="10">No servers found</td>
+                           </tr>
+                `;
+            }
             servers_table_element.children[1].innerHTML = content;
         })
+    }else{
+        console.error("Error : " + req.status);
     }
 }
 
 function previewPicture(input,previewImageID){
     const previewImageElement = document.getElementById(previewImageID)
 
-    const [picture] = input.files
+    const [picture] = input.files;
 
     if(picture){
 
-        var reader = new FileReader();
+        let reader = new FileReader();
 
         reader.onload = (e) => {
-            previewImageElement.src = e.target.result
+            previewImageElement.src = e.target.result;
         }
 
-        reader.readAsDataURL(picture)
+        reader.readAsDataURL(picture);
     }
 }
 
@@ -126,25 +136,27 @@ async function init_list_addons() {
 
     const list_addons_element = document.getElementById("list-addons")
 
-    let res = await fetch(host_url + "/index.php",{
+    let req = await fetch(host_url + "/index.php",{
         method:"POST",
         body: new URLSearchParams({gestion:"API",action:"list_addons"})
     });
 
-    let addons = res.json();
+    if(req.ok){
 
-    addons.then((data) => {
-        data.map((addon) => {
-            if(addon.name != null){
-                content += addon.name.toLowerCase().includes(addon_filter_element.value.toLowerCase()) ?  `<div class="card card_addon">
+        let res = req.json();
+
+        res.then((data) => {
+            data.map((addon) => {
+                if(addon.name != null){
+                    content += addon.name.toLowerCase().includes(addon_filter_element.value.toLowerCase()) ?  `<div class="card card_addon">
                                 <div class="card-body d-flex flex-column gap-2">
                                     <div class="d-flex flex-row gap-2">
                                         <div class="addon_picture">
-                                            <img src="app/addons/icons/${addon.icon}" alt="icon"/>
+                                            <img src="app/addons/icons/${addon.icon}" alt="icon" class="w-100"/>
                                         </div>
                                         <div class="addon-info d-flex flex-column justify-content-between">
-                                            <span><b>${addon.name}</b></span>
-                                            <span>size : ${addon.size} MB</span>
+                                            <span class="w-100"><b>${addon.name}</b></span>
+                                            <span class="w-100">size : ${addon.size} MB</span>
                                         </div>
                                     </div>
                                     <div class="addon-description">
@@ -152,17 +164,20 @@ async function init_list_addons() {
                                     </div>
                                 </div>
                                 
-                                <div class="card-bottom d-flex justify-content-between">
-                                    <button class="btn btn-blue" onclick="OpenCheckAddon('${addon.name}')">Check</button>
+                                <div class="card-footer d-flex justify-content-between">
+                                    <button class="btn btn-primary" onclick="OpenCheckAddon('${addon.name}')">Check</button>
                                     <button class="btn btn-red" onclick="deleteAddon('${addon.name}')">Remove</button>
                                 </div>
                             </div>` : "";
-            }
+                }
+            })
+
+            list_addons_element.innerHTML = content;
         })
 
-        list_addons_element.innerHTML = content;
-    })
-
+    }else{
+        console.error("Error : " + req.status);
+    }
 }
 
 async function deleteAddon(addonName){
@@ -170,35 +185,42 @@ async function deleteAddon(addonName){
    const notification_element = document.getElementById("notification");
    let content = "";
 
-    let res = await fetch(host_url + "/index.php",{
+    let req = await fetch(host_url + "/index.php",{
         method:"POST",
         body: new URLSearchParams({gestion:"API", action:"delete_addon", Name:addonName})
     });
 
-    let result = res.json();
+    if(req.ok){
 
-    result.then(async (value) => {
-        if(value.list_servers){
-            Open("notification");
-            content = `<span>you can't delete this addon ! <br>
+        let res = req.json();
+
+        res.then(async (value) => {
+            if(value.list_servers){
+                Open("notification");
+                content = `<span>you can't delete this addon ! <br>
                              you need to remove it from the servers : </span>
                             <ul>`;
 
-            value.list_servers.map((server) => {
-                content += `<li>${server}</li>`;
-            })
+                value.list_servers.map((server) => {
+                    content += `<li>${server}</li>`;
+                })
 
-            content += "</ul>";
+                content += "</ul>";
 
-            notification_element.innerHTML = content;
-        }
+                notification_element.innerHTML = content;
+            }
 
-        await sleep(5000).then(() => {
-            Close("notification");
-        });
+            await sleep(5000).then(() => {
+                Close("notification");
+            });
 
-        init_list_addons();
-    })
+            await init_list_addons();
+        })
+
+    }else{
+        console.error("Error : " + req.status);
+    }
+
 }
 
 async function OpenCheckAddon(addonName){
@@ -215,39 +237,45 @@ async function OpenCheckAddon(addonName){
     const check_addon_characters_table_tbody_element = document.getElementById('check-addon-characters-table').children[1];
     form_update_addonName.value = addonName;
 
-    let res = await fetch(host_url + "/index.php",{
+    let req = await fetch(host_url + "/index.php",{
         method:"POSt",
         body: new URLSearchParams({gestion:"API",action:"get_addon",Name:addonName})
     })
 
-    let result = res.json();
+    if(req.ok){
+        let res = req.json();
 
-    result.then((data) => {
+        res.then((data) => {
 
-        check_addon_title_element.innerText = data.name;
-        check_addon_preview_image_element.src = host_url + "/app/addons/icons/" +data.icon;
-        check_addon_size_element.innerHTML = "Size : " + data.size + " MB";
-        check_addon_description_element.innerText = data.description;
+            check_addon_title_element.innerText = data.name;
+            check_addon_preview_image_element.src = host_url + "/app/addons/icons/" +data.icon;
+            check_addon_size_element.innerHTML = "Size : " + data.size + " MB";
+            check_addon_description_element.innerText = data.description;
 
-        let map_content = "";
-        let character_content = "";
+            let map_content = "";
+            let character_content = "";
 
-        data.maps.map((map) => {
-            map_content += `<tr><td>${map.levelname}</td><td>${map.id}</td></tr>`
+            data.maps.map((map) => {
+                map_content += `<tr><td>${map.levelname}</td><td>${map.id}</td></tr>`
+            })
+
+            data.characters.map((character) => {
+                character_content += `<td>${character.skinName}</td>`
+            })
+
+            check_addon_maps_table_tbody_element.innerHTML = map_content;
+            check_addon_characters_table_tbody_element.innerHTML = character_content;
         })
-
-        data.characters.map((character) => {
-            console.log(character)
-            character_content += `<td>${character.skinName}</td>`
-        })
-
-        check_addon_maps_table_tbody_element.innerHTML = map_content;
-        check_addon_characters_table_tbody_element.innerHTML = character_content;
-    })
+    }else{
+        console.error("Error : " + req.status);
+    }
 }
 
-init_list_Servers();
-init_list_addons();
-init_gametype_selector();
-init_forcecharacter_selector("config-server-forcecharacter");
-init_rooms_selector("config-server-room", '');
+(async () => {
+    await init_list_Servers();
+    await init_list_addons();
+    await init_gametype_selector();
+    init_default_forcecharacter_selector("config-server-forcecharacter");
+    init_rooms_selector("config-server-room", '');
+})();
+

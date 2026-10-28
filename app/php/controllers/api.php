@@ -134,8 +134,16 @@ class APIController{
                     echo json_encode($this->model->banServerPlayer($_POST['Name'],$_POST['Node']));
                     break;
 
+                case "unban":
+                    echo json_encode($this->model->ServerUnbanIP($_POST['Name'],$_POST['ip']),true);
+                    break;
+
                 case 'get_server_logs':
                     echo json_encode($this->model->getServerLog($_POST['Name']));
+                    break;
+
+                case "get_server_resources":
+                    echo json_encode($this->model->getServerResources($_POST['Name']),true);
                     break;
             }
         }

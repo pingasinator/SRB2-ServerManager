@@ -2,7 +2,7 @@
 
 class AccueilView{
 
-    function display(){
+    function display(): void{
         include("app/html/accueil.html");
     }
 }

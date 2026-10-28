@@ -2,7 +2,7 @@
 
 class ServerView{
 
-    function display(){
+    function display(): void{
         include("app/html/server.html");
     }
 }

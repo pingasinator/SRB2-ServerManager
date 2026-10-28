@@ -65,19 +65,7 @@ datalist{
     gap: 20px 20px;
 }
 
-#action-bar{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
 
-#options{
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
-    gap: 10px;
-}
 
 #options-actions{
     display: flex;
@@ -163,16 +151,8 @@ select{
     color: white;
 }
 
-label{
-    width: 100%;
-}
-
 nav{
     border-bottom: solid #5a616b 1px;
-}
-
-#form_server div,#form_server select{
-    width: 100%;
 }
 
 .background{
@@ -199,15 +179,15 @@ input[type=text],input[type=password],textarea{
     overflow-y: scroll;
 }
 
-#config-server-command-input{
-    width: 100%;
-}
-
-#players-section{
-    height: 250px;
+#players-section, #bans-section{
+    height: 150px;
 }
 
 .check-addon-table{
     height: 175px;
     overflow-y: scroll;
+}
+
+.input-group{
+    z-index: 0;
 }

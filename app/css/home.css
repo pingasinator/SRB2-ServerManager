@@ -16,18 +16,6 @@
     color: white;
 }
 
-#card_server{
-    height: 50%;
-}
-
-#card_addons{
-    height: 50%;
-}
-
-#card_addon div div span{
-    width: 100%;
-}
-
 #div-table{
     max-height: 100%;
     overflow-y: auto;
@@ -50,10 +38,6 @@
 
 #list-addons{
     overflow: scroll;
-}
-
-.addon_picture img{
-    width: 100%;
 }
 
 #previewImage{

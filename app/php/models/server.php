@@ -7,7 +7,7 @@ class ServerModel{
      *
      * @return array
      */
-    function createServer(){
+    function createServer(): array{
         $server = new server($_POST);
 
         $data = $server->ToJSON();
@@ -22,11 +22,11 @@ class ServerModel{
     /**
      * Starts a Tmux session
      *
-     * @param $name
+     * @param $serverName
      * @return array
      */
-    function startServer($name){
-        $path = "app/servers/{$name}.json";
+    function startServer($serverName): array{
+        $path = "app/servers/{$serverName}.json";
 
         if(file_exists($path)){
             $data = file_get_contents($path);
@@ -62,19 +62,20 @@ class ServerModel{
             $this->getServerLog($server->getName());
 
             return array("output" => $output, "code" => $returncode);
-        }else{
-            return  array("output" => "error : Server file not found", "code" => 1);
         }
+
+        return  array("output" => "error : Server file not found", "code" => 1);
+
     }
 
     /**
-     * add an existing addon to the server
+     * Adds an existing addon to the server
      *
      * @param $serverName
      * @param $addonName
      * @return array
      */
-    function addAddon($serverName,$addonName){
+    function addAddon($serverName,$addonName): array{
         $serverFilePath = 'app/servers/'. $serverName .'.json';
         if(file_exists($serverFilePath)){
             $data = file_get_contents($serverFilePath);
@@ -94,12 +95,19 @@ class ServerModel{
                 return  array("output" => "error : Addon not found", "code" => 1);
             }
 
-        }else{
-            return  array("output" => "error : Server file not found", "code" => 1);
         }
+
+        return  array("output" => "error : Server file not found", "code" => 1);
+
     }
 
-    function listServerAddons($serverName){
+    /**
+     * Lists all the server addons
+     *
+     * @param $serverName
+     * @return array
+     */
+    function listServerAddons($serverName): array{
         $serverFilePath = 'app/servers/'. $serverName .'.json';
         $addons = array();
 
@@ -122,7 +130,7 @@ class ServerModel{
      * @param $serverName
      * @return array
      */
-    function restartServer($serverName){
+    function restartServer($serverName): array{
         $this->killServer($serverName);
          return $this->startServer($serverName);
     }
@@ -132,7 +140,7 @@ class ServerModel{
      *
      * @return array
      */
-    function ListServers(){
+    function ListServers(): array{
 
         $path = 'app/servers/';
         $files = scandir($path);
@@ -151,24 +159,24 @@ class ServerModel{
     }
 
     /**
-     * Checks if a server has a session tmux
+     * Checks if the server has a session tmux
      *
      * @param $serverName
      * @return string
      */
-    function checkServerState($serverName){
+    function checkServerState($serverName): string{
         $command = Perm . " tmux list-session | grep -w 'srb2_{$serverName}'";
         exec($command,$output,$returncode);
         return $returncode ? "inactive" : "active";
     }
 
     /**
-     * kill the tmux session
+     * Kills the tmux session
      *
      * @param $serverName
      * @return array
      */
-    function killServer($serverName){
+    function killServer($serverName): array{
         $this->getServerLog($serverName);
         $command = Perm . " tmux kill-session -t srb2_{$serverName}";
         exec($command,$output,$returncode);
@@ -176,29 +184,29 @@ class ServerModel{
     }
 
     /**
-     * kill the tmux session and delete the json file
+     * Kills the tmux session and delete the json file
      *
-     * @param $name
+     * @param $ServerName
      * @return string
      */
-    function deleteServer($name){
-        $this->killServer($name);
-        if(file_exists('app/servers/'. $name .'.json')){
-            unlink('app/servers/'. $name .'.json');
-            unlink('app/logs/'. $name .'.log');
+    function deleteServer($ServerName){
+        $this->killServer($ServerName);
+        if(file_exists('app/servers/'. $ServerName .'.json')){
+            unlink('app/servers/'. $ServerName .'.json');
+            unlink('app/logs/'. $ServerName .'.log');
             return "successullly deleted <br>";
         }
         return "file not found";
     }
 
     /**
-     * Make an Instance of a server
+     * Returns an Instance of a server
      *
-     * @param $name
+     * @param $ServerName
      * @return server|string
      */
-    function getServer($name){
-        $path = 'app/servers/'. $name .'.json';
+    function getServer($ServerName): Server | array{
+        $path = 'app/servers/'. $ServerName .'.json';
         if(file_exists($path)){
             $data = file_get_contents($path);
             $server = new server(json_decode($data,true));
@@ -209,12 +217,14 @@ class ServerModel{
     }
 
     /**
+     * Changes the current map in the server
+     *
      * @param $serverName
      * @param $map
      * @param $gametype
      * @return array
      */
-    function changeMap($serverName,$map,$gametype){
+    function changeMap($serverName,$map,$gametype): array{
         $command = Perm . " tmux send-key -t srb2_{$serverName} ". escapeshellarg("map {$map}  -gametype \"{$gametype}\"\n");
         echo $command;
         exec($command,$output,$returncode);
@@ -222,13 +232,13 @@ class ServerModel{
     }
 
     /**
-     * send SRB2 command to the server
+     * Sends SRB2 command to the server
      *
      * @param $serverName
      * @param $command
      * @return array
      */
-    function sendCommand($serverName,$command)
+    function sendCommand($serverName,$command):array
     {
         $command = Perm . " tmux send-key -t srb2_{$serverName} " . escapeshellarg("{$command}\n");
         exec($command,$output,$returncode);
@@ -241,22 +251,22 @@ class ServerModel{
      * @param $server
      * @return array|int
      */
-    function updateServerConfig($server){
+    function updateServerConfig($server): bool | array{
         $path = 'app/servers/'. $server->getName() .'.json';
         if(file_exists($path)){
             file_put_contents($path,$server->toJson());
-            return 1;
+            return true;
         }
         return array("output" => "error : Server config file not found", "code" => 1);
     }
 
     /**
-     * return all the defaults and custom maps of the server
+     * Returns all the defaults and custom maps of the server
      *
      * @param $serverName
      * @return array|null
      */
-    public function listServerMaps($serverName){
+    public function listServerMaps($serverName): array{
         $defaultMaps = loadDefaultMaps();
         $customMaps = array();
 
@@ -277,9 +287,13 @@ class ServerModel{
         return $Maps;
     }
 
-
-
-    public function getServerPlayers($serverName){
+    /**
+     * Lists the Players in the server
+     *
+     * @param $serverName
+     * @return array
+     */
+    public function getServerPlayers($serverName): array{
 
         $this->sendCommand($serverName, "nodes");
 
@@ -316,61 +330,126 @@ class ServerModel{
         return $players;
     }
 
-    public function getServerBanList($serverName){
+    /**
+     * Lists the IPs banned
+     *
+     * @param $serverName
+     * @return array
+     */
+    public function getServerBanList($serverName): array{
         $ips = array();
-        $this->sendCommand($serverName, "showbanlist");
-        usleep(100000);
-        $result =  $this->getServerLog($serverName);
-        $lines = explode("\n",$result["output"]);
-        for($i = count($lines) - 1;$i > 0;$i--){
-            if($lines[$i] === "\$showbanlist" || $lines[$i] === "(empty)"){
-                break;
-            }
+        $this->sendCommand($serverName, "reloadbans");
 
-            if($lines[$i] !== "Ban List:" && $lines[$i] !== ""){
-                $ips[] = explode("/",explode(" ",$lines[$i])[1])[0];
+        $path = addonsFolder . "../ban.txt";
+        if(file_exists($path)){
+            $contents = file_get_contents($path);
+            $lines = explode("\n",$contents);
+            foreach($lines as $line){
+                if(trim($line) !== ""){
+                    $ips[] = explode(" ",$line)[0];
+                }
             }
-
         }
-
         return $ips;
     }
 
-    public function setServerTimeAndPointLimit($serverName,$time,$point){
+    /**
+     * Sets the point and time limit of the game (time 0 = unlimited time, point 0 = unlimited points)
+     *
+     * @param $serverName
+     * @param $time
+     * @param $point
+     * @return array
+     */
+    public function setServerTimeAndPointLimit($serverName,$time,$point): array{
         $this->sendCommand($serverName, "timelimit {$time}");
         $this->sendCommand($serverName, "pointlimit {$point}");
         return array("output" => "sucess", "code" => 0);
     }
 
-    public function ServerCleanBans($serverName){
+    /**
+     * Removes all the IPs banned in the ban.txt
+     *
+     * @param $serverName
+     * @return array
+     */
+    public function ServerCleanBans($serverName): array{
         $this->sendCommand($serverName, "clearbans");
         return array("output" => "success", "code" => 0);
     }
 
-    public function kickServerPlayer($serverName,$node){
+    /**
+     * Kicks a player out of the server
+     *
+     * @param $serverName
+     * @param $node
+     * @return array
+     */
+    public function kickServerPlayer($serverName,$node):array{
         $this->sendCommand($serverName, "kick {$node}");
         sleep(1);
         return array("output" => "success","code" => 0);
     }
 
-    public function banServerPlayer($serverName,$node){
+    /**
+     * Bans a player and add it to banlist.txt
+     *
+     * @param $serverName
+     * @param $node
+     * @return array
+     */
+    public function banServerPlayer($serverName,$node):array{
         $this->sendCommand($serverName, "ban {$node}");
         sleep(1);
         return array("output" => "success","code" => 0);
     }
 
-    public function getAddon($modName){
+    /**
+     * Removes an IP in the ban.txt
+     *
+     * @param $serverName
+     * @param $ip
+     * @return array
+     */
+    public function ServerUnbanIP($serverName,$ip): array{
+        $path = addonsFolder . "../ban.txt";
+        $contents = file_get_contents($path);
+        $lines = explode("\n",$contents);
+        for($i = 0; $i < count($lines); $i++ ){
+            if(str_contains($lines[$i],$ip)){
+                unset($lines[$i]);
+            }
+        }
+        file_put_contents($path,implode("\n",$lines));
+
+        $this->sendCommand($serverName, "reloadbans");
+        return array("output" => "success","code" => 0);
+    }
+
+    /**
+     * Returns an Addon in the addons folder (returns an array if not found)
+     *
+     * @param $modName
+     * @return array|Addon
+     */
+    public function getAddon($modName):array | Addon{
         $path = 'app/addons/'. $modName .'.json';
         if(file_exists($path)){
             $data = file_get_contents($path);
             $addon = new addon(json_decode($data,true));
             return $addon;
         }
+
+        return array("output" => "addon not found","code" => 1);
     }
 
-
-
-    public function listServerCharacters($serverName){
+    /**
+     * Lists all the characters in the server (modded included)
+     *
+     * @param $serverName
+     * @return array
+     */
+    public function listServerCharacters($serverName):array{
         $server = $this->getServer($serverName);
         $defaultCharacters = loadDefaultCharacters();
         foreach($server->getMods() as $modName){
@@ -387,8 +466,14 @@ class ServerModel{
         return $defaultCharacters;
     }
 
-    public function forceCharacter($serverName,$skin)
-    {
+    /**
+     * Forces all the players to have à specific character
+     *
+     * @param $serverName
+     * @param $skin
+     * @return array
+     */
+    public function forceCharacter($serverName,$skin):array{
         $server = $this->getServer($serverName);
         $server->setForceCharacter($skin);
         if($this->updateServerConfig($server)){
@@ -399,7 +484,13 @@ class ServerModel{
         return array("output" => "error : Server config file not found", "code" => 1);
     }
 
-    public function listServerGametypes($serverName){
+    /**
+     * Lists all the gametypes in the server (modded gametypes included)
+     *
+     * @param $serverName
+     * @return array
+     */
+    public function listServerGametypes($serverName): array{
         $server = $this->getServer($serverName);
         $addons = $server->getMods();
         $gametypes = loadDefaultGametypes();
@@ -417,16 +508,32 @@ class ServerModel{
         return $gametypes;
     }
 
-    public function getServerGametype($serverName,$gametypeIdentifier){
+    /**
+     * Returns a Gametype of the server by its identifier
+     *
+     * @param $serverName
+     * @param $gametypeIdentifier
+     * @return mixed
+     */
+    public function getServerGametype($serverName,$gametypeIdentifier): mixed{
         $gametypes = $this->listServerGametypes($serverName);
         foreach($gametypes as $gametype){
             if($gametype['identifier'] == $gametypeIdentifier){
                 return $gametype;
             }
         }
+
+        return array("output" => "Error : Server gametype not found", "code" => 1);
     }
 
-    public function removeServerAddon($serverName,$addonName){
+    /**
+     * Removes an Addon from the server and restart it
+     *
+     * @param $serverName
+     * @param $addonName
+     * @return array
+     */
+    public function removeServerAddon($serverName,$addonName):array{
         $path = 'app/servers/'. $serverName .'.json';
         if(file_exists($path)){
             $data = file_get_contents($path);
@@ -454,12 +561,22 @@ class ServerModel{
         return array("output" => "error : Server config file not found", "code" => 1);
     }
 
-    public function getServerMapsWithGameType($serverName,$gametypeName){
+    /**
+     * Returns all the server maps (modded included) that are compatible with a specific gametype
+     *
+     * @param $serverName
+     * @param $gametypeName
+     * @return array
+     */
+    public function getServerMapsWithGameType($serverName,$gametypeName): array{
         $server = $this->getServer($serverName);
         $maps = $this->listServerMaps($serverName);
         $gametype = $this->getServerGametype($serverName,$gametypeName);
         $filteredMaps = array();
         foreach($maps as $map){
+            if(is_string($map['TypeOfLevel'])){
+                $filteredMaps[] = $map;
+            }
             foreach($map['TypeOfLevel'] as $typeOfLevel){
                 foreach ($gametype["TypeOfLevel"] as $type){
                     if($typeOfLevel === $type){
@@ -472,7 +589,41 @@ class ServerModel{
         return $filteredMaps;
     }
 
+    /**
+     * Returns the CPU, RAM usage and the time it was up
+     *
+     * @param $serverName
+     * @return array
+     */
+    public function getServerResources($serverName):array{
+        try{
+            $command = "tmux list-panes -s -t srb2_{$serverName} -F '#{pane_pid}'";
+            exec($command,$output,$returncode);
+            if($returncode != 0){
+                return array("output" => array("cpu" => 0, "ram" => 0,"time" => "00:00"), "code" => 1);
+            }
+            $command = "pstree -p {$output[0]}";
+            exec($command,$output,$returncode);
+            $processes = explode("---",$output[1]);
+            $process = str_replace(["lsdlsrb2(",")"],["",""],$processes[2]);
+            $command = "ps -o %cpu,rss,etime --ppid {$process}";
+            exec($command,$output,$returncode);
 
+            $data = preg_split('/\s+/',trim($output[3]));
+
+            return array ("output" => array("cpu" => $data[0],"ram" => intval(intval($data[1]) / 1024),"time" => $data[2]), "code" => 0);
+
+        }catch(Exception $e){
+            return array("output" => array("cpu" => 0, "ram" => 0,"time" => "00:00"), "code" => 1);
+        }
+    }
+
+    /**
+     * Returns the server logs
+     *
+     * @param $serverName
+     * @return array
+     */
     function getServerLog($serverName): array{
         if($this->checkServerState($serverName) === "active"){
             $command = Perm . " tmux capture-pane -t srb2_{$serverName} -S - && " . Perm . " tmux save-buffer app/logs/{$serverName}.log";
