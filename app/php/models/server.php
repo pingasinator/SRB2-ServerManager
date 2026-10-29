@@ -616,16 +616,16 @@ class ServerModel{
      */
     public function getServerResources($serverName):array{
         try{
-            $command = "tmux list-panes -s -t srb2_{$serverName} -F '#{pane_pid}'";
+            $command = Perm . " tmux list-panes -s -t srb2_{$serverName} -F '#{pane_pid}'";
             exec($command,$output,$returncode);
             if($returncode != 0){
                 return array("output" => array("cpu" => 0, "ram" => 0,"time" => "00:00"), "code" => 1);
             }
-            $command = "pstree -p {$output[0]}";
+            $command = Perm . " pstree -p {$output[0]}";
             exec($command,$output,$returncode);
             $processes = explode("---",$output[1]);
             $process = str_replace(["lsdlsrb2(",")"],["",""],$processes[2]);
-            $command = "ps -o %cpu,rss,etime --ppid {$process}";
+            $command = Perm . " ps -o %cpu,rss,etime --ppid {$process}";
             exec($command,$output,$returncode);
 
             $data = preg_split('/\s+/',trim($output[3]));
