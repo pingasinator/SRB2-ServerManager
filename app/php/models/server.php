@@ -245,7 +245,7 @@ class ServerModel{
      */
     function sendCommand($serverName,$command):array
     {
-        if($this->checkServerState($serverName)){
+        if($this->checkServerState($serverName) === "inactive"){
             return array("output" => "Server offline", "code" => 1);
         }
 
