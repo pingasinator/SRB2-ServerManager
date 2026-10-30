@@ -136,7 +136,7 @@
             <div class="card-header"><h1>Import Addon</h1></div>
             <div class="card-body ">
                 <form id="form_addons" action="index.php" method="post" class="d-flex flex-column gap-2" enctype="multipart/form-data">
-                    <input type="hidden" name="gestion" value="accueil">
+                    <input type="hidden" name="manage" value="home">
                     <input type="hidden" name="action" value="import_addon">
                     <div class="d-flex flex-row">
                         <label for="form_addons_icon" class="w-100">
@@ -172,7 +172,7 @@
             </div>
             <div class="card-body">
                 <form id="form-update-addon" action="index.php" method="post" enctype="multipart/form-data" class="d-flex flex-column gap-2">
-                    <input type="hidden" name="gestion" value="accueil">
+                    <input type="hidden" name="manage" value="home">
                     <input type="hidden" name="action" value="update_addon">
                     <input id="form-update-addonName" type="hidden" name="addonName">
                     <input id="check-addon-icon" type="file" name="icon" accept=".png, .jpg, .jpeg" class="d-none" onchange="previewPicture(this,'card-checkaddon-previewimage')">

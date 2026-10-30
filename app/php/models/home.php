@@ -1,6 +1,6 @@
 <?php
 
-class AccueilModel{
+class HomeModel{
 
     /**
      * imports an addon (only pk3 are supported)
