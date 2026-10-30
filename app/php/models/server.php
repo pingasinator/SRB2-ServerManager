@@ -495,12 +495,12 @@ class ServerModel{
     public function forceCharacter($serverName,$skin):array{
         $server = $this->getServer($serverName);
         $server->setForceCharacter($skin);
-        if($this->updateServerConfig($server)){
+        if($this->checkServerState($server->getName()) === "active"){
             $command = Perm . " tmux send-key -t srb2_{$serverName} " . escapeshellarg("forceskin {$skin }\n");
             exec($command,$output,$returncode);
             return array("output" => "Character {$skin} forced", "code" => 0);
         }
-        return array("output" => "error : Server config file not found", "code" => 1);
+        return array("output" => "Server offline", "code" => 1);
     }
 
     /**

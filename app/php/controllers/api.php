@@ -73,12 +73,12 @@ class APIController{
                     break;
 
                 case "list_addons":
-                    $this->model = new AccueilModel();
+                    $this->model = new HomeModel();
                     echo json_encode($this->model->listAddons());
                     break;
 
                 case "delete_addon":
-                    $this->model = new AccueilModel();
+                    $this->model = new HomeModel();
                     echo json_encode($this->model->deleteAddon($_POST['Name']));
                     break;
 

@@ -46,7 +46,7 @@ let listAddons = [];
 async function init_config(){
 
     return await init_server_config().then(async () => {
-        document.getElementById("form_server").action = `index.php?gestion=server&Name=${server_name}`;
+        document.getElementById("form_server").action = `index.php?manage=server&Name=${server_name}`;
 
         await init_server_gametype_selector(config_server_gametype_element,default_gametype).then(async (value) => {
             await init_map_selector('config-server-map',value,default_map);
@@ -78,7 +78,7 @@ async function forceCharacter(){
 
     let req = await fetch(host_url + "/index.php",{
         method:"post",
-        body: new URLSearchParams({gestion:"API",action: 'force_server_character',Name:server_name,Character:character})
+        body: new URLSearchParams({manage:"API",action: 'force_server_character',Name:server_name,Character:character})
     });
 
     let res = req.json();
@@ -95,7 +95,7 @@ async function set_time_and_point_limits(){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"set_time_and_point_limit",Name:server_name,Time:time,Point:point})
+        body: new URLSearchParams({manage:"API",action:"set_time_and_point_limit",Name:server_name,Time:time,Point:point})
     })
 
     let res = req.json();
@@ -113,7 +113,7 @@ async function init_server_config(){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"get_server_config",Name:serverName})
+        body: new URLSearchParams({manage:"API",action:"get_server_config",Name:serverName})
     });
 
     let res = req.json();
@@ -156,7 +156,7 @@ async function action(action){
 
     let req = await fetch(host_url + "/index.php",{
         method:"post",
-        body: new URLSearchParams({gestion:"API",action: action + '_server',Name:server_name})
+        body: new URLSearchParams({manage:"API",action: action + '_server',Name:server_name})
     });
 
     let res = req.json();
@@ -173,7 +173,7 @@ async function setMap(){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:'API',action:'set_map',Name:server_name,GameType:gameType.value,Map:map.value})
+        body: new URLSearchParams({manage:'API',action:'set_map',Name:server_name,GameType:gameType.value,Map:map.value})
     });
 
     if(req.ok){
@@ -192,7 +192,7 @@ async function sendCommand(){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:'API',action:'send_command',Name:server_name,Command:command.value})
+        body: new URLSearchParams({manage:'API',action:'send_command',Name:server_name,Command:command.value})
     });
 
     let res = req.json();
@@ -216,7 +216,7 @@ async function add_addons(){
 
             let req = await fetch(host_url + "/index.php",{
                 method:"POST",
-                body: new URLSearchParams({gestion:"API",action:"add_addon_server",Name:server_name,addon:tbody.children[i].children[2].innerText})
+                body: new URLSearchParams({manage:"API",action:"add_addon_server",Name:server_name,addon:tbody.children[i].children[2].innerText})
             });
 
             if(req.ok){
@@ -243,7 +243,7 @@ async function remove_Addons(){
 
             let req = await fetch(host_url + "/index.php",{
                 method:"POST",
-                body: new URLSearchParams({gestion:"API",action:"remove_addon_server",Name:server_name,addon:tbody.children[i].children[2].innerText})
+                body: new URLSearchParams({manage:"API",action:"remove_addon_server",Name:server_name,addon:tbody.children[i].children[2].innerText})
             });
 
             if(req.ok){
@@ -267,7 +267,7 @@ async function init_server_gametype_selector(selector,selectedValue){
 
     const req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"list_server_gametypes",Name:server_name})
+        body: new URLSearchParams({manage:"API",action:"list_server_gametypes",Name:server_name})
     });
 
     if(req.ok){
@@ -295,7 +295,7 @@ async function init_map_selector(selectorId,typeSelected,selectedValue){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"get_server_maps_with_gametype",Name:server_name,TypeOfLevel:typeSelected})
+        body: new URLSearchParams({manage:"API",action:"get_server_maps_with_gametype",Name:server_name,TypeOfLevel:typeSelected})
     });
 
 
@@ -322,7 +322,7 @@ async function init_server_forcecharacter_selector(selectorID,selectedvalue) {
             
     const req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:'API',action:"list_server_characters",Name:server_name})
+        body: new URLSearchParams({manage:'API',action:"list_server_characters",Name:server_name})
     });
 
     if(req.ok){
@@ -346,7 +346,7 @@ async function init_server_addons(tbodyID){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"list_server_addons",Name:server_name})
+        body: new URLSearchParams({manage:"API",action:"list_server_addons",Name:server_name})
     });
 
 
@@ -378,7 +378,7 @@ async function init_addonstoadd() {
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"list_addons",Name:server_name})
+        body: new URLSearchParams({manage:"API",action:"list_addons",Name:server_name})
     });
 
     if(req.ok){
@@ -411,7 +411,7 @@ async function get_server_logs(){
     while(1){
 
         if(server_state !== "inactive"){
-            let data = {gestion:"API",action:'get_server_logs',Name:server_name};
+            let data = {manage:"API",action:'get_server_logs',Name:server_name};
 
             let req = await fetch(host_url + "/index.php",{
                 method:"POST",
@@ -427,7 +427,6 @@ async function get_server_logs(){
 
             }else{
                 console.log("error : " + req.status);
-                break;
             }
         }
 
@@ -443,7 +442,7 @@ async function init_server_state(){
 
     let req = await fetch(host_url + "/index.php",{
         method: "POST",
-        body: new URLSearchParams({gestion:"API",action:"get_server_state",Name:server_name})
+        body: new URLSearchParams({manage:"API",action:"get_server_state",Name:server_name})
     });
 
     if(req.ok){
@@ -465,7 +464,7 @@ async function refresh_players(){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"get_server_players",Name:server_name})
+        body: new URLSearchParams({manage:"API",action:"get_server_players",Name:server_name})
     });
 
     if(req.ok){
@@ -500,7 +499,7 @@ async function refresh_bans(){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"get_server_bans",Name:server_name})
+        body: new URLSearchParams({manage:"API",action:"get_server_bans",Name:server_name})
     });
 
     if(req.ok){
@@ -524,7 +523,7 @@ async function refresh_bans(){
 async function kick(player){
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"kick_server_player",Name:server_name,Node:player})
+        body: new URLSearchParams({manage:"API",action:"kick_server_player",Name:server_name,Node:player})
     })
 
     if(req.ok){
@@ -542,7 +541,7 @@ async function kick(player){
 async function ban(player){
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"ban_server_player",Name:server_name,Node:player})
+        body: new URLSearchParams({manage:"API",action:"ban_server_player",Name:server_name,Node:player})
     })
 
     if(req.ok){
@@ -564,7 +563,7 @@ async function unban(ip){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API", action:"unban", Name:server_name ,ip:ip})
+        body: new URLSearchParams({manage:"API", action:"unban", Name:server_name ,ip:ip})
     });
 
     if(req.ok){
@@ -580,7 +579,7 @@ async function unban(ip){
 async function clearBans(){
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"server_clear_bans",Name:server_name})
+        body: new URLSearchParams({manage:"API",action:"server_clear_bans",Name:server_name})
     })
 
     if(req.ok){
@@ -600,7 +599,7 @@ async function send_message(){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"send_server_message",Name:server_name,Message:message_element.value})
+        body: new URLSearchParams({manage:"API",action:"send_server_message",Name:server_name,Message:message_element.value})
     })
 
     if(req.ok){
@@ -620,7 +619,7 @@ async function get_server_resources(){
         if(server_state !== "inactive") {
             let req = await fetch(host_url + "/index.php", {
                 method: "POST",
-                body: new URLSearchParams({gestion: "API", action: "get_server_resources", Name: server_name})
+                body: new URLSearchParams({manage: "API", action: "get_server_resources", Name: server_name})
             });
 
             if (req.ok) {
@@ -631,7 +630,7 @@ async function get_server_resources(){
                     server_cpu_element.innerText = data.output.cpu + "%";
                     server_ram_element.innerText = data.output.ram + "MB";
                     server_time_element.innerText = data.output.time;
-                })
+                });
 
             } else {
                 console.error("Error : " + req.status);

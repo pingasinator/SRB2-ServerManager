@@ -27,7 +27,7 @@ async function action(e){
 
             let req = await fetch(host_url + "/index.php",{
                 method:"POST",
-                body: new URLSearchParams({gestion:"API",action: e + '_server',Name:server})
+                body: new URLSearchParams({manage:"API",action: e + '_server',Name:server})
             })
 
             let res = req.json();
@@ -45,7 +45,7 @@ async function create_server() {
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
         body: new URLSearchParams({
-            gestion:"API",
+            manage:"API",
             action:'create_server',
             Name:server_name_element.value,
             Port:server_port_element.value,
@@ -81,7 +81,7 @@ async function init_list_Servers(){
 
     let req = await fetch(host_url + "/index.php", {
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:'list_servers'})
+        body: new URLSearchParams({manage:"API",action:'list_servers'})
     })
 
     if(req.ok){
@@ -91,7 +91,7 @@ async function init_list_Servers(){
             data.map((server) => {
                 content += server.server.Name.toLowerCase().includes(server_filter_element.value.toLowerCase()) ?  `<tr>
                                 <td><input type="checkbox"></td>
-                                <td><a href="index.php?gestion=server&Name=${server.server.Name}">${server.server.Name}</a></td>
+                                <td><a href="index.php?manage=server&Name=${server.server.Name}">${server.server.Name}</a></td>
                                 <td>${server.server.DisplayName}</td>
                                 <td class="state-${server.state}">${server.state}</td>
                                 <td>${server.server.Port}</td>
@@ -140,7 +140,7 @@ async function init_list_addons() {
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API",action:"list_addons"})
+        body: new URLSearchParams({manage:"API",action:"list_addons"})
     });
 
     if(req.ok){
@@ -188,7 +188,7 @@ async function deleteAddon(addonName){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",
-        body: new URLSearchParams({gestion:"API", action:"delete_addon", Name:addonName})
+        body: new URLSearchParams({manage:"API", action:"delete_addon", Name:addonName})
     });
 
     if(req.ok){
@@ -237,7 +237,7 @@ async function OpenCheckAddon(addonName){
 
     let req = await fetch(host_url + "/index.php",{
         method:"POSt",
-        body: new URLSearchParams({gestion:"API",action:"get_addon",Name:addonName})
+        body: new URLSearchParams({manage:"API",action:"get_addon",Name:addonName})
     })
 
     if(req.ok){

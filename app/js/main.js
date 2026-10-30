@@ -67,7 +67,7 @@ async function init_map_selector(selectorId,typeSelected,selectedValue){
 
     let map_selector = document.getElementById(selectorId);
     let content = "";
-    let data = {gestion:"API",action:"list_maps"};
+    let data = {manage:"API",action:"list_maps"};
 
     let req = await fetch(host_url + "/index.php",{
         method:"POST",

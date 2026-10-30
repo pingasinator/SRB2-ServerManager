@@ -1,13 +1,13 @@
 <?php
 
-class AccueilController{
+class HomeController{
 
     public $model;
     public $view;
 
     function __construct(){
-        $this->view = new AccueilView();
-        $this->model = new AccueilModel();
+        $this->view = new HomeView();
+        $this->model = new HomeModel();
         return $this;
     }
     function checkAction(){
