@@ -2,7 +2,6 @@
 
 class Addon {
     private $name;
-    private $file;
     private $size;
     private $icon = "default.png";
     private $characters = array();
@@ -123,7 +122,6 @@ class Addon {
 
         return [
             "name" => $this->name,
-            "file" => $this->file,
             "icon" => $this->icon,
             "size" => $this->size,
             "characters" => $characters,

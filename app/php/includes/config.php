@@ -1,6 +1,6 @@
 <?php
 
-define('Perm', '');
+define('Perm', 'sudo');
 
 define('addonsFolder',"./app/srb2/.srb2/addons/");
 
