@@ -33,7 +33,7 @@ class ServerModel{
 
             $server = new server(json_decode($data,true));
 
-            $command = Perm . " tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()} -room {$server->getRoom()} " . ($server->getAllowDownload() === 'on' ? '' :'-noupload') ;
+            $command = Perm . " tmux new-session -d -s srb2_{$server->getName()} 'flatpak run org.srb2.SRB2 -home " . realpath("./app/srb2") . " -dedicated -port {$server->getPort()} -warp {$server->getMap()} -gametype {$server->getGameType()} -room {$server->getRoom()} " . ($server->getAllowDownload() === 'on' ? '' :'-noupload') ;
             if(count($server->getMods()) > 0){
                 $command .= " -file ";
                 $mods = $server->getMods();

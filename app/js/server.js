@@ -161,6 +161,7 @@ async function action(action){
 
     let res = req.json();
 
+
     res.then(async (data) => {
         sendNotification(`<span>${data.output} <br> Code : ${data.code}</span>`,data.code === 0 ? "valide" : "error");
         await init_server_state();
