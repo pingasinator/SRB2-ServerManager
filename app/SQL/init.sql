@@ -33,6 +33,12 @@ CREATE TABLE IF NOT EXISTS `map`(
     NextLevel VARCHAR(2)
 );
 
+CREATE TABLE IF NOT EXISTS `typeoflevel`(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    value VARCHAR(25),
+    map_id VARCHAR(10) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS `addon`(
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
@@ -71,13 +77,8 @@ CREATE TABLE IF NOT EXISTS `addon_contain_character`(
 );
 
 CREATE TABLE IF NOT EXISTS `addon_include_map`(
-    map_id VARCHAR(2) NOT NULL,
+    map_id VARCHAR(10) NOT NULL,
     addon_id INT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS `map_compatible_gametype`(
-    map_id VARCHAR(2) NOT NULL,
-    gametype_id INT NOT NULL
 );
 
 -- FOREIGN KEYS
@@ -101,8 +102,7 @@ ALTER TABLE `addon_include_map`
     ADD CONSTRAINT fk_include_map FOREIGN KEY (map_id) REFERENCES `map`(id),
     ADD CONSTRAINT fk_include_addon FOREIGN KEY (addon_id) REFERENCES `addon`(id);
 
-ALTER TABLE `map_compatible_gametype`
-    ADD CONSTRAINT fk_compatible_gametype FOREIGN KEY (gametype_id) REFERENCES `gametype`(id),
-    ADD CONSTRAINT fk_compatible_map FOREIGN KEY (map_id) REFERENCES `map`(id);
+ALTER TABLE `typeoflevel`
+    ADD CONSTRAINT fk_typeoflevel_map FOREIGN KEY (map_id) REFERENCES `map`(id);
 
 COMMIT;
