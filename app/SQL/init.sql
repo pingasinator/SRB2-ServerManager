@@ -1,13 +1,13 @@
 START TRANSACTION;
 
 CREATE TABLE IF NOT EXISTS `server`(
-    id INT NOT NULL PRIMARY KEY,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
     displayName VARCHAR(100),
     motd VARCHAR(255),
     maxPlayers INT,
     gameType VARCHAR(20),
-    map VARCHAR(2) NOT NULL,
+    map VARCHAR(10) NOT NULL,
     timeLimit INT,
     pointLimit INT,
     forceCharacter VARCHAR(25),
@@ -20,21 +20,21 @@ CREATE TABLE IF NOT EXISTS `server`(
 );
 
 CREATE TABLE IF NOT EXISTS `gametype`(
-    id INT NOT NULL PRIMARY KEY,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(25),
     identifier VARCHAR(25),
     typeoflevel VARCHAR(25)
 );
 
 CREATE TABLE IF NOT EXISTS `map`(
-    id VARCHAR(2) NOT NULL PRIMARY KEY,
+    id VARCHAR(10) NOT NULL PRIMARY KEY,
     levelName VARCHAR(100),
     ACT INT,
     NextLevel VARCHAR(2)
 );
 
 CREATE TABLE IF NOT EXISTS `addon`(
-    id INT NOT NULL PRIMARY KEY,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
     size INT,
     icon VARCHAR(100),
@@ -42,12 +42,12 @@ CREATE TABLE IF NOT EXISTS `addon`(
 );
 
 CREATE TABLE IF NOT EXISTS `command`(
-    id INT NOT NULL PRIMARY KEY,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     command VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS `character`(
-    id INT NOT NULL PRIMARY KEY,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     skinName VARCHAR(25),
     displayName VARCHAR(25)
 );
