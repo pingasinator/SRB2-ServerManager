@@ -11,10 +11,10 @@ class server{
     private $map;
 
     private $timeLimit = 10;
-    private $pointLimit;
+    private $pointLimit = 0;
     private $forceCharacter = "None";
 
-    private $port = "5029";
+    private $port = 5029;
     private $password = "";
     private $room = "00";
     private $masterServer = "https://mb.srb2.org/MS/0";
@@ -149,7 +149,11 @@ class server{
     }
 
     public function setMaxPlayers($maxPlayers){
-        $this->maxPlayers = $maxPlayers;
+        if(intval($maxPlayers) <= 0){
+            $this->maxPlayers = 1;
+        }else{
+            $this->maxPlayers = intval($maxPlayers);
+        }
     }
 
     public function setGameType($GameType){
@@ -161,12 +165,12 @@ class server{
     }
 
     public function setTimeLimit($TimeLimit){
-        $this->timeLimit = $TimeLimit;
+        $this->timeLimit = intval($TimeLimit);
     }
 
     public function setPointLimit($PointLimit)
     {
-        $this->pointLimit = $PointLimit;
+        $this->pointLimit = intval($PointLimit);
     }
 
     public function setForceCharacter($forceCharacter){
@@ -174,8 +178,10 @@ class server{
     }
 
     public function setPort($port){
-        if($port != ""){
-            $this->port = $port;
+        if($port != "" && intval($port) != 0){
+            $this->port = intval($port);
+        }else{
+            $this->port = 5029;
         }
     }
 
@@ -192,11 +198,11 @@ class server{
     }
 
     public function setAllowDownload($AllowDownload){
-        $this->allowDownload = $AllowDownload;
+        $this->allowDownload = boolval($AllowDownload);
     }
 
     public function setDownloadSize($Downloadsize){
-        $this->downloadSize = $Downloadsize;
+        $this->downloadSize = intval($Downloadsize);
     }
 
     public function setMods($Mods){

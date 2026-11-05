@@ -47,7 +47,7 @@ class ServerModel{
 
             $command .= "+servername \"{$server->getDisplayName()}\" +password \"{$server->getPassword()}\" +forceskin {$server->getForceCharacter()} +maxplayers {$server->getMaxPlayers()} +motd \"{$motd}\" +timelimit {$server->getTimelimit()} +pointlimit {$server->getPointlimit()} ";
 
-            if($server->getAllowDownload() === 'on'){
+            if($server->getAllowDownload()){
                 $var = $server->getDownloadsize() * 1024;
                 $command .= "+maxsend {$var}";
             }

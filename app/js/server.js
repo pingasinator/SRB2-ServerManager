@@ -140,13 +140,12 @@ async function init_server_config(){
 
         config_server_timelimit_element.value = data.TimeLimit;
         config_server_pointlimit_element.value = data.PointLimit;
-        config_server_allowdownload_element.checked = data.AllowDownload === "on";
+        config_server_allowdownload_element.checked = data.AllowDownload;
         config_server_downloadsize_element.value = data.DownloadSize;
 
         config_server_port_element.value = data.Port;
         config_server_password_element.value = data.Password;
         config_server_masterserver_element.value = data.MasterServer;
-
 
         return 1;
     })
