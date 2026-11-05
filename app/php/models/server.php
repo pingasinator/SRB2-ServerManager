@@ -10,11 +10,31 @@ class ServerModel extends Model{
     function createServer(): array{
         $server = new server($_POST);
 
+        $sql = "INSERT INTO server (name,displayname,motd,maxPlayers,gameType,map,timeLimit,pointLimit,forcecharacter,port,password,room,masterServer) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $this->executeQuery($sql,[
+            $server->getName(),
+            $server->getDisplayName(),
+            $server->getMotd(),
+            $server->getMaxPlayers(),
+            $server->getGameType(),
+            $server->getMap(),
+            0,
+            0,
+            $server->getForceCharacter(),
+            $server->getPort(),
+            $server->getPassword(),
+            $server->getRoom(),
+            $server->getMasterServer()
+        ]);
+
+        /*
         $data = $server->ToJSON();
         $path = 'app/servers/'. $server->getName().'.json';
         file_put_contents($path, $data);
-
         $this->startServer($server->getName());
+        */
+
+
 
         return array("output" => "Server successfully created.", "code" => 0);
     }

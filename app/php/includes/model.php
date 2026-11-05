@@ -16,10 +16,10 @@ abstract class Model{
     public function executeQuery(string $query,$params = null){
 
         if($params == null){
-            $res = $this->init_DB()->exec($query);
+            $res = $this->init_DB()->query($query);
         }else{
-            $res = $this->init_DB()->prepare($query,$params);
-            $res->execute();
+            $res = $this->init_DB()->prepare($query);
+            $res->execute($params);
         }
 
         return $res;
