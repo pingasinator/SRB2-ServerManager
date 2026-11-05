@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `map`(
     id VARCHAR(10) NOT NULL PRIMARY KEY,
     levelName VARCHAR(100),
     ACT INT,
-    NextLevel VARCHAR(2)
+    NextLevel VARCHAR(10)
 );
 
 CREATE TABLE IF NOT EXISTS `typeoflevel`(
