@@ -1,6 +1,6 @@
 <?php
 
-class HomeModel{
+class HomeModel extends Model{
 
     /**
      * imports an addon (only pk3 are supported)

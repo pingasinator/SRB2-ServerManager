@@ -1,8 +1,13 @@
 <?php
 
-define('Perm', '');
+define('DBHOST', 'localhost');
+define('DBNAME', 'srb2manager');
+define('DBUSER', 'root');
+define('DBPASS', '');
 
+define('Perm', '');
 define('addonsFolder',"./app/srb2/.srb2/addons/");
+
 
 /**
  * Autoloader

@@ -1,6 +1,6 @@
 <?php
 
-class ServerModel{
+class ServerModel extends Model{
 
     /**
      * Creates a server, put it in a json file and starts it.
